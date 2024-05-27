@@ -1,0 +1,50 @@
+# mkdir /nfs-nas-swarm/config/pgadmin
+# chown 5050:5050 /nfs-nas-swarm/config/pgadmin
+
+version: '3.3'
+services:
+  pgadmin:
+    image: dpage/pgadmin4:8.6
+    environment:
+      PGID: '5050'
+      PUID: '5050'
+      TZ: Europe/Amsterdam
+      PGADMIN_DEFAULT_EMAIL: 'karam.ajaj@hotmail.com'
+      PGADMIN_DEFAULT_PASSWORD: pgadmin_password
+      PGADMIN_LISTEN_PORT: '5050'
+    secrets:
+      - pgadmin_password
+    volumes:
+     - /nfs-nas-swarm/config/pgadmin:/var/lib/pgadmin
+    networks:
+     - internal
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 0
+      labels:
+        traefik.http.routers.pgadmin-http.rule: Host(`pgadmin.vnerd.nl`)
+        traefik.http.routers.pgadmin-https.tls.certresolver: le
+        traefik.http.routers.pgadmin-https.tls: 'true'
+        traefik.http.services.pgadmin.loadbalancer.server.port: '5050'
+        traefik.http.routers.pgadmin-http.middlewares: https-redirect
+        traefik.http.routers.pgadmin-https.entrypoints: https
+        traefik.http.routers.pgadmin-https.rule: Host(`pgadmin.vnerd.nl`)
+        traefik.constrpgadminnt-label: traefik-public
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.pgadmin-http.entrypoints: http
+        traefik.http.routers.pgadmin-https.middlewares: authelia
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true
+secrets:
+   pgadmin_password:
+     external: true

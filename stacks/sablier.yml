@@ -1,0 +1,30 @@
+version: '3.3'
+services:
+  sablier:
+    image: ghcr.io/acouvreur/sablier:latest
+    command:
+     - start
+     - --provider.name=swarm
+    environment:
+      PGID: '999'
+      TZ: Europe/Amsterdam
+    ports:
+     - 1000:1000
+    volumes:
+     - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+     - internal
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+         - node.role == manager
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true

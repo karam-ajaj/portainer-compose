@@ -1,0 +1,633 @@
+version: '3.3'
+services:
+  bazarr:
+    image: ghcr.io/hotio/bazarr:latest
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /media_services_config/bazarr:/config
+     - /media_pool:/data
+    networks:
+     - media-network
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.bazarr-http.entrypoints: http
+        traefik.http.routers.bazarr-https.entrypoints: https
+        traefik.http.routers.bazarr-https.tls: 'true'
+        traefik.http.routers.bazarr-https.tls.certresolver: le
+        traefik.http.routers.bazarr-https.rule: Host(`bazarr.vnerd.nl`)
+        traefik.http.services.bazarr.loadbalancer.server.port: '6767'
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.bazarr-http.rule: Host(`bazarr.vnerd.nl`)
+        traefik.http.routers.bazarr-http.middlewares: https-redirect
+        traefik.http.routers.bazarr-https.middlewares: authelia
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  headphones:
+    image: lscr.io/linuxserver/headphones:latest
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /media_services_config/headphones:/config
+     - /media_pool:/data
+    networks:
+     - media-network
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 0
+      labels:
+        traefik.http.routers.headphones-http.rule: Host(`headphones.vnerd.nl`)
+        sablier.enable: 'true'
+        traefik.http.routers.headphones-https.tls.certresolver: le
+        traefik.http.routers.headphones-https.entrypoints: https
+        traefik.http.routers.headphones-http.middlewares: https-redirect
+        sablier.group: headphones
+        traefik.constraint-label: traefik-public
+        traefik.docker.lbswarm: 'true'
+        traefik.http.services.headphones.loadbalancer.server.port: '8181'
+        traefik.http.routers.headphones-http.entrypoints: http
+        traefik.http.routers.headphones-https.rule: Host(`headphones.vnerd.nl`)
+        traefik.http.routers.headphones-https.tls: 'true'
+        traefik.http.routers.headphones-https.middlewares: authelia, headphones-sablier@file
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  heimdall:
+    image: lscr.io/linuxserver/heimdall:latest
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /media_services_config/heimdall:/config
+     - /etc/localtime:/etc/localtime:ro
+    networks:
+     - media-network
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 0
+      labels:
+        sablier.enable: 'true'
+        traefik.http.services.heimdall.loadbalancer.server.port: '80'
+        traefik.http.routers.heimdall-https.entrypoints: https
+        traefik.http.routers.heimdall-https.tls.certresolver: le
+        traefik.http.routers.heimdall-http.middlewares: https-redirect
+        sablier.group: heimdall
+        traefik.http.routers.heimdall-https.rule: Host(`heimdall.vnerd.nl`)
+        traefik.constraint-label: traefik-public
+        traefik.docker.lbswarm: 'true'
+        traefik.http.routers.heimdall-https.tls: 'true'
+        traefik.http.routers.heimdall-http.entrypoints: http
+        traefik.http.routers.heimdall-http.rule: Host(`heimdall.vnerd.nl`)
+        traefik.http.routers.heimdall-https.middlewares: heimdall-sablier@file
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /media_services_config/jackett:/config
+    networks:
+     - media-network
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.jackett-http.entrypoints: http
+        traefik.http.routers.jackett-https.middlewares: authelia
+        traefik.http.routers.jackett-https.rule: Host(`jackett.vnerd.nl`)
+        traefik.http.services.jackett.loadbalancer.server.port: '9117'
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.jackett-http.rule: Host(`jackett.vnerd.nl`)
+        traefik.http.routers.jackett-http.middlewares: https-redirect
+        traefik.http.routers.jackett-https.entrypoints: https
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.jackett-https.tls: 'true'
+        traefik.http.routers.jackett-https.tls.certresolver: le
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  lazylibrarian:
+    image: lscr.io/linuxserver/lazylibrarian:latest
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /media_services_config/lazylibrarian:/config
+     - /media_pool:/data
+    networks:
+     - media-network
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.lazylibrarian-http.rule: Host(`lazylibrarian.vnerd.nl`)
+        traefik.http.services.lazylibrarian.loadbalancer.server.port: '5299'
+        traefik.http.routers.lazylibrarian-https.rule: Host(`lazylibrarian.vnerd.nl`)
+        traefik.http.routers.lazylibrarian-http.entrypoints: http
+        traefik.http.routers.lazylibrarian-https.entrypoints: https
+        traefik.http.routers.lazylibrarian-https.tls: 'true'
+        traefik.http.routers.lazylibrarian-http.middlewares: https-redirect
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.lazylibrarian-https.tls.certresolver: le
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.lazylibrarian-https.middlewares: authelia
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /etc/localtime:/etc/localtime:ro
+     - /media_services_config/lidarr:/config
+     - /media_pool:/data
+    networks:
+     - media-network
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.lidarr-https.tls.certresolver: le
+        traefik.http.routers.lidarr-https.middlewares: authelia
+        traefik.http.routers.lidarr-http.entrypoints: http
+        traefik.http.routers.lidarr-http.rule: Host(`lidarr.vnerd.nl`)
+        traefik.http.routers.lidarr-https.tls: 'true'
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.lidarr-https.rule: Host(`lidarr.vnerd.nl`)
+        traefik.http.services.lidarr.loadbalancer.server.port: '8686'
+        traefik.http.routers.lidarr-https.entrypoints: https
+        traefik.http.routers.lidarr-http.middlewares: https-redirect
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  mylar:
+    image: lscr.io/linuxserver/mylar3:latest
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /media_services_config/mylar:/config
+     - /media_pool:/data
+    networks:
+     - media-network
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.mylar-http.middlewares: https-redirect
+        traefik.http.routers.mylar-https.tls: 'true'
+        traefik.http.routers.mylar-http.rule: Host(`mylar.vnerd.nl`)
+        traefik.http.routers.mylar-https.middlewares: authelia
+        traefik.http.routers.mylar-https.rule: Host(`mylar.vnerd.nl`)
+        traefik.http.routers.mylar-https.tls.certresolver: le
+        traefik.http.routers.mylar-http.entrypoints: http
+        traefik.http.services.mylar.loadbalancer.server.port: '8090'
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.mylar-https.entrypoints: https
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  nzbget:
+    image: lscr.io/linuxserver/nzbget:latest
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /media_services_config/nzbget:/config
+     - /media_pool/usenet:/data/usenet
+    networks:
+     - media-network
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.nzbget-https.rule: Host(`nzbget.vnerd.nl`)
+        traefik.http.routers.nzbget-https.middlewares: authelia
+        traefik.http.routers.nzbget-http.rule: Host(`nzbget.vnerd.nl`)
+        traefik.http.routers.nzbget-https.tls: 'true'
+        traefik.http.routers.nzbget-http.middlewares: https-redirect
+        traefik.http.routers.nzbget-https.tls.certresolver: le
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.nzbget-https.entrypoints: https
+        traefik.http.routers.nzbget-http.entrypoints: http
+        traefik.http.services.nzbget.loadbalancer.server.port: '6789'
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  nzbhydra:
+    image: lscr.io/linuxserver/nzbhydra2:latest
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /media_services_config/nzbhydra2:/config
+    networks:
+     - media-network
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 0
+      labels:
+        sablier.enable: 'true'
+        traefik.http.routers.nzbhydra2-http.middlewares: https-redirect
+        traefik.http.routers.nzbhydra2-https.entrypoints: https
+        traefik.http.routers.nzbhydra2-http.rule: Host(`nzbhydra.vnerd.nl`)
+        traefik.http.routers.nzbhydra2-https.middlewares: authelia, nzbhydra-sablier@file
+        traefik.http.routers.nzbhydra2-http.entrypoints: http
+        traefik.http.services.nzbhydra2.loadbalancer.server.port: '5076'
+        traefik.http.routers.nzbhydra2-https.tls.certresolver: le
+        traefik.http.routers.nzbhydra2-https.tls: 'true'
+        sablier.group: nzbhydra
+        traefik.constraint-label: traefik-public
+        traefik.docker.lbswarm: 'true'
+        traefik.http.routers.nzbhydra2-https.rule: Host(`nzbhydra.vnerd.nl`)
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  ombi:
+    image: lscr.io/linuxserver/ombi:latest
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /media_services_config/ombi:/config
+    networks:
+     - media-network
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 0
+      labels:
+        sablier.enable: 'true'
+        traefik.http.services.ombi.loadbalancer.server.port: '3579'
+        traefik.http.routers.ombi-https.middlewares: authelia, ombi-sablier@file
+        traefik.http.routers.ombi-http.rule: Host(`ombi.vnerd.nl`)
+        traefik.http.routers.ombi-https.rule: Host(`ombi.vnerd.nl`)
+        traefik.http.routers.ombi-https.entrypoints: https
+        traefik.http.routers.ombi-https.tls: 'true'
+        traefik.http.routers.ombi-http.middlewares: https-redirect
+        sablier.group: ombi
+        traefik.constraint-label: traefik-public
+        traefik.docker.lbswarm: 'true'
+        traefik.http.routers.ombi-http.entrypoints: http
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.ombi-https.tls.certresolver: le
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  overseerr:
+    image: linuxserver/overseerr:1.33.2
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /media_services_config/overseerr/config:/config
+     # - /media_services_config/overseerr/app/overseerr:/app/overseerr
+    networks:
+     - media-network
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.overseerr-http.entrypoints: http
+        traefik.http.routers.overseerr-http.rule: Host(`overseerr.vnerd.nl`)
+        traefik.http.routers.overseerr-https.entrypoints: https
+        traefik.http.routers.overseerr-http.middlewares: https-redirect
+        traefik.http.services.overseerr.loadbalancer.server.port: '5055'
+        traefik.http.routers.overseerr-https.tls.certresolver: le
+        traefik.http.routers.overseerr-https.tls: 'true'
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.overseerr-https.rule: Host(`overseerr.vnerd.nl`)
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:nightly
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /media_services_config/prowlarr:/config
+     - /media_pool:/data
+    networks:
+     - media-network
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.prowlarr-https.middlewares: authelia
+        traefik.http.routers.prowlarr-https.tls: 'true'
+        traefik.http.routers.prowlarr-https.tls.certresolver: le
+        traefik.http.routers.prowlarr-http.middlewares: https-redirect
+        traefik.http.routers.prowlarr-http.rule: Host(`prowlarr.vnerd.nl`)
+        traefik.http.routers.prowlarr-http.entrypoints: http
+        traefik.http.routers.prowlarr-https.entrypoints: https
+        traefik.http.services.prowlarr.loadbalancer.server.port: '9696'
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.prowlarr-https.rule: Host(`prowlarr.vnerd.nl`)
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    ports:
+     - 6881:6881
+    volumes:
+     - /media_services_config/qbittorrent:/config
+     - /media_pool/torrents:/data/torrents
+    networks:
+     - media-network
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.qbittorrent-https.middlewares: authelia
+        traefik.http.routers.qbittorrent-https.rule: Host(`qbittorrent.vnerd.nl`)
+        traefik.http.routers.qbittorrent-https.entrypoints: https
+        traefik.http.routers.qbittorrent-http.entrypoints: http
+        traefik.http.routers.qbittorrent-http.rule: Host(`qbittorrent.vnerd.nl`)
+        traefik.http.routers.qbittorrent-http.middlewares: https-redirect
+        traefik.http.services.qbittorrent.loadbalancer.server.port: '8080'
+        traefik.http.routers.qbittorrent-https.tls.certresolver: le
+        traefik.constraint-label: traefik-public
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.qbittorrent-https.tls: 'true'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  radarr:
+    image: lscr.io/linuxserver/radarr:version-5.4.6.8723
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /media_services_config/radarr:/config
+     - /media_pool:/data
+    networks:
+     - media-network
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.radarr-https.tls: 'true'
+        traefik.http.routers.radarr-http.entrypoints: http
+        traefik.http.routers.radarr-https.middlewares: authelia
+        traefik.http.routers.radarr-https.tls.certresolver: le
+        traefik.http.routers.radarr-https.entrypoints: https
+        traefik.http.routers.radarr-http.middlewares: https-redirect
+        traefik.constraint-label: traefik-public
+        traefik.http.services.radarr.loadbalancer.server.port: '7878'
+        traefik.http.routers.radarr-https.rule: Host(`radarr.vnerd.nl`)
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.radarr-http.rule: Host(`radarr.vnerd.nl`)
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  readarr:
+    image: lscr.io/linuxserver/readarr:nightly
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /media_services_config/readarr:/config
+     - /media_pool:/data
+    networks:
+     - media-network
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.readarr-https.middlewares: authelia
+        traefik.http.routers.readarr-http.rule: Host(`readarr.vnerd.nl`)
+        traefik.http.services.readarr.loadbalancer.server.port: '8787'
+        traefik.http.routers.readarr-http.middlewares: https-redirect
+        traefik.http.routers.readarr-https.tls: 'true'
+        traefik.http.routers.readarr-https.rule: Host(`readarr.vnerd.nl`)
+        traefik.http.routers.readarr-https.entrypoints: https
+        traefik.http.routers.readarr-https.tls.certresolver: le
+        traefik.constraint-label: traefik-public
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.readarr-http.entrypoints: http
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  # reiverr:
+  #   image: ghcr.io/aleksilassila/reiverr:latest
+  #   environment:
+  #     PGID: '911'
+  #     PUID: '911'
+  #     TZ: Europe/Amsterdam
+  #   volumes:
+  #    - /media_services_config/reiverr:/config
+  #    - /media_pool:/data
+  #   networks:
+  #    - media-network
+  #    - traefik-public
+  #   logging:
+  #     driver: json-file
+  #   deploy:
+  #     labels:
+  #       traefik.http.routers.reiverr-https.tls: 'true'
+  #       traefik.http.routers.reiverr-https.rule: Host(`reiverr.vnerd.nl`)
+  #       traefik.http.routers.reiverr-http.entrypoints: http
+  #       traefik.http.routers.reiverr-http.rule: Host(`reiverr.vnerd.nl`)
+  #       traefik.http.routers.reiverr-http.middlewares: https-redirect
+  #       traefik.constraint-label: traefik-public
+  #       traefik.http.routers.reiverr-https.tls.certresolver: le
+  #       traefik.http.routers.reiverr-https.entrypoints: https
+  #       traefik.http.services.reiverr.loadbalancer.server.port: '9494'
+  #       traefik.docker.network: traefik-public
+  #       traefik.enable: 'true'
+  #       traefik.http.routers.reiverr-https.middlewares: authelia
+  #     placement:
+  #       constraints:
+  #        - node.labels.Arch!=i686
+  #        - node.labels.worker==enabled
+  rutorrent:
+    image: lscr.io/linuxserver/rutorrent:latest
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    ports:
+     - 36258:36258
+    volumes:
+     - /media_services_config/rutorrent:/config
+     - /media_pool/torrents:/data/torrents
+    networks:
+     - media-network
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.rutorrent-https.entrypoints: https
+        traefik.http.routers.rutorrent-http.entrypoints: http
+        traefik.http.routers.rutorrent-http.middlewares: https-redirect
+        traefik.http.routers.rutorrent-https.middlewares: authelia
+        traefik.http.services.rutorrent.loadbalancer.server.port: '80'
+        traefik.http.routers.rutorrent-https.rule: Host(`rutorrent.vnerd.nl`)
+        traefik.constraint-label: traefik-public
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.rutorrent-http.rule: Host(`rutorrent.vnerd.nl`)
+        traefik.http.routers.rutorrent-https.tls.certresolver: le
+        traefik.http.routers.rutorrent-https.tls: 'true'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd:latest
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /media_services_config/sabnzbd:/config
+     - /media_pool/usenet:/data/usenet
+     - /media_pool/sabnzbd:/data/sabnzbd
+    networks:
+     - media-network
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.sabnzbd-https.middlewares: authelia
+        traefik.http.routers.sabnzbd-http.middlewares: https-redirect
+        traefik.http.routers.sabnzbd-http.rule: Host(`sabnzbd.vnerd.nl`)
+        traefik.http.routers.sabnzbd-https.tls.certresolver: le
+        traefik.http.routers.sabnzbd-https.rule: Host(`sabnzbd.vnerd.nl`)
+        traefik.http.services.sabnzbd.loadbalancer.server.port: '8080'
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.sabnzbd-https.tls: 'true'
+        traefik.http.routers.sabnzbd-http.entrypoints: http
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.sabnzbd-https.entrypoints: https
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:version-4.0.4.1491
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /media_services_config/sonarr:/config
+     - /media_pool:/data
+    networks:
+     - media-network
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.sonarr-http.rule: Host(`sonarr.vnerd.nl`)
+        traefik.http.routers.sonarr-http.entrypoints: http
+        traefik.http.routers.sonarr-https.entrypoints: https
+        traefik.http.services.sonarr.loadbalancer.server.port: '8989'
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.sonarr-http.middlewares: https-redirect
+        traefik.http.routers.sonarr-https.middlewares: authelia
+        traefik.http.routers.sonarr-https.tls: 'true'
+        traefik.http.routers.sonarr-https.rule: Host(`sonarr.vnerd.nl`)
+        traefik.http.routers.sonarr-https.tls.certresolver: le
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  media-network:
+    driver: overlay
+  traefik-public:
+    external: true

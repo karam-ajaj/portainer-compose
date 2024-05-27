@@ -1,0 +1,39 @@
+version: '3.3'
+services:
+  doublecommander:
+    image: lscr.io/linuxserver/doublecommander:latest
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /nfs-nas-swarm:/data
+     - /nfs-nas-swarm/config/doublecommander:/config
+    networks:
+     - internal
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.doublecommander-http.rule: Host(`doublecommander.vnerd.nl`)
+        traefik.http.routers.doublecommander-http.entrypoints: http
+        traefik.http.routers.doublecommander-https.entrypoints: https
+        traefik.http.routers.doublecommander-https.tls: 'true'
+        traefik.http.routers.doublecommander-https.middlewares: authelia
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.doublecommander-https.rule: Host(`doublecommander.vnerd.nl`)
+        traefik.http.routers.doublecommander-http.middlewares: https-redirect
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.services.doublecommander.loadbalancer.server.port: '3000'
+        traefik.http.routers.doublecommander-https.tls.certresolver: le
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true

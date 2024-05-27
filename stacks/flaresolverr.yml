@@ -1,0 +1,36 @@
+version: '3.3'
+services:
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    environment:
+      LOG_LEVEL: info
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    networks:
+     - internal
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.flaresolverr-http.entrypoints: http
+        traefik.http.routers.flaresolverr-http.middlewares: https-redirect
+        traefik.constrflaresolverrnt-label: traefik-public
+        traefik.http.services.flaresolverr.loadbalancer.server.port: '8191'
+        traefik.http.routers.flaresolverr-https.entrypoints: https
+        traefik.http.routers.flaresolverr-https.middlewares: authelia
+        traefik.http.routers.flaresolverr-https.rule: Host(`flaresolverr.vnerd.nl`)
+        traefik.http.routers.flaresolverr-http.rule: Host(`flaresolverr.vnerd.nl`)
+        traefik.http.routers.flaresolverr-https.tls: 'true'
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.flaresolverr-https.tls.certresolver: le
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true

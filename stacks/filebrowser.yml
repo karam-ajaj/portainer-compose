@@ -1,0 +1,41 @@
+version: '3.3'
+services:
+  filebrowser:
+    image: filebrowser/filebrowser:v2.25.0-s6
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /nfs-nas-swarm/config/filebrowser/.filebrowser.json:/.filebrowser.json
+     - /nfs-nas-swarm:/srv
+     - /nfs-nas-swarm/config/filebrowser/filebrowser.db:/database/filebrowser.db
+    networks:
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 0
+      labels:
+        sablier.enable: 'true'
+        traefik.http.routers.filebrowser-https.middlewares: authelia, filebrowser-sablier@file
+        traefik.http.routers.filebrowser-https.tls: 'true'
+        traefik.http.routers.filebrowser-https.tls.certresolver: le
+        traefik.http.routers.filebrowser-https.entrypoints: https
+        traefik.http.routers.filebrowser-http.rule: Host(`filebrowser.vnerd.nl`)
+        sablier.group: filebrowser
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.filebrowser-https.rule: Host(`filebrowser.vnerd.nl`)
+        traefik.docker.lbswarm: 'true'
+        traefik.http.routers.filebrowser-http.entrypoints: http
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.filebrowser-http.middlewares: https-redirect
+        traefik.http.services.filebrowser.loadbalancer.server.port: '80'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  traefik-public:
+    external: true

@@ -1,0 +1,44 @@
+version: '3.3'
+services:
+  influxdb:
+    image: influxdb:latest
+    environment:
+      INFLUXDB_UDP_DATABASE: traefik
+      INFLUXDB_UDP_ENABLED: 'true'
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    ports:
+     - 8089:8089/udp
+    volumes:
+     - /nfs-nas-swarm/data/influxdb:/var/lib/influxdb2
+    networks:
+     - internal
+     - traefik-public
+     - cloudbeaver_internal
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.influxdb-https.tls: 'true'
+        traefik.http.routers.influxdb-http.middlewares: https-redirect
+        traefik.http.routers.influxdb-http.rule: Host(`influxdb.vnerd.nl`)
+        traefik.http.routers.influxdb-https.tls.certresolver: le
+        traefik.http.routers.influxdb-http.entrypoints: http
+        traefik.http.services.influxdb.loadbalancer.server.port: '8086'
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.influxdb-https.entrypoints: https
+        traefik.http.routers.influxdb-https.rule: Host(`influxdb.vnerd.nl`)
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true
+  cloudbeaver_internal:
+    external: true

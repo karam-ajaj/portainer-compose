@@ -1,0 +1,16 @@
+version: '3.3'
+services:
+  ansible:
+    image: keinstien/ansible:latest
+    networks:
+     - internal
+    logging:
+      driver: json-file
+    deploy:
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.hostname == pc01.karam.lab
+networks:
+  internal:
+    driver: overlay

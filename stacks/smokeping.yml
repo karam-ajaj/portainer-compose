@@ -1,0 +1,35 @@
+version: '3.3'
+services:
+  smokeping:
+    image: lscr.io/linuxserver/smokeping:latest
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /nfs-nas-swarm/config/smokeping:/config
+    networks:
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.smokeping-http.rule: Host(`smokeping.vnerd.nl`)
+        traefik.http.routers.smokeping-https.middlewares: authelia
+        traefik.http.routers.smokeping-https.rule: Host(`smokeping.vnerd.nl`)
+        traefik.http.services.smokeping.loadbalancer.server.port: '80'
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.smokeping-https.tls.certresolver: le
+        traefik.http.routers.smokeping-http.middlewares: https-redirect
+        traefik.http.routers.smokeping-http.entrypoints: http
+        traefik.http.routers.smokeping-https.tls: 'true'
+        traefik.http.routers.smokeping-https.entrypoints: https
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  traefik-public:
+    external: true

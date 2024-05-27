@@ -1,0 +1,69 @@
+version: '3.3'
+services:
+  ai:
+    image: codeproject/ai-server:latest
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    ports:
+     - 32168:32168
+    volumes:
+     - /nfs-nas-swarm/config/ai/settings:/etc/codeproject/ai
+     - /nfs-nas-swarm/config/ai/modules:/app/modules
+    networks:
+     - internal
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.ai-http.rule: Host(`ai.vnerd.nl`)
+        traefik.http.routers.ai-https.tls.certresolver: le
+        traefik.http.routers.ai-https.tls: 'true'
+        traefik.http.services.ai.loadbalancer.server.port: '32168'
+        traefik.http.routers.ai-http.middlewares: https-redirect
+        traefik.http.routers.ai-https.entrypoints: https
+        traefik.http.routers.ai-https.rule: Host(`ai.vnerd.nl`)
+        traefik.constraint-label: traefik-public
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.ai-http.entrypoints: http
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  aiui:
+    image: nginx:latest
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /nfs-nas-swarm/config/aiui:/usr/share/nginx/html
+    networks:
+     - internal
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.aiui-http.middlewares: https-redirect
+        traefik.http.routers.aiui-http.rule: Host(`aiui.vnerd.nl`)
+        traefik.http.routers.aiui-https.rule: Host(`aiui.vnerd.nl`)
+        traefik.http.routers.aiui-https.tls: 'true'
+        traefik.constraiuint-label: traefik-public
+        traefik.http.routers.aiui-http.entrypoints: http
+        traefik.http.routers.aiui-https.entrypoints: https
+        traefik.http.routers.aiui-https.tls.certresolver: le
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.services.aiui.loadbalancer.server.port: '80'
+      placement:
+        constraints:
+         - node.labels.Arch==i686
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true

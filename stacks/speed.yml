@@ -1,0 +1,42 @@
+version: '3.3'
+services:
+  speed:
+    image: lscr.io/linuxserver/speedtest-tracker:latest
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+      APP_NAME: vnerd lab speed
+      PUBLIC_DASHBOARD: 'true'
+    volumes:
+     - /nfs-nas-swarm/config/speed:/config
+    networks:
+     - internal
+     - traefik-public
+    logging:
+      # driver: syslog
+      # options:
+      #    syslog-address: "udp://10.10.10.85:4317"
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.speed-http.rule: Host(`speed.vnerd.nl`)
+        traefik.http.routers.speed-https.tls.certresolver: le
+        traefik.http.services.speed.loadbalancer.server.port: '80'
+        traefik.http.routers.speed-https.rule: Host(`speed.vnerd.nl`)
+        traefik.http.routers.speed-http.middlewares: https-redirect
+        traefik.http.routers.speed-http.entrypoints: http
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.speed-https.tls: 'true'
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.speed-https.entrypoints: https
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true

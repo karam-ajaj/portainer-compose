@@ -1,0 +1,64 @@
+version: '3.3'
+services:
+  app:
+    image: minio/minio:latest
+    command:
+     - minio
+     - server
+     - /data
+     - --console-address
+     - :9001
+    environment:
+      PUID: '911'
+      PGID: '911'
+      MINIO_BROWSER_REDIRECT_URL: https://minio-console.vnerd.nl
+      MINIO_ROOT_PASSWORD_FILE: /run/secrets/minio_password
+      MINIO_ROOT_USER: admin
+      MINIO_SERVER_URL: https://minio.vnerd.nl
+    secrets:
+      - minio_password
+    ports:
+     - 9000:9000
+    volumes:
+     - /nfs-nas-swarm/data/minio:/data
+     - /nfs-nas-swarm/data/minio:/password
+    networks:
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.minio-https.rule: Host(`minio.vnerd.nl`)
+        traefik.http.routers.minioconsole-https.service: minioconsole
+        traefik.http.services.minioconsole.loadbalancer.server.port: '9001'
+        traefik.http.routers.minio-https.entrypoints: https
+        traefik.http.routers.minioconsole-https.tls.certresolver: le
+        traefik.http.routers.minioconsole-http.entrypoints: http
+        traefik.http.routers.minio-http.middlewares: https-redirect
+        traefik.http.routers.minio-http.rule: Host(`minio.vnerd.nl`)
+        traefik.http.routers.minio-http.entrypoints: http
+        traefik.http.routers.minio-https.service: minio
+        traefik.http.services.minio.loadbalancer.server.port: '9000'
+        traefik.http.routers.minioconsole-https.tls: 'true'
+        traefik.http.routers.minio-https.tls: 'true'
+        traefik.http.routers.minioconsole-http.rule: Host(`minio-console.vnerd.nl`)
+        traefik.http.routers.minioconsole-http.middlewares: https-redirect
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.minioconsole-https.rule: Host(`minio-console.vnerd.nl`)
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.minio-https.tls.certresolver: le
+        traefik.http.routers.minioconsole-https.entrypoints: https
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  traefik-public:
+    external: true
+secrets:
+   minio_password:
+     external: true
+# secrets:
+#    minio_password:
+#      file: /run/secrets/minio_password.txt

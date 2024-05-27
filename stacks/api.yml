@@ -1,0 +1,126 @@
+version: '3.3'
+services:
+  api:
+    image: swaggerapi/swagger-editor
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+      SWAGGER_JSON_URL: '/api/swagger.yml'
+    networks:
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.api-http.middlewares: https-redirect
+        traefik.http.routers.api-http.rule: Host(`api.vnerd.nl`)
+        traefik.http.services.api.loadbalancer.server.port: '8080'
+        traefik.http.routers.api-https.tls: 'true'
+        traefik.http.routers.api-https.tls.certresolver: le
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.api-https.rule: Host(`api.vnerd.nl`)
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.api-https.entrypoints: https
+        traefik.http.routers.api-http.entrypoints: http
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  vc:
+    image: swaggerapi/swagger-ui
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+      SWAGGER_FILE: '/usr/share/nginx/html/api/swagger.yml'
+      SWAGGER_JSON_URL: '/api/swagger.yml'
+    volumes:
+     - /nfs-nas-swarm/config/api/vc:/usr/share/nginx/html/api
+    networks:
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.vc-http.middlewares: https-redirect
+        traefik.http.routers.vc-http.rule: Host(`vc.api.vnerd.nl`)
+        traefik.http.services.vc.loadbalancer.server.port: '8080'
+        traefik.http.routers.vc-https.tls: 'true'
+        traefik.http.routers.vc-https.tls.certresolver: le
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.vc-https.rule: Host(`vc.api.vnerd.nl`)
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.vc-https.entrypoints: https
+        traefik.http.routers.vc-http.entrypoints: http
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  aria:
+    image: swaggerapi/swagger-ui
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+      SWAGGER_FILE: '/usr/share/nginx/html/api/swagger.yml'
+      SWAGGER_JSON_URL: '/api/swagger.yml'
+    volumes:
+     - /nfs-nas-swarm/config/api/aria:/usr/share/nginx/html/api
+    networks:
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.aria-http.middlewares: https-redirect
+        traefik.http.routers.aria-http.rule: Host(`aria.api.vnerd.nl`)
+        traefik.http.services.aria.loadbalancer.server.port: '8080'
+        traefik.http.routers.aria-https.tls: 'true'
+        traefik.http.routers.aria-https.tls.certresolver: le
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.aria-https.rule: Host(`aria.api.vnerd.nl`)
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.aria-https.entrypoints: https
+        traefik.http.routers.aria-http.entrypoints: http
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  lcm:
+    image: swaggerapi/swagger-ui
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+      SWAGGER_FILE: '/usr/share/nginx/html/api/swagger.yml'
+      SWAGGER_JSON_URL: '/api/swagger.yml'
+    volumes:
+     - /nfs-nas-swarm/config/api/lcm:/usr/share/nginx/html/api
+    networks:
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.lcm-http.middlewares: https-redirect
+        traefik.http.routers.lcm-http.rule: Host(`lcm.api.vnerd.nl`)
+        traefik.http.services.lcm.loadbalancer.server.port: '8080'
+        traefik.http.routers.lcm-https.tls: 'true'
+        traefik.http.routers.lcm-https.tls.certresolver: le
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.lcm-https.rule: Host(`lcm.api.vnerd.nl`)
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.lcm-https.entrypoints: https
+        traefik.http.routers.lcm-http.entrypoints: http
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  traefik-public:
+    external: true

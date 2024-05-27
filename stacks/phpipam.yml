@@ -1,0 +1,92 @@
+version: '3.3'
+services:
+  app:
+    image: pierrecdn/phpipam:latest
+    environment:
+      BACKUP_FREQUENCY: 1d
+      BACKUP_NUM_KEEP: '7'
+      MYSQL_DATABASE: phpipam
+      MYSQL_ENV_MYSQL_DB: phpipam
+      MYSQL_ENV_MYSQL_HOST: db
+      MYSQL_ENV_MYSQL_PASSWORD: phpipam_password
+      MYSQL_ENV_MYSQL_USER: phpipam
+      MYSQL_PASSWORD: phpipam_password
+      MYSQL_ROOT_PASSWORD: phpipam_password
+      #MYSQL_USER: phpipam
+    networks:
+     - ipam-internal
+     - traefik-public
+     - cloudbeaver_internal
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 0
+      labels:
+        traefik.http.routers.phpipam-https.tls.certresolver: le
+        traefik.http.routers.phpipam-https.rule: Host(`phpipam.vnerd.nl`)
+        traefik.http.routers.phpipam-https.tls: 'true'
+        traefik.http.services.phpipam.loadbalancer.server.port: '80'
+        traefik.http.routers.phpipam-http.middlewares: https-redirect
+        traefik.http.routers.phpipam-http.entrypoints: http
+        traefik.http.routers.phpipam-https.entrypoints: https
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.phpipam-http.rule: Host(`phpipam.vnerd.nl`)
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  db:
+    image: mariadb:10
+    environment:
+      BACKUP_FREQUENCY: 1d
+      BACKUP_NUM_KEEP: '7'
+      MYSQL_DATABASE: phpipam
+      MYSQL_ENV_MYSQL_DB: phpipam
+      MYSQL_ENV_MYSQL_HOST: db
+      MYSQL_ENV_MYSQL_PASSWORD: phpipam_password
+      MYSQL_ENV_MYSQL_USER: phpipam
+      MYSQL_PASSWORD: phpipam_password
+      MYSQL_ROOT_PASSWORD: phpipam_password
+      MYSQL_USER: phpipam
+    networks:
+     - ipam-internal
+     - cloudbeaver_internal
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 0
+  db-backup:
+    image: mariadb:10
+    environment:
+      BACKUP_FREQUENCY: 1d
+      BACKUP_NUM_KEEP: '7'
+      MYSQL_DATABASE: phpipam
+      MYSQL_ENV_MYSQL_DB: phpipam
+      MYSQL_ENV_MYSQL_HOST: db
+      MYSQL_ENV_MYSQL_PASSWORD: phpipam_password
+      MYSQL_ENV_MYSQL_USER: phpipam
+      MYSQL_PASSWORD: phpipam_password
+      MYSQL_ROOT_PASSWORD: phpipam_password
+      MYSQL_USER: phpipam
+    networks:
+     - ipam-internal
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 0
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  ipam-internal:
+    driver: overlay
+  traefik-public:
+    external: true
+  cloudbeaver_internal:
+    external: true
+secrets:
+   phpipam_password:
+     external: true

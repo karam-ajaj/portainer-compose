@@ -1,0 +1,42 @@
+version: '3.3'
+services:
+  freecad:
+    image: lscr.io/linuxserver/freecad:latest
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /nfs-nas-swarm/config/freecad:/config
+    networks:
+     - internal
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 0
+      labels:
+        traefik.http.services.freecad.loadbalancer.server.port: '3000'
+        sablier.enable: 'true'
+        traefik.http.routers.freecad-https.rule: Host(`freecad.vnerd.nl`)
+        traefik.http.routers.freecad-http.middlewares: https-redirect
+        traefik.http.routers.freecad-http.rule: Host(`freecad.vnerd.nl`)
+        traefik.http.routers.freecad-http.entrypoints: http
+        traefik.http.routers.freecad-https.tls.certresolver: le
+        traefik.http.routers.freecad-https.middlewares: authelia,freecad-sablier@file
+        sablier.group: freecad
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.freecad-https.entrypoints: https
+        traefik.docker.lbswarm: 'true'
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.freecad-https.tls: 'true'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true

@@ -1,0 +1,30 @@
+version: '3.3'
+services:
+  rdesktop:
+    image: lscr.io/linuxserver/rdesktop:latest
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    ports:
+     - 3389:3389
+    volumes:
+     - /dev/dri:/dev/dri
+    networks:
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.tcp.routers.rdesktop.tls: 'true'
+        traefik.constraint-label: traefik-public
+        traefik.tcp.routers.rdesktop.entrypoints: rdp
+        traefik.tcp.services.rdesktop.loadbalancer.server.port: '3389'
+        traefik.tcp.routers.rdesktop.tls.certresolver: le
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.tcp.routers.rdesktop.rule: HostSNI(`rdesktop.vnerd.nl`)
+        traefik.http.routers.rdesktop-https.middlewares: authelia
+networks:
+  traefik-public:
+    external: true

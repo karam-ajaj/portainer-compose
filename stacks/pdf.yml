@@ -1,0 +1,38 @@
+version: '3.3'
+services:
+  pdf:
+    image: frooodle/s-pdf:latest
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /nfs-nas-swarm/config/pdf/trainingData:/usr/share/tesseract-ocr/4.00/tessdata
+     - /nfs-nas-swarm/config/pdf/extraConfigs:/configs
+    networks:
+     - internal
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.pdf-http.entrypoints: http
+        traefik.http.routers.pdf-https.tls: 'true'
+        traefik.http.routers.pdf-http.rule: Host(`pdf.vnerd.nl`)
+        traefik.http.routers.pdf-https.entrypoints: https
+        traefik.http.routers.pdf-https.rule: Host(`pdf.vnerd.nl`)
+        traefik.http.routers.pdf-http.middlewares: https-redirect
+        traefik.http.routers.pdf-https.tls.certresolver: le
+        traefik.constraint-label: traefik-public
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.services.pdf.loadbalancer.server.port: '8080'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true

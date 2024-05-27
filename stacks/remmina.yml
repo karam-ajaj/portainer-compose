@@ -1,0 +1,37 @@
+version: '3.3'
+services:
+  remmina:
+    image: lscr.io/linuxserver/remmina:latest
+    environment:
+      CUSTOM_USER: karam
+      PGID: '911'
+      PUID: '911'
+      TITLE: vnerd remmina
+      TZ: Europe/Amsterdam
+    volumes:
+     - /dev/dri:/dev/dri
+    networks:
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.remmina-https.tls.certresolver: le
+        traefik.http.routers.remmina-https.middlewares: authelia
+        traefik.http.routers.remmina-https.rule: Host(`remmina.vnerd.nl`)
+        traefik.http.routers.remmina-https.tls: 'true'
+        traefik.http.routers.remmina-https.entrypoints: https
+        traefik.http.routers.remmina-http.entrypoints: http
+        traefik.http.services.remmina.loadbalancer.server.port: '3000'
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.remmina-http.middlewares: https-redirect
+        traefik.http.routers.remmina-http.rule: Host(`remmina.vnerd.nl`)
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  traefik-public:
+    external: true

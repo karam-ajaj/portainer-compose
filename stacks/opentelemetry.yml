@@ -1,0 +1,38 @@
+version: '3.3'
+services:
+  opentelemetry:
+    image: otel/opentelemetry-collector
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    ports:
+    - 4317:4317
+    - 4318:4318
+    networks:
+     - internal
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      # labels:
+      #   traefik.http.routers.opentelemetry-https.tls: 'true'
+      #   traefik.http.routers.opentelemetry-http.middlewares: https-redirect
+      #   traefik.http.routers.opentelemetry-http.rule: Host(`opentelemetry.vnerd.nl`)
+      #   traefik.http.routers.opentelemetry-https.tls.certresolver: le
+      #   traefik.http.routers.opentelemetry-http.entrypoints: http
+      #   traefik.http.services.opentelemetry.loadbalancer.server.port: '4318'
+      #   traefik.constraint-label: traefik-public
+      #   traefik.http.routers.opentelemetry-https.entrypoints: https
+      #   traefik.http.routers.opentelemetry-https.rule: Host(`opentelemetry.vnerd.nl`)
+      #   traefik.docker.network: traefik-public
+      #   traefik.enable: 'true'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true

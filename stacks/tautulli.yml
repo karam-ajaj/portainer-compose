@@ -1,0 +1,38 @@
+version: '3.3'
+services:
+  tautulli:
+    image: hotio/tautulli:release-2.13.4
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+      UMASK: '002'
+    volumes:
+     - /nfs-nas-swarm/config/tautulli:/config
+    networks:
+     - media_services_media-network
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.tautulli-https.rule: Host(`tautulli.vnerd.nl`)
+        traefik.http.routers.tautulli-http.entrypoints: http
+        traefik.http.routers.tautulli-https.entrypoints: https
+        traefik.http.routers.tautulli-https.tls: 'true'
+        traefik.http.routers.tautulli-https.tls.certresolver: le
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.tautulli-http.middlewares: https-redirect
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.tautulli-http.rule: Host(`tautulli.vnerd.nl`)
+        traefik.http.services.tautulli.loadbalancer.server.port: '8181'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  media_services_media-network:
+    external: true
+  traefik-public:
+    external: true

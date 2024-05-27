@@ -1,0 +1,38 @@
+version: '3.3'
+services:
+  grafana:
+    image: grafana/grafana-enterprise:latest
+    environment:
+      PGID: '911'
+      PUID: '911'
+      SIGNUPS_ALLOWED: 'false'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /nfs-nas-swarm/data/grafana:/var/lib/grafana
+    networks:
+     - internal
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.grafana-https.entrypoints: https
+        traefik.http.routers.grafana-https.rule: Host(`grafana.vnerd.nl`)
+        traefik.http.routers.grafana-http.middlewares: https-redirect
+        traefik.http.routers.grafana-https.tls: 'true'
+        traefik.http.routers.grafana-https.tls.certresolver: le
+        traefik.http.services.grafana.loadbalancer.server.port: '3000'
+        traefik.http.routers.grafana-http.rule: Host(`grafana.vnerd.nl`)
+        traefik.constraint-label: traefik-public
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.grafana-http.entrypoints: http
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true

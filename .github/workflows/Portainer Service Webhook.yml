@@ -1,0 +1,191 @@
+name: Portainer Service Webhook
+
+## webhooks on portainer:
+env:
+  adminer : https://portainer.vnerd.nl/api/stacks/webhooks/d68343fa-2adf-4f16-9869-0ec8c02063f8
+  ai: https://portainer.vnerd.nl/api/stacks/webhooks/01895035-0c48-467b-8790-0e925abedf20
+  # ansible: 
+  api: https://portainer.vnerd.nl/api/stacks/webhooks/fefa4ec1-2939-4177-a4f4-60e240bfedd2
+  audiobookshelf: https://portainer.vnerd.nl/api/stacks/webhooks/f521b84f-5363-4c77-a77e-ccfeebd722d3
+  authelia: https://portainer.vnerd.nl/api/stacks/webhooks/85a21ff7-366d-4dfe-a4e4-b0bbdf27d030
+  cloudbeaver: https://portainer.vnerd.nl/api/stacks/webhooks/b39162be-1e34-4e09-b558-f58bfc90c219
+  coder: https://portainer.vnerd.nl/api/stacks/webhooks/d4d1a3e8-4868-4bf5-931e-881495f57d3b
+  cv : https://portainer.vnerd.nl/api/stacks/webhooks/0302a1b9-ebe9-4f49-b19f-751d54289bf7
+  cyberchef: https://portainer.vnerd.nl/api/stacks/webhooks/42207547-453c-4b39-a919-9ca894744ea6
+  dashdot: https://portainer.vnerd.nl/api/stacks/webhooks/4d6df715-9687-427e-bcf9-2a3a575e403c
+  diskover: https://portainer.vnerd.nl/api/stacks/webhooks/f9329cba-c4cc-4323-b0c4-d7fa4aab8fc9
+  dockwatch: https://portainer.vnerd.nl/api/stacks/webhooks/a2076c89-eac0-444f-97a8-50518dc11df5
+  docs: https://portainer.vnerd.nl/api/stacks/webhooks/1828173c-ee26-45c1-8d7d-e538b36b59fe
+  doublecommander: https://portainer.vnerd.nl/api/stacks/webhooks/675f7068-a857-4c80-890b-092b512e520c
+  duplicati: https://portainer.vnerd.nl/api/stacks/webhooks/ea135ff1-d5f6-4360-b583-ab048c889536
+  filebrowser: https://portainer.vnerd.nl/api/stacks/webhooks/ce806e63-392f-4580-af01-8028af8ab825
+  flaresolverr: https://portainer.vnerd.nl/api/stacks/webhooks/8a1f9dde-c153-4576-b76f-796c56c59960
+  freecad: https://portainer.vnerd.nl/api/stacks/webhooks/d95bcca4-48d1-4f8d-a415-c49000b7b2be
+  grafana: https://portainer.vnerd.nl/api/stacks/webhooks/dfef142d-e53b-43c3-ba99-6b321c7dd497
+  grav: https://portainer.vnerd.nl/api/stacks/webhooks/12de37a7-b66e-42f9-a5fc-659093fe5e6a
+  homarr: https://portainer.vnerd.nl/api/stacks/webhooks/d8366d37-7257-445e-b424-f39e016285bc
+  influxdb: https://portainer.vnerd.nl/api/stacks/webhooks/6216037c-e1e6-440b-8a9e-387cc9697966
+  jellyfin:
+  kavita: https://portainer.vnerd.nl/api/stacks/webhooks/d016d35c-b7a4-4133-be04-23e8f3d8f5c4
+  librenms: https://portainer.vnerd.nl/api/stacks/webhooks/884d5401-4342-4f12-b75e-75717efa5739
+  logspout: https://portainer.vnerd.nl/api/stacks/webhooks/f2ce74dc-4928-4d91-9591-ce781f8e5f04
+  mealie: https://portainer.vnerd.nl/api/stacks/webhooks/6012e58c-d77b-4a75-a06d-53c8e0136afc
+  media_services: https://portainer.vnerd.nl/api/stacks/webhooks/6ee97e03-1a3d-4d81-b9cf-3de91318e05b
+  minio: https://portainer.vnerd.nl/api/stacks/webhooks/bc5f94c6-1cbf-4528-b9e9-56fe382058b8
+  nginx: https://portainer.vnerd.nl/api/stacks/webhooks/a125a7db-9235-4b84-a4c3-4b26ec7cf360
+  notifiarr: https://portainer.vnerd.nl/api/stacks/webhooks/7dcda516-d254-4101-bfc0-349bbd526686
+  opentelemetry: https://portainer.vnerd.nl/api/stacks/webhooks/d7f8d8bf-3e5d-417a-b4d3-98fc0085cfbb
+  pdf: https://portainer.vnerd.nl/api/stacks/webhooks/f1301806-65b1-4e6c-b549-035d54ca79f1
+  pgadmin: https://portainer.vnerd.nl/api/stacks/webhooks/838f0999-ead7-4271-b128-c6d26e0168fc
+  phpipam: https://portainer.vnerd.nl/api/stacks/webhooks/60c0be93-c528-4bf6-8409-ed5663868fcb
+  portainer:
+  rdesktop:
+  remmina: https://portainer.vnerd.nl/api/stacks/webhooks/d393636c-88c0-4237-9dac-b3f8cd3e509b
+  sablier: https://portainer.vnerd.nl/api/stacks/webhooks/41045284-2262-4f42-958a-0939d9681611
+  smokeping: https://portainer.vnerd.nl/api/stacks/webhooks/73c65171-6bc5-4408-a445-32ee49343002
+  speed: https://portainer.vnerd.nl/api/stacks/webhooks/09d08270-5de8-4491-a537-68f651fc223b
+  swarmpit: https://portainer.vnerd.nl/api/stacks/webhooks/c3ae3a7d-6d94-4c8b-95c7-221bcc506cfa
+  swarmprom: https://portainer.vnerd.nl/api/stacks/webhooks/66c6a6e5-4815-4409-b970-bbae57c7d3e4
+  tautulli: https://portainer.vnerd.nl/api/stacks/webhooks/e8badb4e-bad5-4f9c-9af8-bc9182182a7a
+  tdarr: https://portainer.vnerd.nl/api/stacks/webhooks/88516e47-9396-4f08-9234-d2eb4f7cde44
+  teleport: https://portainer.vnerd.nl/api/stacks/webhooks/08724165-bbdb-4acd-9e94-508351a5c1a1
+  terraform: https://portainer.vnerd.nl/api/stacks/webhooks/85be31f2-c43a-4099-a0ff-e26e1f88dc08
+  traefik: https://portainer.vnerd.nl/api/stacks/webhooks/f25382b3-e727-48f0-a834-6bf182908b39
+  traefikv3: https://portainer.vnerd.nl/api/stacks/webhooks/2d419051-99f3-4c2b-ab93-2b9d06dced22
+  unifi: https://portainer.vnerd.nl/api/stacks/webhooks/adddbde2-596e-4979-a2cb-c46c6b76105c
+  vaultwarden: https://portainer.vnerd.nl/api/stacks/webhooks/08a4c0de-df19-4339-8173-5278e4b49b36
+  wetty: https://portainer.vnerd.nl/api/stacks/webhooks/cca9fee3-0f92-46bd-85c5-faa2fed43b48
+  wizarr: https://portainer.vnerd.nl/api/stacks/webhooks/c9cbdbba-5a1a-4373-ae3f-56965cda4e09
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  echo:
+    if: github.event.head_commit.message == 'echo'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{github.event.head_commit.message}}
+  adminer:
+    if: github.event.head_commit.message == 'adminer'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.adminer}}
+  ai:
+    if: github.event.head_commit.message == 'ai'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.ai}}
+  # ansible:
+  #   if: github.event.head_commit.message == 'ansible'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.ansible}}
+  api:
+    if: github.event.head_commit.message == 'api'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.api}}
+  audiobookshelf:
+    if: github.event.head_commit.message == 'audiobookshelf'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.audiobookshelf}}
+  authelia:
+    if: github.event.head_commit.message == 'authelia'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.authelia}}
+  cloudbeaver:
+    if: github.event.head_commit.message == 'cloudbeaver'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.cloudbeaver}}
+  coder:
+    if: github.event.head_commit.message == 'coder'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.coder}}
+  cv:
+    if: github.event.head_commit.message == 'cv'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.cv}}
+  cyberchef:
+    if: github.event.head_commit.message == 'cyberchef'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.cyberchef}}
+  dashdot:
+    if: github.event.head_commit.message == 'dashdot'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.dashdot}}
+  diskover:
+    if: github.event.head_commit.message == 'diskover'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.diskover}}
+  dockwatch:
+    if: github.event.head_commit.message == 'dockwatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.dockwatch}}
+  docs:
+    if: github.event.head_commit.message == 'docs'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.docs}}
+  doublecommander:
+    if: github.event.head_commit.message == 'doublecommander'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.doublecommander}}
+  duplicati:
+    if: github.event.head_commit.message == 'duplicati'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.duplicati}}
+  # XYZ:
+  #   if: github.event.head_commit.message == 'XYZ'
+  #   name: XYZ
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - run: echo ${{github.event.head_commit.message}}
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.XYZ}}

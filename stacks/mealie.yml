@@ -1,0 +1,64 @@
+version: '3.3'
+services:
+  app:
+    image: hkotel/mealie:latest
+    environment:
+      DB_ENGINE: postgres
+      PGID: '911'
+      POSTGRES_DB: mealie
+      POSTGRES_PASSWORD: mealie
+      POSTGRES_PORT: '5432'
+      POSTGRES_SERVER: postgres
+      POSTGRES_USER: mealie
+      PUID: '911'
+      RECIPE_DISABLE_AMOUNT: 'false'
+      RECIPE_DISABLE_COMMENTS: 'false'
+      RECIPE_LANDSCAPE_VIEW: 'true'
+      RECIPE_PUBLIC: 'true'
+      RECIPE_SHOW_ASSETS: 'true'
+      RECIPE_SHOW_NUTRITION: 'true'
+    volumes:
+     - /nfs-nas-swarm/data/mealie:/app/data
+     - /etc/localtime:/etc/localtime:ro
+    networks:
+     - internal
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.mealie-http.entrypoints: http
+        traefik.http.routers.mealie-http.middlewares: https-redirect
+        traefik.http.routers.mealie-https.entrypoints: https
+        traefik.http.routers.mealie-https.tls.certresolver: le
+        traefik.http.routers.mealie-https.tls: 'true'
+        traefik.constraint-label: traefik-public
+        traefik.http.services.mealie.loadbalancer.server.port: '9000'
+        traefik.http.routers.mealie-http.rule: Host(`mealie.vnerd.nl`)
+        traefik.http.routers.mealie-https.rule: Host(`mealie.vnerd.nl`)
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: mealie
+      POSTGRES_USER: mealie
+    networks:
+     - internal
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true

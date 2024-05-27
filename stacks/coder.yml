@@ -1,0 +1,48 @@
+version: '3.3'
+services:
+  coder:
+    image: lscr.io/linuxserver/code-server:latest
+    environment:
+      DEFAULT_WORKSPACE: /home/coder/nfs-nas-swarm/config
+      PASSWORD: password
+      PGID: '0'
+      PUID: '0'
+      SUDO_PASSWORD: password
+      TZ: Europe/Amsterdam
+    volumes:
+     - /nfs-nas-swarm/config:/home/coder/nfs-nas-swarm/config
+     - /nfs-nas-swarm/bkp:/home/coder/nfs-nas-swarm/bkp
+     - /nfs-nas-swarm/github-repos:/home/coder/nfs-nas-swarm/github-repos
+     - /nfs-nas-swarm/config/coder/config:/config
+     - /nfs-nas-swarm/data/CV:/home/coder/CV
+     - /nfs-nas-swarm/config/coder/ssh-keys:/root/.ssh
+     - /nfs-nas-swarm/config/coder/sysctl.conf:/etc/sysctl.conf
+    networks:
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 0
+      labels:
+        sablier.enable: 'true'
+        traefik.http.routers.coder-https.entrypoints: https
+        traefik.http.routers.coder-https.middlewares: authelia, coder-sablier@file
+        traefik.http.routers.coder-http.middlewares: https-redirect
+        traefik.http.routers.coder-https.rule: Host(`coder.vnerd.nl`)
+        traefik.http.routers.coder-https.tls.certresolver: le
+        traefik.http.routers.coder-https.tls: 'true'
+        traefik.http.routers.coder-http.entrypoints: http
+        sablier.group: coder
+        traefik.constraint-label: traefik-public
+        traefik.docker.lbswarm: 'true'
+        traefik.http.services.coder.loadbalancer.server.port: '8443'
+        traefik.http.routers.coder-http.rule: Host(`coder.vnerd.nl`)
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  traefik-public:
+    external: true

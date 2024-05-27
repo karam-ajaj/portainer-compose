@@ -1,0 +1,124 @@
+version: '3.3'
+services:
+  dockwatch-pc01:
+    image: ghcr.io/notifiarr/dockwatch:main
+    environment:
+      PGID: '998'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /nfs-nas-swarm/config/dockwatch/pc01:/config
+     - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+     - internal
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      placement:
+        constraints:
+         - node.hostname==pc01.karam.lab
+  dockwatch-pc03:
+    image: ghcr.io/notifiarr/dockwatch:main
+    environment:
+      PGID: '999'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /nfs-nas-swarm/config/dockwatch/pc03:/config
+     - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+     - internal
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 0
+      placement:
+        constraints:
+         - node.hostname==pc03.karam.lab
+  dockwatch-pxsw01:
+    image: ghcr.io/notifiarr/dockwatch:main
+    environment:
+      PGID: '999'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /nfs-nas-swarm/config/dockwatch/pxsw01:/config
+     - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+     - internal
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.dockwatch-pxsw01-https.tls: 'true'
+        traefik.http.routers.dockwatch-pxsw01-http.middlewares: https-redirect
+        traefik.http.routers.dockwatch-pxsw01-https.rule: Host(`dockwatch.vnerd.nl`)
+        traefik.http.routers.dockwatch-pxsw01-https.tls.certresolver: le
+        traefik.http.routers.dockwatch-pxsw01-http.rule: Host(`dockwatch.vnerd.nl`)
+        traefik.http.services.dockwatch-pxsw01.loadbalancer.server.port: '80'
+        traefik.http.routers.dockwatch-pxsw01-https.entrypoints: https
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.dockwatch-pxsw01-http.entrypoints: http
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.dockwatch-pxsw01-https.middlewares: authelia
+      placement:
+        constraints:
+         - node.hostname==pxsw01.karam.lab
+  dockwatch-pxsw02:
+    image: ghcr.io/notifiarr/dockwatch:main
+    environment:
+      PGID: '999'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /nfs-nas-swarm/config/dockwatch/pxsw02:/config
+     - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+     - internal
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      placement:
+        constraints:
+         - node.hostname==pxsw02.karam.lab
+  dockwatch-pxsw03:
+    image: ghcr.io/notifiarr/dockwatch:main
+    environment:
+      PGID: '999'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /nfs-nas-swarm/config/dockwatch/pxsw03:/config
+     - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+     - internal
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 0
+      placement:
+        constraints:
+         - node.hostname==pxsw03.karam.lab
+  dockwatch-pxsw04:
+    image: ghcr.io/notifiarr/dockwatch:main
+    environment:
+      PGID: '999'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /nfs-nas-swarm/config/dockwatch/pxsw04:/config
+     - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+     - internal
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      placement:
+        constraints:
+         - node.hostname==pxsw04.karam.lab
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true

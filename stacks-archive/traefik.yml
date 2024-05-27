@@ -1,0 +1,80 @@
+version: '3.4'
+services:
+  traefik:
+    image: traefik:v2.11.2
+    command:
+     - --providers.docker
+     - --providers.docker.exposedbydefault=false
+     - --providers.docker.swarmmode
+     - --entrypoints.http.address=:80
+     - --entrypoints.https.address=:443
+     - --entrypoints.rdp.address=:3389
+     - --entrypoints.teleport3025.address=:3025
+     - --entryPoints.http.forwardedHeaders.insecure
+     - --entryPoints.https.forwardedHeaders.insecure
+     - --entryPoints.rdp.forwardedHeaders.insecure
+     - --certificatesresolvers.le.acme.email=karam.ajaj@hotmail.com
+     - --certificatesresolvers.le.acme.storage=/certificates/acme.json
+     - --certificatesresolvers.le.acme.tlschallenge=true
+     - --serverstransport.insecureskipverify=true
+     - --providers.docker.allowEmptyServices=true
+     - --accesslog
+     - --log
+     - --api
+     - --providers.file.directory=/dynamic-config
+     - --providers.file.watch=true
+     - --metrics.influxdb2=true
+     - --metrics.influxdb2.address=http://influxdb_influxdb:8086
+     - --metrics.influxdb2.token=tyTQyZI6fiFjgl2Yg008HheRWqu163HNZCfHN93cdll0ke8sN4p7z1d1y9sS2hGwlPqbW5oMW3mnmAAwG3r7SQ==
+     - --metrics.influxdb2.org=karam-lab
+     - --metrics.influxdb2.bucket=traefik_metrics
+     - --metrics.influxdb2.addEntryPointsLabels=true
+     - --metrics.influxdb2.addrouterslabels=true
+     - --metrics.influxdb2.addServicesLabels=true
+     - --experimental.plugins.sablier.modulename=github.com/acouvreur/sablier
+     - --experimental.plugins.sablier.version=v1.5.0
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    ports:
+     - 80:80
+     - 443:443
+     - 3025:3025
+     - 3389:3389
+    volumes:
+     - /nfs-nas-swarm/config/traefik/certificates:/certificates
+     - /nfs-nas-swarm/config/traefik/dynamic-config:/dynamic-config
+     - /nfs-nas-swarm/config/traefik/static-config:/static-config
+     - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.middlewares.https-redirect.redirectscheme.scheme: https
+        traefik.http.middlewares.admin-auth.basicauth.users: admin:.
+        traefik.http.routers.traefik-public-https.rule: Host(`traefik.vnerd.nl`)
+        traefik.http.routers.traefik-public-https.tls: 'true'
+        traefik.http.services.traefik-public.loadbalancer.server.port: '8080'
+        traefik.http.routers.traefik-public-https.service: api@internal
+        traefik.http.routers.traefik-public-http.middlewares: https-redirect
+        traefik.http.routers.traefik-public-http.entrypoints: http
+        traefik.http.routers.traefik-public-https.entrypoints: https
+        traefik.http.middlewares.https-redirect.redirectscheme.permanent: 'true'
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.traefik-public-http.rule: Host(`traefik.vnerd.nl`)
+        traefik.http.routers.traefik-public-https.middlewares: authelia
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.traefik-public-https.tls.certresolver: le
+      #update_config:
+        #order: start-first
+      placement:
+        constraints:
+         - node.role==manager
+         - node.labels.worker==enabled
+networks:
+  traefik-public:
+    external: true

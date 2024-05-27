@@ -1,0 +1,166 @@
+version: '3.3'
+services:
+  tdarr:
+    image: ghcr.io/haveagitgat/tdarr:2.17.01
+    environment:
+      NVIDIA_DRIVER_CAPABILITIES: all
+      NVIDIA_VISIBLE_DEVICES: all
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+      UMASK_SET: '002'
+      ffmpegVersion: '6'
+      inContainer: 'true'
+      internalNode: 'true'
+      nodeName: server
+      serverIP: 0.0.0.0
+      serverPort: '8266'
+      webUIPort: '8265'
+    ports:
+     - 8266:8266
+    volumes:
+     - /nfs-nas-swarm/config/tdarr/server:/app/server
+     - /nfs-nas-swarm/config/tdarr/configs:/app/configs
+     - /nfs-nas-swarm/config/tdarr/logs:/app/logs
+     - /media_pool/media:/data
+     - /media_pool/tdarr/transcode_cache:/tmp
+    networks:
+     - internal
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.tdarr-http.middlewares: https-redirect
+        traefik.http.routers.tdarr-https.tls: 'true'
+        traefik.http.routers.tdarr-https.entrypoints: https
+        traefik.http.services.tdarr.loadbalancer.server.port: '8265'
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.tdarr-https.tls.certresolver: le
+        traefik.http.routers.tdarr-http.entrypoints: http
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.tdarr-https.rule: Host(`tdarr.vnerd.nl`)
+        traefik.http.routers.tdarr-https.middlewares: authelia
+        traefik.http.routers.tdarr-http.rule: Host(`tdarr.vnerd.nl`)
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.hostname==pxsw01.karam.lab
+  tdarr-node-pxsw01:
+    image: ghcr.io/haveagitgat/tdarr_node:2.17.01
+    environment:
+      NVIDIA_DRIVER_CAPABILITIES: all
+      NVIDIA_VISIBLE_DEVICES: all
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+      UMASK_SET: '002'
+      ffmpegVersion: '6'
+      inContainer: 'true'
+      nodeName: node-pxsw01
+      serverIP: tdarr
+      serverPort: '8266'
+    volumes:
+     - /nfs-nas-swarm/config/tdarr/configs:/app/configs
+     - /nfs-nas-swarm/config/tdarr/logs:/app/logs
+     - /media_pool/media:/data
+     - /media_pool/tdarr/transcode_cache:/tmp
+    networks:
+     - internal
+    logging:
+      driver: json-file
+    deploy:
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.hostname==pxsw01.karam.lab
+  tdarr-node-pxsw02:
+    image: ghcr.io/haveagitgat/tdarr_node:2.17.01
+    environment:
+      NVIDIA_DRIVER_CAPABILITIES: all
+      NVIDIA_VISIBLE_DEVICES: all
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+      UMASK_SET: '002'
+      ffmpegVersion: '6'
+      inContainer: 'true'
+      nodeName: node-pxsw02
+      serverIP: tdarr
+      serverPort: '8266'
+    volumes:
+     - /nfs-nas-swarm/config/tdarr/configs:/app/configs
+     - /nfs-nas-swarm/config/tdarr/logs:/app/logs
+     - /media_pool/media:/data
+     - /media_pool/tdarr/transcode_cache:/tmp
+    networks:
+     - internal
+    logging:
+      driver: json-file
+    deploy:
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.hostname==pxsw02.karam.lab
+  tdarr-node-pxsw03:
+    image: ghcr.io/haveagitgat/tdarr_node:2.17.01
+    environment:
+      NVIDIA_DRIVER_CAPABILITIES: all
+      NVIDIA_VISIBLE_DEVICES: all
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+      UMASK_SET: '002'
+      ffmpegVersion: '6'
+      inContainer: 'true'
+      nodeName: node-pxsw03
+      serverIP: tdarr
+      serverPort: '8266'
+    volumes:
+     - /nfs-nas-swarm/config/tdarr/configs:/app/configs
+     - /nfs-nas-swarm/config/tdarr/logs:/app/logs
+     - /media_pool/media:/data
+     - /media_pool/tdarr/transcode_cache:/tmp
+    networks:
+     - internal
+    logging:
+      driver: json-file
+    deploy:
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.hostname==pxsw03.karam.lab
+  tdarr-node-pxsw04:
+    image: ghcr.io/haveagitgat/tdarr_node:2.17.01
+    environment:
+      NVIDIA_DRIVER_CAPABILITIES: all
+      NVIDIA_VISIBLE_DEVICES: all
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+      UMASK_SET: '002'
+      ffmpegVersion: '6'
+      inContainer: 'true'
+      nodeName: node-pxsw04
+      serverIP: tdarr
+      serverPort: '8266'
+    volumes:
+     - /nfs-nas-swarm/config/tdarr/configs:/app/configs
+     - /nfs-nas-swarm/config/tdarr/logs:/app/logs
+     - /media_pool/media:/data
+     - /media_pool/tdarr/transcode_cache:/tmp
+    networks:
+     - internal
+    logging:
+      driver: json-file
+    deploy:
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.hostname==pxsw04.karam.lab
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true

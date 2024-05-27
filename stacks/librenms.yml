@@ -1,0 +1,261 @@
+version: '3.3'
+services:
+  db:
+    image: mariadb:10.5
+    command:
+     - mysqld
+     - --innodb-file-per-table=1
+     - --lower-case-table-names=0
+     - --character-set-server=utf8mb4
+     - --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_DATABASE: librenms
+      MYSQL_PASSWORD: librenms_password
+      MYSQL_USER: librenms
+      TZ: Europe/Amsterdam
+    secrets:
+      - librenms_password
+    volumes:
+     - /nfs-nas-swarm/data/librenms/db:/var/lib/mysql
+    networks:
+     - internal
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 0
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  dispatcher:
+    image: librenms/librenms:latest
+    environment:
+      CACHE_DRIVER: redis
+      DB_HOST: db
+      DB_NAME: librenms
+      DB_PASSWORD: librenms_password
+      DB_TIMEOUT: '60'
+      DB_USER: librenms
+      DISPATCHER_NODE_ID: dispatcher1
+      LIBRENMS_SNMP_COMMUNITY: librenmsdocker
+      LIBRENMS_WEATHERMAP: 'false'
+      LIBRENMS_WEATHERMAP_SCHEDULE: '*/5 * * * *'
+      LOG_IP_VAR: remote_addr
+      MAX_INPUT_VARS: '1000'
+      OPCACHE_MEM_SIZE: '128'
+      PGID: '911'
+      PUID: '911'
+      REAL_IP_FROM: 0.0.0.0/32
+      REAL_IP_HEADER: X-Forwarded-For
+      REDIS_HOST: redis
+      SESSION_DRIVER: redis
+      SIDECAR_DISPATCHER: '1'
+      TZ: Europe/Amsterdam
+      UPLOAD_MAX_SIZE: 16M
+    secrets:
+      - librenms_password
+    volumes:
+     - /nfs-nas-swarm/data/librenms/librenms:/data
+    networks:
+     - internal
+     - internal-admin
+     - internal-raw
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 0
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  librenms:
+    image: librenms/librenms:latest
+    environment:
+      CACHE_DRIVER: redis
+      DB_HOST: db
+      DB_NAME: librenms
+      DB_PASSWORD: librenms_password
+      DB_TIMEOUT: '60'
+      DB_USER: librenms
+      LIBRENMS_SNMP_COMMUNITY: librenmsdocker
+      LIBRENMS_WEATHERMAP: 'false'
+      LIBRENMS_WEATHERMAP_SCHEDULE: '*/5 * * * *'
+      LOG_IP_VAR: remote_addr
+      MAX_INPUT_VARS: '1000'
+      OPCACHE_MEM_SIZE: '128'
+      PGID: '911'
+      PUID: '911'
+      REAL_IP_FROM: 0.0.0.0/32
+      REAL_IP_HEADER: X-Forwarded-For
+      REDIS_HOST: redis
+      SESSION_DRIVER: redis
+      TZ: Europe/Amsterdam
+      UPLOAD_MAX_SIZE: 16M
+    secrets:
+      - librenms_password
+    ports:
+     - 8000:8000
+    volumes:
+     - /nfs-nas-swarm/data/librenms/librenms:/data
+    networks:
+     - internal
+     - internal-admin
+     - internal-raw
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 0
+      labels:
+        traefik.http.routers.librenms-https.tls.certresolver: le
+        traefik.http.routers.librenms-https.rule: Host(`librenms.vnerd.nl`)
+        traefik.http.routers.librenms-https.tls: 'true'
+        traefik.http.routers.librenms-https.entrypoints: https
+        traefik.http.routers.librenms-http.rule: Host(`librenms.vnerd.nl`)
+        traefik.constraint-label: traefik-public
+        traefik.http.services.librenms.loadbalancer.server.port: '8000'
+        traefik.http.routers.librenms-http.middlewares: https-redirect
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.librenms-http.entrypoints: http
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  msmtpd:
+    image: crazymax/msmtpd:latest
+    environment:
+      SMTP_AUTH: 'on'
+      SMTP_FROM: librenms@gmail.com
+      SMTP_HOST: smtp.gmail.com
+      SMTP_PASSWORD: smtp_password
+      SMTP_PORT: '587'
+      SMTP_STARTTLS: 'on'
+      SMTP_TLS: 'on'
+      SMTP_TLS_CHECKCERT: 'on'
+      SMTP_USER: ajaj.karam@gmail.com
+    secrets:
+      - smtp_password
+    networks:
+     - internal
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 0
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  redis:
+    image: redis:5.0-alpine
+    environment:
+      TZ: Europe/Amsterdam
+    networks:
+     - internal
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 0
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  snmptrapd:
+    image: librenms/librenms:latest
+    environment:
+      CACHE_DRIVER: redis
+      DB_HOST: db
+      DB_NAME: librenms
+      DB_PASSWORD: librenms_password
+      DB_TIMEOUT: '60'
+      DB_USER: librenms
+      LIBRENMS_SNMP_COMMUNITY: librenmsdocker
+      LIBRENMS_WEATHERMAP: 'false'
+      LIBRENMS_WEATHERMAP_SCHEDULE: '*/5 * * * *'
+      LOG_IP_VAR: remote_addr
+      MAX_INPUT_VARS: '1000'
+      OPCACHE_MEM_SIZE: '128'
+      PGID: '911'
+      PUID: '911'
+      REAL_IP_FROM: 0.0.0.0/32
+      REAL_IP_HEADER: X-Forwarded-For
+      REDIS_HOST: redis
+      SESSION_DRIVER: redis
+      SIDECAR_SNMPTRAPD: '1'
+      TZ: Europe/Amsterdam
+      UPLOAD_MAX_SIZE: 16M
+    secrets:
+      - librenms_password
+    ports:
+     - 162:162
+    volumes:
+     - /nfs-nas-swarm/data/librenms/librenms:/data
+    networks:
+     - internal
+     - internal-admin
+     - internal-raw
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 0
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  syslogng:
+    image: librenms/librenms:latest
+    environment:
+      CACHE_DRIVER: redis
+      DB_HOST: db
+      DB_NAME: librenms
+      DB_PASSWORD: librenms_password
+      DB_TIMEOUT: '60'
+      DB_USER: librenms
+      LIBRENMS_SNMP_COMMUNITY: librenmsdocker
+      LIBRENMS_WEATHERMAP: 'false'
+      LIBRENMS_WEATHERMAP_SCHEDULE: '*/5 * * * *'
+      LOG_IP_VAR: remote_addr
+      MAX_INPUT_VARS: '1000'
+      OPCACHE_MEM_SIZE: '128'
+      PGID: '911'
+      PUID: '911'
+      REAL_IP_FROM: 0.0.0.0/32
+      REAL_IP_HEADER: X-Forwarded-For
+      REDIS_HOST: redis
+      SESSION_DRIVER: redis
+      SIDECAR_SYSLOGNG: '1'
+      TZ: Europe/Amsterdam
+      UPLOAD_MAX_SIZE: 16M
+    secrets:
+      - librenms_password
+    ports:
+     - 514:514
+    volumes:
+     - /nfs-nas-swarm/data/librenms/librenms:/data
+    networks:
+     - internal
+     - internal-admin
+     - internal-raw
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 0
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  internal:
+    driver: overlay
+  internal-admin:
+    driver: overlay
+  internal-raw:
+    driver: overlay
+  traefik-public:
+    external: true
+secrets:
+   librenms_password:
+     external: true
+   smtp_password:
+     external: true

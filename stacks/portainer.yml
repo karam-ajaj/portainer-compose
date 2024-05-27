@@ -1,0 +1,71 @@
+version: '3.3'
+services:
+  agent:
+    image: portainer/agent:latest
+    environment:
+      AGENT_CLUSTER_ADDR: tasks.agent
+      PGID: '999'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /var/run/docker.sock:/var/run/docker.sock
+     - /var/lib/docker/volumes:/var/lib/docker/volumes
+    networks:
+     - portainer-internal
+    logging:
+      driver: json-file
+    deploy:
+      mode: global
+      placement:
+        constraints:
+         - node.labels.Arch != i686
+  portainer:
+    image: portainer/portainer-ce:latest
+    command:
+     - -H
+     - tcp://tasks.agent:9001
+     - --tlsskipverify
+    environment:
+      PGID: '999'
+      PORTAINER_LICENSE_KEY: PORTAINER_LICENSE_KEY
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    ports:
+     - 900:9000
+    volumes:
+     - /var/run/docker.sock:/var/run/docker.sock
+     - /nfs-nas-swarm/data/portainer:/data
+    networks:
+     - portainer-internal
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.portainer-https.entrypoints: https
+        traefik.http.routers.portainer-https.tls.certresolver: le
+        traefik.http.routers.portainer-http.middlewares: https-redirect
+        traefik.http.routers.portainer-https.tls: 'true'
+        traefik.constraint-label: traefik-public
+        traefik.http.services.portainer.loadbalancer.server.port: '9000'
+        traefik.http.routers.portainer-http.entrypoints: http
+        traefik.http.routers.portainer-http.rule: Host(`portainer.vnerd.nl`)
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.portainer-https.rule: Host(`portainer.vnerd.nl`)
+      update_config:
+        parallelism: 0
+        failure_action: rollback
+      placement:
+        constraints:
+         - node.role == manager
+         - node.labels.worker==enabled
+         - node.labels.Arch!=aarch64
+networks:
+  portainer-internal:
+    driver: overlay
+  traefik-public:
+    external: true
+secrets:
+   PORTAINER_LICENSE_KEY:
+     external: true

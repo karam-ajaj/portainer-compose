@@ -1,0 +1,162 @@
+version: '3.3'
+services:
+  ans01:
+    image: krishnasrinivas/wetty:latest
+    environment:
+      NODE_ENV: production
+      SSHHOST: 10.10.10.150
+      SSHUSER: karam
+    volumes:
+     - /nfs-nas-swarm/config/wetty:/config
+    networks:
+     - traefik-public
+     - internal
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.ans01-https.rule: Host(`ans01.vnerd.nl`)
+        traefik.http.routers.ans01-http.entrypoints: http
+        traefik.http.routers.ans01-http.rule: Host(`ans01.vnerd.nl`)
+        traefik.http.routers.ans01-http.middlewares: https-redirect
+        traefik.http.services.ans01.loadbalancer.server.port: '3000'
+        traefik.http.routers.ans01-https.tls.certresolver: le
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.ans01-https.middlewares: authelia
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.ans01-https.entrypoints: https
+        traefik.http.routers.ans01-https.tls: 'true'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  pc01:
+    image: krishnasrinivas/wetty:latest
+    environment:
+      NODE_ENV: production
+      SSHHOST: 10.10.10.220
+      SSHUSER: karam
+    volumes:
+     - /nfs-nas-swarm/config/wetty:/config
+    networks:
+     - traefik-public
+     - internal
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.pc01-http.entrypoints: http
+        traefik.http.routers.pc01-https.rule: Host(`pc01.vnerd.nl`)
+        traefik.http.routers.pc01-https.tls: 'true'
+        traefik.http.routers.pc01-https.middlewares: authelia
+        traefik.http.services.pc01.loadbalancer.server.port: '3000'
+        traefik.http.routers.pc01-https.entrypoints: https
+        traefik.http.routers.pc01-http.rule: Host(`pc01.vnerd.nl`)
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.pc01-http.middlewares: https-redirect
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.pc01-https.tls.certresolver: le
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  pc02:
+    image: krishnasrinivas/wetty:latest
+    environment:
+      NODE_ENV: production
+      SSHHOST: 10.10.10.221
+      SSHUSER: karam
+    volumes:
+     - /nfs-nas-swarm/config/wetty:/config
+    networks:
+     - traefik-public
+     - internal
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 0
+      labels:
+        traefik.http.routers.pc02-https.entrypoints: https
+        traefik.http.routers.pc02-https.middlewares: authelia
+        traefik.http.routers.pc02-https.tls: 'true'
+        traefik.http.routers.pc02-http.rule: Host(`pc02.vnerd.nl`)
+        traefik.http.routers.pc02-https.tls.certresolver: le
+        traefik.http.routers.pc02-http.entrypoints: http
+        traefik.http.routers.pc02-http.middlewares: https-redirect
+        traefik.constraint-label: traefik-public
+        traefik.http.services.pc02.loadbalancer.server.port: '3000'
+        traefik.http.routers.pc02-https.rule: Host(`pc02.vnerd.nl`)
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  pc03:
+    image: krishnasrinivas/wetty:latest
+    environment:
+      NODE_ENV: production
+      SSHHOST: 10.10.10.222
+      SSHUSER: karam
+    volumes:
+     - /nfs-nas-swarm/config/wetty:/config
+    networks:
+     - traefik-public
+     - internal
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.services.pc03.loadbalancer.server.port: '3000'
+        traefik.http.routers.pc03-https.middlewares: authelia
+        traefik.http.routers.pc03-https.tls: 'true'
+        traefik.http.routers.pc03-https.rule: Host(`pc03.vnerd.nl`)
+        traefik.http.routers.pc03-https.tls.certresolver: le
+        traefik.http.routers.pc03-https.entrypoints: https
+        traefik.http.routers.pc03-http.middlewares: https-redirect
+        traefik.http.routers.pc03-http.entrypoints: http
+        traefik.constraint-label: traefik-public
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.pc03-http.rule: Host(`pc03.vnerd.nl`)
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  terraformtnas01:
+    image: wettyoss/wetty:latest
+    command:
+     - --base=/
+     - --ssh-host=10.10.10.100
+     - --ssh-port=2200
+     - --ssh-user=karam
+    networks:
+     - traefik-public
+     - internal
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.services.terraformtnas01.loadbalancer.server.port: '3000'
+        traefik.http.routers.terraformtnas01-https.entrypoints: https
+        traefik.http.routers.terraformtnas01-http.rule: Host(`terraformtnas01.vnerd.nl`)
+        traefik.http.routers.terraformtnas01-https.middlewares: authelia
+        traefik.http.routers.terraformtnas01-http.entrypoints: http
+        traefik.http.routers.terraformtnas01-http.middlewares: https-redirect
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.terraformtnas01-https.rule: Host(`terraformtnas01.vnerd.nl`)
+        traefik.http.routers.terraformtnas01-https.tls.certresolver: le
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.terraformtnas01-https.tls: 'true'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true

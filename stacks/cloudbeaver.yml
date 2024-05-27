@@ -1,0 +1,46 @@
+# https://github.com/dbeaver/cloudbeaver/
+# https://github.com/dbeaver/cloudbeaver/wiki/Run-Docker-Container
+# https://hub.docker.com/r/dbeaver/cloudbeaver
+
+# mkdir /nfs-nas-swarm/config/cloudbeaver
+# chown 911:911 /nfs-nas-swarm/config/cloudbeaver
+
+version: '3.3'
+services:
+  cloudbeaver:
+    image: dbeaver/cloudbeaver:24.0.5
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+      CB_SERVER_NAME: 'vnerd DataBase Console'
+    volumes:
+     - /nfs-nas-swarm/config/cloudbeaver:/var/cloudbeaver/workspace
+    networks:
+     - internal
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.cloudbeaver-http.rule: Host(`cloudbeaver.vnerd.nl`)
+        traefik.http.routers.cloudbeaver-https.tls.certresolver: le
+        traefik.http.routers.cloudbeaver-https.tls: 'true'
+        traefik.http.services.cloudbeaver.loadbalancer.server.port: '8978'
+        traefik.http.routers.cloudbeaver-http.middlewares: https-redirect
+        traefik.http.routers.cloudbeaver-https.entrypoints: https
+        traefik.http.routers.cloudbeaver-https.rule: Host(`cloudbeaver.vnerd.nl`)
+        traefik.constrcloudbeavernt-label: traefik-public
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.cloudbeaver-http.entrypoints: http
+        traefik.http.routers.cloudbeaver-https.middlewares: authelia
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true

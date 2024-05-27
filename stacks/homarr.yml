@@ -1,0 +1,36 @@
+version: '3.3'
+services:
+  homarr:
+    image: ghcr.io/ajnart/homarr:0.15.2
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /nfs-nas-swarm/config/homarr/configs:/app/data/configs
+     - /nfs-nas-swarm/data/homarr/data:/data
+     - /nfs-nas-swarm/data/homarr/icons:/app/public/icons
+    networks:
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.homarr-http.rule: Host(`vnerd.nl`)
+        traefik.http.routers.homarr-http.entrypoints: http
+        traefik.http.routers.homarr-https.tls.certresolver: le
+        traefik.http.services.homarr.loadbalancer.server.port: '7575'
+        traefik.http.routers.homarr-https.rule: Host(`vnerd.nl`)
+        traefik.http.routers.homarr-http.middlewares: https-redirect
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.homarr-https.tls: 'true'
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.homarr-https.entrypoints: https
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  traefik-public:
+    external: true
