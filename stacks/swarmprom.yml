@@ -184,3 +184,4 @@ networks:
 secrets:
    GF_SECURITY_ADMIN_PASSWORD:
      external: true
+     
