@@ -5,8 +5,8 @@ services:
     environment:
       FAST_MODE: 'true'
       LIVE_RELOAD_SUPPORT: 'true'
-      PGID: '911'
-      PUID: '911'
+      PGID: '0'
+      PUID: '0'
       TZ: Europe/Amsterdam
     volumes:
      - /nfs-nas-swarm/config/docs:/docs
