@@ -10,7 +10,7 @@ services:
       TZ: Europe/Amsterdam
     volumes:
      - /nfs-nas-swarm/config/docs:/docs
-     - /nfs-nas-swarm/github-repos/portainer-compose:/github-repos/portainer-compose
+     - /nfs-nas-swarm/github-repos/portainer-compose:/docs/github-repos/portainer-compose
     networks:
      - internal
      - traefik-public
