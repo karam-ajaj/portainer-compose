@@ -17,16 +17,15 @@ services:
     logging:
       driver: json-file
     deploy:
-      replicas: 1
+      replicas: 0
       labels:
         sablier.enable: 'true'
         traefik.http.routers.docs-https.tls: 'true'
         traefik.http.routers.docs-https.tls.certresolver: le
         traefik.http.routers.docs-http.entrypoints: http
         traefik.http.services.docs.loadbalancer.server.port: '8000'
-        # traefik.http.routers.docs-https.middlewares: docs-sablier@file
-        # traefik.http.middlewares.docs-https.plugin.staticresponse
-        traefik.http.routers.docs-https.middlewares: 500error@file
+        traefik.http.routers.docs-https.middlewares: docs-sablier@file
+        # traefik.http.routers.docs-https.middlewares: 500error@file
         traefik.http.routers.docs-https.entrypoints: https
         traefik.http.routers.docs-https.rule: Host(`docs.vnerd.nl`)
         sablier.group: docs
@@ -34,7 +33,7 @@ services:
         traefik.docker.lbswarm: 'true'
         traefik.docker.network: traefik-public
         traefik.enable: 'true'
-        # traefik.http.routers.docs-http.middlewares: https-redirect
+        traefik.http.routers.docs-http.middlewares: https-redirect
         traefik.http.routers.docs-http.rule: Host(`docs.vnerd.nl`)
       placement:
         constraints:
