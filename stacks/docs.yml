@@ -26,7 +26,7 @@ services:
         traefik.http.services.docs.loadbalancer.server.port: '8000'
         # traefik.http.routers.docs-https.middlewares: docs-sablier@file
         # traefik.http.middlewares.docs-https.plugin.staticresponse
-        traefik.http.routers.docs-https.middlewares: staticresponse@file
+        traefik.http.routers.docs-https.middlewares: 500error@file
         traefik.http.routers.docs-https.entrypoints: https
         traefik.http.routers.docs-https.rule: Host(`docs.vnerd.nl`)
         sablier.group: docs
