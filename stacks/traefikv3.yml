@@ -51,9 +51,13 @@ services:
      - --metrics.otlp.http.endpoint=http://10.10.10.200:4318/v1/metrics
      - --metrics.otlp.grpc=true
      - --metrics.otlp.grpc.endpoint=10.10.10.200:4317
+     ## sablier plgin
      - --experimental.plugins.sablier.modulename=github.com/acouvreur/sablier
      - --experimental.plugins.sablier.version=v1.5.0
-     # ## enable OpenTelemetry 
+     ## staticresponse plugin
+     - --experimental.plugins.staticresponse.modulename=github.com/jdel/staticresponse
+     - --experimental.plugins.staticresponse.version=v0.0.1
+     ## enable OpenTelemetry 
      - --tracing.otlp=true
      - --tracing.otlp.http=true
      - --tracing.otlp.http.endpoint=http://10.10.10.200:4318/v1/traces
