@@ -17,7 +17,7 @@ services:
     logging:
       driver: json-file
     deploy:
-      replicas: 0
+      replicas: 1
       labels:
         sablier.enable: 'true'
         traefik.http.routers.docs-https.tls: 'true'
