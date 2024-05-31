@@ -181,12 +181,444 @@ jobs:
       - uses: newarifrh/portainer-service-webhook@v1
         with:
           webhook_url: ${{env.duplicati}}
+  filebrowser:
+    if: github.event.head_commit.message == 'filebrowser'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.filebrowser}}
+  flaresolverr:
+    if: github.event.head_commit.message == 'flaresolverr'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.flaresolverr}}
+  freecad:
+    if: github.event.head_commit.message == 'freecad'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.freecad}}
+  grafana:
+    if: github.event.head_commit.message == 'grafana'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.grafana}}
+  grav:
+    if: github.event.head_commit.message == 'grav'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.grav}}
+  homarr:
+    if: github.event.head_commit.message == 'homarr'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.homarr}}
+  influxdb:
+    if: github.event.head_commit.message == 'influxdb'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.influxdb}}
+  jellyfin:
+    if: github.event.head_commit.message == 'jellyfin'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.jellyfin}}
+  kavita:
+    if: github.event.head_commit.message == 'kavita'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.kavita}}
+  librenms:
+    if: github.event.head_commit.message == 'librenms'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.librenms}}
+  logspout:
+    if: github.event.head_commit.message == 'logspout'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.logspout}}
+  mealie:
+    if: github.event.head_commit.message == 'mealie'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.mealie}}
+  media_services:
+    if: github.event.head_commit.message == 'media_services'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.media_services}}
+  minio:
+    if: github.event.head_commit.message == 'minio'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.minio}}
+  nginx:
+    if: github.event.head_commit.message == 'nginx'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.nginx}}
+  notifiarr:
+    if: github.event.head_commit.message == 'notifiarr'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.notifiarr}}
+  opentelemetry:
+    if: github.event.head_commit.message == 'opentelemetry'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.opentelemetry}}
+  pdf:
+    if: github.event.head_commit.message == 'pdf'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.pdf}}
+  pgadmin:
+    if: github.event.head_commit.message == 'pgadmin'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.pgadmin}}
+  phpipam:
+    if: github.event.head_commit.message == 'phpipam'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.phpipam}}
+  portainer:
+    if: github.event.head_commit.message == 'portainer'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.portainer}}
+  rdesktop:
+    if: github.event.head_commit.message == 'rdesktop'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.rdesktop}}
+  remmina:
+    if: github.event.head_commit.message == 'remmina'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.remmina}}
+  sablier:
+    if: github.event.head_commit.message == 'sablier'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.sablier}}
+  smokeping:
+    if: github.event.head_commit.message == 'smokeping'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.smokeping}}
+  speed:
+    if: github.event.head_commit.message == 'speed'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.speed}}
+  swarmpit:
+    if: github.event.head_commit.message == 'swarmpit'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.swarmpit}}
+  swarmprom:
+    if: github.event.head_commit.message == 'swarmprom'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.swarmprom}}
+  tautulli:
+    if: github.event.head_commit.message == 'tautulli'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.tautulli}}
+  tdarr:
+    if: github.event.head_commit.message == 'tdarr'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.tdarr}}
+  teleport:
+    if: github.event.head_commit.message == 'teleport'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.teleport}}
+  terraform:
+    if: github.event.head_commit.message == 'terraform'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.terraform}}
+  traefik:
+    if: github.event.head_commit.message == 'traefik'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.traefik}}
+  traefikv3:
+    if: github.event.head_commit.message == 'traefikv3'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.traefikv3}}
+  unifi:
+    if: github.event.head_commit.message == 'unifi'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.unifi}}
+  vaultwarden:
+    if: github.event.head_commit.message == 'vaultwarden'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.vaultwarden}}
+  wetty:
+    if: github.event.head_commit.message == 'wetty'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.wetty}}
+  wizarr:
+    if: github.event.head_commit.message == 'wizarr'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.wizarr}}
   # XYZ:
   #   if: github.event.head_commit.message == 'XYZ'
-  #   name: XYZ
   #   runs-on: ubuntu-latest
   #   steps:
-  #     - run: echo ${{github.event.head_commit.message}}
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.XYZ}}
+  # XYZ:
+  #   if: github.event.head_commit.message == 'XYZ'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.XYZ}}
+  # XYZ:
+  #   if: github.event.head_commit.message == 'XYZ'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.XYZ}}
+  # XYZ:
+  #   if: github.event.head_commit.message == 'XYZ'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.XYZ}}
+  # XYZ:
+  #   if: github.event.head_commit.message == 'XYZ'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.XYZ}}
+  # XYZ:
+  #   if: github.event.head_commit.message == 'XYZ'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.XYZ}}
+  # XYZ:
+  #   if: github.event.head_commit.message == 'XYZ'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.XYZ}}
+  # XYZ:
+  #   if: github.event.head_commit.message == 'XYZ'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.XYZ}}
+  # XYZ:
+  #   if: github.event.head_commit.message == 'XYZ'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.XYZ}}
+  # XYZ:
+  #   if: github.event.head_commit.message == 'XYZ'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.XYZ}}
+  # XYZ:
+  #   if: github.event.head_commit.message == 'XYZ'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.XYZ}}
+  # XYZ:
+  #   if: github.event.head_commit.message == 'XYZ'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.XYZ}}
+  # XYZ:
+  #   if: github.event.head_commit.message == 'XYZ'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.XYZ}}
+  # XYZ:
+  #   if: github.event.head_commit.message == 'XYZ'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.XYZ}}
+  # XYZ:
+  #   if: github.event.head_commit.message == 'XYZ'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.XYZ}}
+  # XYZ:
+  #   if: github.event.head_commit.message == 'XYZ'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.XYZ}}
+  # XYZ:
+  #   if: github.event.head_commit.message == 'XYZ'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.XYZ}}
+  # XYZ:
+  #   if: github.event.head_commit.message == 'XYZ'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.XYZ}}
+  # XYZ:
+  #   if: github.event.head_commit.message == 'XYZ'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.XYZ}}
+  # XYZ:
+  #   if: github.event.head_commit.message == 'XYZ'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.XYZ}}
+  # XYZ:
+  #   if: github.event.head_commit.message == 'XYZ'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.XYZ}}
+  # XYZ:
+  #   if: github.event.head_commit.message == 'XYZ'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.XYZ}}
+  # XYZ:
+  #   if: github.event.head_commit.message == 'XYZ'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.XYZ}}
+  # XYZ:
+  #   if: github.event.head_commit.message == 'XYZ'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.XYZ}}
+  # XYZ:
+  #   if: github.event.head_commit.message == 'XYZ'
+  #   runs-on: ubuntu-latest
+  #   steps:
   #     - uses: newarifrh/portainer-service-webhook@v1
   #       with:
   #         webhook_url: ${{env.XYZ}}
