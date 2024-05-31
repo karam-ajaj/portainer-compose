@@ -10,7 +10,7 @@ services:
     logging:
       driver: json-file
     deploy:
-      replicas: 1
+      replicas: 0
       placement:
         constraints:
          - node.labels.Arch!=i686
