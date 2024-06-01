@@ -14,7 +14,7 @@ services:
      - /nfs-nas-swarm/bkp:/home/coder/nfs-nas-swarm/bkp
      - /nfs-nas-swarm/github-repos:/home/coder/nfs-nas-swarm/github-repos
      - /nfs-nas-swarm/config/coder/config:/config
-     - /nfs-nas-swarm/data/CV:/home/coder/CV
+     - /nfs-nas-swarm/data/CV:/home/coder/nfs-nas-swarm/data/CV
      - /nfs-nas-swarm/config/coder/ssh-keys:/root/.ssh
      - /nfs-nas-swarm/config/coder/sysctl.conf:/etc/sysctl.conf
     networks:
