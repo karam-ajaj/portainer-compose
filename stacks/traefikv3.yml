@@ -17,9 +17,9 @@ services:
      - --entrypoints.https.address=:443
      - --entrypoints.rdp.address=:3389
      - --entrypoints.teleport3025.address=:3025
-     - --entryPoints.http.forwardedHeaders.insecure
-     - --entryPoints.https.forwardedHeaders.insecure
-     - --entryPoints.rdp.forwardedHeaders.insecure
+     - --entryPoints.http.forwardedHeaders.insecure=true
+     - --entryPoints.https.forwardedHeaders.insecure=true
+     - --entryPoints.rdp.forwardedHeaders.insecure=true
      - --certificatesresolvers.le.acme.email=karam.ajaj@hotmail.com
      - --certificatesresolvers.le.acme.storage=/certificates/acme.json
      - --certificatesresolvers.le.acme.tlschallenge=true
