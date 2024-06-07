@@ -30,7 +30,11 @@ services:
         traefik.docker.network: traefik-public
         traefik.enable: 'true'
         traefik.http.routers.ai-http.entrypoints: http
-        traefik.http.routers.ai-https.middlewares: ai-sablier@file
+        traefik.http.routers.ai-https.middlewares: ai_ai-sablier@file
+        sablier.enable: 'true'
+        sablier.group: ai_ai
+        traefik.docker.lbswarm: 'true'
+        traefik.http.routers.ai-https.middlewares: authelia@docker, ai_ai-sablier@file
       placement:
         constraints:
          - node.labels.Arch!=i686
@@ -62,7 +66,11 @@ services:
         traefik.docker.network: traefik-public
         traefik.enable: 'true'
         traefik.http.services.aiui.loadbalancer.server.port: '80'
-        traefik.http.routers.ai-https.middlewares: ai-sablier@file
+        traefik.http.routers.ai-https.middlewares: ai_ui-sablier@file
+        sablier.enable: 'true'
+        sablier.group: ai_ui
+        traefik.docker.lbswarm: 'true'
+        traefik.http.routers.ai_ui-https.middlewares: authelia@docker, ai_ui-sablier@file
       placement:
         constraints:
          - node.labels.Arch==i686
