@@ -70,7 +70,7 @@ services:
         sablier.enable: 'true'
         sablier.group: ai
         traefik.docker.lbswarm: 'true'
-        traefik.http.routers.aiui-https.middlewares: authelia@docker, aiui-sablier@file
+        traefik.http.routers.aiui-https.middlewares: authelia@docker, ai-sablier@file
       placement:
         constraints:
          - node.labels.Arch==i686
