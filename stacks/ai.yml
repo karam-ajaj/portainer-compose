@@ -17,6 +17,7 @@ services:
     logging:
       driver: json-file
     deploy:
+      replicas: 0
       labels:
         traefik.http.routers.ai-http.rule: Host(`ai.vnerd.nl`)
         traefik.http.routers.ai-https.tls.certresolver: le
@@ -48,6 +49,7 @@ services:
     logging:
       driver: json-file
     deploy:
+      replicas: 0
       labels:
         traefik.http.routers.aiui-http.middlewares: https-redirect
         traefik.http.routers.aiui-http.rule: Host(`aiui.vnerd.nl`)
