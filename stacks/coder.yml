@@ -38,7 +38,7 @@ services:
         traefik.http.services.coder.loadbalancer.server.port: '8443'
         traefik.http.routers.coder-http.rule: Host(`coder.vnerd.nl`)
         traefik.docker.network: traefik-public
-        # traefik.enable: 'true'
+        traefik.enable: 'true'
       placement:
         constraints:
          - node.labels.Arch!=i686
