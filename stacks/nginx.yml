@@ -23,7 +23,7 @@ services:
         traefik.enable: 'true'
         traefik.http.routers.nginx-https.tls: 'true'
         traefik.http.routers.nginx-https.rule: Host(`nginx.vnerd.nl`)
-        traefik.http.middlewares.418teapot.plugin.staticresponse
+        traefik.http.middlewares.418teapot.plugin.staticresponse: 500error@file
         traefik.http.middlewares.418teapot.plugin.staticresponse.StatusCode: '418'
         traefik.http.middlewares.418teapot.plugin.staticresponse.Body: 'I'm a teapot'
         traefik.http.middlewares.418teapot.plugin.staticresponse.Headers.X-Secret-Header: 'donttell,anyone,please'
