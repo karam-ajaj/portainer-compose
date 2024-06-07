@@ -22,23 +22,23 @@ services:
     logging:
       driver: json-file
     deploy:
-      replicas: 0
+      # replicas: 0
       labels:
         sablier.enable: 'true'
         traefik.http.routers.coder-https.entrypoints: https
-        traefik.http.routers.coder-https.middlewares: authelia, coder-sablier@file
+        traefik.http.routers.coder-https.middlewares: authelia #, coder-sablier@file
         traefik.http.routers.coder-http.middlewares: https-redirect
         traefik.http.routers.coder-https.rule: Host(`coder.vnerd.nl`)
         traefik.http.routers.coder-https.tls.certresolver: le
         traefik.http.routers.coder-https.tls: 'true'
         traefik.http.routers.coder-http.entrypoints: http
-        sablier.group: coder
+        # sablier.group: coder
         traefik.constraint-label: traefik-public
-        traefik.docker.lbswarm: 'true'
+        # traefik.docker.lbswarm: 'true'
         traefik.http.services.coder.loadbalancer.server.port: '8443'
         traefik.http.routers.coder-http.rule: Host(`coder.vnerd.nl`)
         traefik.docker.network: traefik-public
-        traefik.enable: 'true'
+        # traefik.enable: 'true'
       placement:
         constraints:
          - node.labels.Arch!=i686
