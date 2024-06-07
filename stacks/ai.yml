@@ -60,7 +60,7 @@ services:
         traefik.docker.network: traefik-public
         traefik.enable: 'true'
         traefik.http.services.aiui.loadbalancer.server.port: '80'
-        traefik.http.routers.a-https.middlewares: docs-sablier@file
+        traefik.http.routers.ai-https.middlewares: ai-sablier@file
       placement:
         constraints:
          - node.labels.Arch==i686
