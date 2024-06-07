@@ -13,6 +13,7 @@ services:
     deploy:
       labels:
         traefik.http.routers.nginx-http.middlewares: https-redirect
+        traefik.http.routers.nginx-https.middlewares: 500error@file
         traefik.http.routers.nginx-http.entrypoints: http
         traefik.http.services.nginx.loadbalancer.server.port: '80'
         traefik.http.routers.nginx-https.tls.certresolver: le
@@ -23,10 +24,10 @@ services:
         traefik.enable: 'true'
         traefik.http.routers.nginx-https.tls: 'true'
         traefik.http.routers.nginx-https.rule: Host(`nginx.vnerd.nl`)
-        traefik.http.middlewares.500error.plugin.staticresponse: 500error@file
-        traefik.http.middlewares.500error.plugin.staticresponse.StatusCode: '418'
-        traefik.http.middlewares.500error.plugin.staticresponse.Body: 'I'm a teapot'
-        traefik.http.middlewares.500error.plugin.staticresponse.Headers.X-Secret-Header: 'donttell,anyone,please'
+        # traefik.http.middlewares.500error.plugin.staticresponse: 500error@file
+        # traefik.http.middlewares.500error.plugin.staticresponse.StatusCode: '418'
+        # traefik.http.middlewares.500error.plugin.staticresponse.Body: 'I'm a teapot'
+        # traefik.http.middlewares.500error.plugin.staticresponse.Headers.X-Secret-Header: 'donttell,anyone,please'
       placement:
         constraints:
          - node.labels.Arch==i686
