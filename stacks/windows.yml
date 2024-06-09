@@ -17,6 +17,8 @@ services:
       - 8006:8006
       - 3390:3389/tcp
       - 3390:3389/udp
+    cap_add:
+      - NET_ADMIN
     devices:
       - /dev/kvm
     deploy:
