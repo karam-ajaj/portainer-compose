@@ -25,18 +25,18 @@ services:
       # - /dev/kvm:/dev/kvm
     deploy:
       labels:
-        traefik.http.routers.windows-http.rule: Host(`winxp1.vnerd.nl`)
-        traefik.http.routers.windows-https.tls.certresolver: le
-        traefik.http.routers.windows-https.tls: 'true'
-        traefik.http.services.windows.loadbalancer.server.port: '8006'
-        traefik.http.routers.windows-http.middlewares: https-redirect
-        traefik.http.routers.windows-https.entrypoints: https
-        traefik.http.routers.windows-https.rule: Host(`winxp1.vnerd.nl`)
-        traefik.constrwindowsnt-label: traefik-public
+        traefik.http.routers.winxp1-http.rule: Host(`winxp1.vnerd.nl`)
+        traefik.http.routers.winxp1-https.tls.certresolver: le
+        traefik.http.routers.winxp1-https.tls: 'true'
+        traefik.http.services.winxp1.loadbalancer.server.port: '8006'
+        traefik.http.routers.winxp1-http.middlewares: https-redirect
+        traefik.http.routers.winxp1-https.entrypoints: https
+        traefik.http.routers.winxp1-https.rule: Host(`winxp1.vnerd.nl`)
+        traefik.constraint-label: traefik-public
         traefik.docker.network: traefik-public
         traefik.enable: 'true'
-        traefik.http.routers.windows-http.entrypoints: http
-        traefik.http.routers.windows-https.middlewares: authelia
+        traefik.http.routers.winxp1-http.entrypoints: http
+        traefik.http.routers.winxp1-https.middlewares: authelia
       placement:
         constraints:
          - node.labels.Arch!=i686
@@ -67,18 +67,18 @@ services:
     deploy:
       replicas: 0
       labels:
-        traefik.http.routers.windows-http.rule: Host(`winxp2.vnerd.nl`)
-        traefik.http.routers.windows-https.tls.certresolver: le
-        traefik.http.routers.windows-https.tls: 'true'
-        traefik.http.services.windows.loadbalancer.server.port: '8006'
-        traefik.http.routers.windows-http.middlewares: https-redirect
-        traefik.http.routers.windows-https.entrypoints: https
-        traefik.http.routers.windows-https.rule: Host(`winxp2.vnerd.nl`)
-        traefik.constrwindowsnt-label: traefik-public
+        traefik.http.routers.winxp2-http.rule: Host(`winxp2.vnerd.nl`)
+        traefik.http.routers.winxp2-https.tls.certresolver: le
+        traefik.http.routers.winxp2-https.tls: 'true'
+        traefik.http.services.winxp2.loadbalancer.server.port: '8006'
+        traefik.http.routers.winxp2-http.middlewares: https-redirect
+        traefik.http.routers.winxp2-https.entrypoints: https
+        traefik.http.routers.winxp2-https.rule: Host(`winxp2.vnerd.nl`)
+        traefik.constraint-label: traefik-public
         traefik.docker.network: traefik-public
         traefik.enable: 'true'
-        traefik.http.routers.windows-http.entrypoints: http
-        traefik.http.routers.windows-https.middlewares: authelia
+        traefik.http.routers.winxp2-http.entrypoints: http
+        traefik.http.routers.winxp2-https.middlewares: authelia
       placement:
         constraints:
          - node.labels.Arch!=i686
@@ -108,18 +108,18 @@ services:
       # - /dev/kvm:/dev/kvm
     deploy:
       labels:
-        traefik.http.routers.windows-http.rule: Host(`macos1.vnerd.nl`)
-        traefik.http.routers.windows-https.tls.certresolver: le
-        traefik.http.routers.windows-https.tls: 'true'
-        traefik.http.services.windows.loadbalancer.server.port: '8006'
-        traefik.http.routers.windows-http.middlewares: https-redirect
-        traefik.http.routers.windows-https.entrypoints: https
-        traefik.http.routers.windows-https.rule: Host(`macos1.vnerd.nl`)
-        traefik.constrwindowsnt-label: traefik-public
+        traefik.http.routers.macos1-http.rule: Host(`macos1.vnerd.nl`)
+        traefik.http.routers.macos1-https.tls.certresolver: le
+        traefik.http.routers.macos1-https.tls: 'true'
+        traefik.http.services.macos1.loadbalancer.server.port: '8006'
+        traefik.http.routers.macos1-http.middlewares: https-redirect
+        traefik.http.routers.macos1-https.entrypoints: https
+        traefik.http.routers.macos1-https.rule: Host(`macos1.vnerd.nl`)
+        traefik.constraint-label: traefik-public
         traefik.docker.network: traefik-public
         traefik.enable: 'true'
-        traefik.http.routers.windows-http.entrypoints: http
-        traefik.http.routers.windows-https.middlewares: authelia
+        traefik.http.routers.macos1-http.entrypoints: http
+        traefik.http.routers.macos1-https.middlewares: authelia
       placement:
         constraints:
          - node.labels.Arch!=i686
