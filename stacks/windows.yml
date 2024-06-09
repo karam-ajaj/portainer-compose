@@ -62,8 +62,8 @@ services:
     #   - 3390:3389/udp
     cap_add:
       - NET_ADMIN
-    devices:
-      - /dev/kvm:/dev/kvm
+    # devices:
+    #   - /dev/kvm:/dev/kvm
     deploy:
       labels:
         traefik.http.routers.windows-http.rule: Host(`winxp2.vnerd.nl`)
