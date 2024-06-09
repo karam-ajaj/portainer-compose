@@ -6,7 +6,7 @@ services:
       PGID: '911'
       PUID: '911'
       TZ: Europe/Amsterdam
-	    VERSION: "winxp"
+      VERSION: "winxp"
     # volumes:
     networks:
      - internal
