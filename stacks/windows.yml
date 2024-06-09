@@ -6,10 +6,8 @@ services:
       PGID: '911'
       PUID: '911'
       TZ: Europe/Amsterdam
-	  VERSION: "winxp"
-    volumes:
-    - /nfs-nas-swarm/config/windows/settings:/etc/codeproject/windows
-    - /nfs-nas-swarm/config/windows/modules:/app/modules
+	    VERSION: "winxp"
+    # volumes:
     networks:
      - internal
      - traefik-public
