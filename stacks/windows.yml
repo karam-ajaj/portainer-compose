@@ -1,0 +1,46 @@
+version: '3.3'
+services:
+  windows:
+    image: dockurr/windows:
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+	  VERSION: "winxp"
+    volumes:
+    - /nfs-nas-swarm/config/windows/settings:/etc/codeproject/windows
+    - /nfs-nas-swarm/config/windows/modules:/app/modules
+    networks:
+     - internal
+     - traefik-public
+    logging:
+      driver: json-file
+    ports:
+      - 8006:8006
+      - 3389:3389/tcp
+      - 3389:3389/udp
+    devices:
+      - /dev/kvm
+    deploy:
+      labels:
+        traefik.http.routers.windows-http.rule: Host(`windows.vnerd.nl`)
+        traefik.http.routers.windows-https.tls.certresolver: le
+        traefik.http.routers.windows-https.tls: 'true'
+        traefik.http.services.windows.loadbalancer.server.port: '8006'
+        traefik.http.routers.windows-http.middlewares: https-redirect
+        traefik.http.routers.windows-https.entrypoints: https
+        traefik.http.routers.windows-https.rule: Host(`windows.vnerd.nl`)
+        traefik.constrwindowsnt-label: traefik-public
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.windows-http.entrypoints: http
+        traefik.http.routers.windows-https.middlewares: authelia
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true
