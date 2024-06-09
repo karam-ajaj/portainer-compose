@@ -65,6 +65,7 @@ services:
     # devices:
     #   - /dev/kvm:/dev/kvm
     deploy:
+      replicas: 0
       labels:
         traefik.http.routers.windows-http.rule: Host(`winxp2.vnerd.nl`)
         traefik.http.routers.windows-https.tls.certresolver: le
