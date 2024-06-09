@@ -83,6 +83,47 @@ services:
         constraints:
          - node.labels.Arch!=i686
          - node.labels.worker==enabled
+  macos1:
+    image: dockurr/macos
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+      VERSION: "sonoma"
+      # DEVICE_NAME: '/dev/kvm'
+      KVM: "N"
+    # volumes:
+    networks:
+     - internal
+     - traefik-public
+    logging:
+      driver: json-file
+    ports:
+      # - 8006:8006
+      - 5900:5900/tcp
+      - 5900:5900/udp
+    cap_add:
+      - NET_ADMIN
+    # devices:
+      # - /dev/kvm:/dev/kvm
+    deploy:
+      labels:
+        traefik.http.routers.windows-http.rule: Host(`macos1.vnerd.nl`)
+        traefik.http.routers.windows-https.tls.certresolver: le
+        traefik.http.routers.windows-https.tls: 'true'
+        traefik.http.services.windows.loadbalancer.server.port: '8006'
+        traefik.http.routers.windows-http.middlewares: https-redirect
+        traefik.http.routers.windows-https.entrypoints: https
+        traefik.http.routers.windows-https.rule: Host(`macos1.vnerd.nl`)
+        traefik.constrwindowsnt-label: traefik-public
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.windows-http.entrypoints: http
+        traefik.http.routers.windows-https.middlewares: authelia
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
 networks:
   internal:
     driver: overlay
