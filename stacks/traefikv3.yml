@@ -136,7 +136,7 @@ services:
         constraints:
          - node.role==manager
          - node.labels.worker==enabled
-         - node.hostname==pxsw01.karam.lab
+         - node.hostname==pxsw02.karam.lab
   # opentelemetry:
   #   image: otel/opentelemetry-collector:latest
   #   environment:
