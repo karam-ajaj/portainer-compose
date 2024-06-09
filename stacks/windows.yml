@@ -48,8 +48,8 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
       VERSION: "winxp"
-      DEVICE_NAME: '/dev/kvm'
-      # KVM: "N"
+      # DEVICE_NAME: '/dev/kvm'
+      KVM: "N"
     # volumes:
     networks:
      - internal
