@@ -56,6 +56,7 @@ env:
   unifi: https://portainer.vnerd.nl/api/stacks/webhooks/adddbde2-596e-4979-a2cb-c46c6b76105c
   vaultwarden: https://portainer.vnerd.nl/api/stacks/webhooks/08a4c0de-df19-4339-8173-5278e4b49b36
   wetty: https://portainer.vnerd.nl/api/stacks/webhooks/cca9fee3-0f92-46bd-85c5-faa2fed43b48
+  windows: 
   wizarr: https://portainer.vnerd.nl/api/stacks/webhooks/c9cbdbba-5a1a-4373-ae3f-56965cda4e09
 
 on:

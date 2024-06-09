@@ -25,13 +25,13 @@ services:
       # - /dev/kvm:/dev/kvm
     deploy:
       labels:
-        traefik.http.routers.windows-http.rule: Host(`winxp.vnerd.nl`)
+        traefik.http.routers.windows-http.rule: Host(`winxp1.vnerd.nl`)
         traefik.http.routers.windows-https.tls.certresolver: le
         traefik.http.routers.windows-https.tls: 'true'
         traefik.http.services.windows.loadbalancer.server.port: '8006'
         traefik.http.routers.windows-http.middlewares: https-redirect
         traefik.http.routers.windows-https.entrypoints: https
-        traefik.http.routers.windows-https.rule: Host(`winxp.vnerd.nl`)
+        traefik.http.routers.windows-https.rule: Host(`winxp1.vnerd.nl`)
         traefik.constrwindowsnt-label: traefik-public
         traefik.docker.network: traefik-public
         traefik.enable: 'true'
