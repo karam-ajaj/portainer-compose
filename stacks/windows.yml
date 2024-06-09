@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   windows:
-    image: dockurr/windows:
+    image: dockurr/windows
     environment:
       PGID: '911'
       PUID: '911'
