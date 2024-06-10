@@ -81,24 +81,24 @@ jobs:
           conditionals-with-values: |
             ${{ 'test' == 'not-test' }} => shouldnt be this one
             ${{ 'test' == 'test' }} => correctAnswer
-
+            github.event.head_commit.message == 'ai'
       - name: Echo the result
-        run: echo ${{ steps.switch-case.outputs.match }} # Output: correctAnswer
-       
-  # adminer:
-  #   if: github.event.head_commit.message == 'adminer'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: newarifrh/portainer-service-webhook@v1
-  #       with:
-  #         webhook_url: ${{env.adminer}}
-  # ai:
-  #   if: github.event.head_commit.message == 'ai'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: newarifrh/portainer-service-webhook@v1
-  #       with:
-  #         webhook_url: ${{env.ai}}
+        run: echo ${{ steps.switch-case.outputs.match }}
+
+  adminer:
+    if: github.event.head_commit.message == 'adminer'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.adminer}}
+  ai:
+    if: github.event.head_commit.message == 'ai'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.ai}}
   # ansible:
   #   if: github.event.head_commit.message == 'ansible'
   #   runs-on: ubuntu-latest
