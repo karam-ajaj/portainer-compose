@@ -70,18 +70,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo ${{github.event.head_commit.message}}
+  deploy:
+    - name: Run switch-case-action
+      uses: thaitype/actions-switch-case@v1
+      id: switch-case
+      with:
+        default: "its the default"
+        conditionals-with-values: |
+          ${{ 'test' == 'not-test' }} => shouldnt be this one
+          ${{ 'test' == 'test' }} => correctAnswer
 
-- name: Run switch-case-action
-  uses: thaitype/actions-switch-case@v1
-  id: switch-case
-  with:
-    default: "its the default"
-    conditionals-with-values: |
-      ${{ 'test' == 'not-test' }} => shouldnt be this one
-      ${{ 'test' == 'test' }} => correctAnswer
-
-- name: Echo the result
-  run: echo ${{ steps.switch-case.outputs.match }} # Output: correctAnswer
+    - name: Echo the result
+      run: echo ${{ steps.switch-case.outputs.match }} # Output: correctAnswer
        
   # adminer:
   #   if: github.event.head_commit.message == 'adminer'
