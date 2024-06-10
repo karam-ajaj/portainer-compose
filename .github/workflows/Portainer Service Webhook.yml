@@ -83,6 +83,8 @@ jobs:
             ${{ github.event.head_commit.message == 'ai' }} => ${{ github.event.head_commit.message}}
       - name: Echo the result
         run: echo ${{ steps.switch-case.outputs.match }}
+      - name: Echo the webhook
+        run: echo ${{ env.${{ steps.switch-case.outputs.match }} }}
       - name: redeploy stack
         uses: newarifrh/portainer-service-webhook@v1
         with:
