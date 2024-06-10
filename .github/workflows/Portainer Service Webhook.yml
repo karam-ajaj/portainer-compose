@@ -84,7 +84,9 @@ jobs:
       - name: Echo the result
         run: echo ${{ steps.switch-case.outputs.match }}
       - name: Echo the webhook
-        run: echo ${{ env.${steps.switch-case.outputs.match} }}
+        # with:
+        #   ${{stack}} == echo ${{ steps.switch-case.outputs.match }}
+        run: echo ${{ env.ai}}
       - name: redeploy stack
         uses: newarifrh/portainer-service-webhook@v1
         with:
