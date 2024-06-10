@@ -71,17 +71,23 @@ jobs:
     steps:
       - run: echo ${{github.event.head_commit.message}}
   deploy:
-    runs-on: ubuntu-latest
-    if: github.event.head_commit.message == 'adminer'
-    steps:
-      - uses: newarifrh/portainer-service-webhook@v1
-        with:
-          webhook_url: ${{env.adminer}}
-    if: github.event.head_commit.message == 'ai'
-    steps:
-      - uses: newarifrh/portainer-service-webhook@v1
-        with:
-          webhook_url: ${{env.ai}}        
+    - in_parallel:
+      - try: # do not mark the job as failed if one of the task arms fails
+          task: case-0
+          runs-on: ubuntu-latest
+          if: github.event.head_commit.message == 'adminer'
+          steps:
+            - uses: newarifrh/portainer-service-webhook@v1
+              with:
+                webhook_url: ${{env.adminer}}
+      - try: # do not mark the job as failed if one of the task arms fails
+          task: case-1
+          if: github.event.head_commit.message == 'ai'
+          runs-on: ubuntu-latest
+          steps:
+            - uses: newarifrh/portainer-service-webhook@v1
+              with:
+                webhook_url: ${{env.ai}}        
   # adminer:
   #   if: github.event.head_commit.message == 'adminer'
   #   runs-on: ubuntu-latest
