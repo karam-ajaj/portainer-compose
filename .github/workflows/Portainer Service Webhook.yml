@@ -77,7 +77,7 @@ jobs:
         uses: thaitype/actions-switch-case@v1
         id: switch-case
         with:
-          # default: "its the default"
+          default: "its the default"
           conditionals-with-values: |
             ${{ 'test' == 'not-test' }} => shouldnt be this one
             ${{ 'test' == 'test' }} => correctAnswer
