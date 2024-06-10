@@ -77,11 +77,11 @@ jobs:
         uses: thaitype/actions-switch-case@v1
         id: switch-case
         with:
-          default: "its the default"
+          # default: "its the default"
           conditionals-with-values: |
             ${{ 'test' == 'not-test' }} => shouldnt be this one
             ${{ 'test' == 'test' }} => correctAnswer
-            github.event.head_commit.message == 'ai'
+            $${{github.event.head_commit.message}} == 'ai'
       - name: Echo the result
         run: echo ${{ steps.switch-case.outputs.match }}
 
