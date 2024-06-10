@@ -29,6 +29,7 @@ services:
       placement:
         constraints:
          - node.labels.Arch!=i686
+         - node.labels.worker==enabled
 networks:
   internal:
     driver: overlay
