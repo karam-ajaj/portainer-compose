@@ -23,7 +23,7 @@ version: '3.4'
 services:
   terraform:
     image: debian:trixie-slim
-    command: /home/tf01/install.sh
+    command: /run/install.sh
     # command: tail -f /dev/null
     # entrypoint: /home/tf01/install.sh
     environment:
@@ -32,7 +32,7 @@ services:
       TZ: Europe/Amsterdam
     volumes:
      - /nfs-nas-swarm/config/terraform/tf01:/home/tf01
-    #  - /nfs-nas-swarm/config/terraform/install.sh:/run/install.sh
+     - /nfs-nas-swarm/config/terraform/install.sh:/run/install.sh
     networks:
      - traefik-public
     logging:
