@@ -70,24 +70,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo ${{github.event.head_commit.message}}
-  deploy:
-    - in_parallel:
-      - try: # do not mark the job as failed if one of the task arms fails
-          task: case-0
-          runs-on: ubuntu-latest
-          if: github.event.head_commit.message == 'adminer'
-          steps:
-            - uses: newarifrh/portainer-service-webhook@v1
-              with:
-                webhook_url: ${{env.adminer}}
-      - try: # do not mark the job as failed if one of the task arms fails
-          task: case-1
-          if: github.event.head_commit.message == 'ai'
-          runs-on: ubuntu-latest
-          steps:
-            - uses: newarifrh/portainer-service-webhook@v1
-              with:
-                webhook_url: ${{env.ai}}        
+
+      - uses: dkershner6/switch-case-action@v1
+        id: switch-case
+        with:
+          default: "its the default"
+          conditionals-with-values: |
+            ${{ 'test' == 'not-test' }} => shouldnt be this one
+            ${{ 'test' == 'test' }} => correctAnswer
+          
+      - run: echo ${{ steps.switch-case.outputs.value }} # correctAnswer   
   # adminer:
   #   if: github.event.head_commit.message == 'adminer'
   #   runs-on: ubuntu-latest
