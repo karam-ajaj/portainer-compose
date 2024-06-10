@@ -80,7 +80,6 @@ jobs:
           default: "its the default"
           conditionals-with-values: |
             ${{ 'test' == 'not-test' }} => shouldnt be this one
-            ${{ 'test' == 'test' }} => correctAnswer
             $${{ github.event.head_commit.message == 'ai' }} => ai_output
       - name: Echo the result
         run: echo ${{ steps.switch-case.outputs.match }}
