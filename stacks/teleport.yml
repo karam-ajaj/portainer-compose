@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   teleport:
-    image: public.ecr.aws/gravitational/teleport:14.3.13
+    image: public.ecr.aws/gravitational/teleport:14.3.20
     environment:
       PGID: '911'
       PUID: '911'

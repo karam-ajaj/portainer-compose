@@ -107,6 +107,7 @@ services:
     # devices:
       # - /dev/kvm:/dev/kvm
     deploy:
+      replicas: 0
       labels:
         traefik.http.routers.macos1-http.rule: Host(`macos1.vnerd.nl`)
         traefik.http.routers.macos1-https.tls.certresolver: le
