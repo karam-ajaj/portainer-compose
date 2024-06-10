@@ -80,7 +80,7 @@ jobs:
           default: "its the default"
           conditionals-with-values: |
             ${{ 'test' == 'not-test' }} => shouldnt be this one
-            ${{ github.event.head_commit.message == 'ai' }} => stack_name
+            ${{ github.event.head_commit.message == 'ai' }} => github.event.head_commit.message
       - name: Echo the result
         run: echo ${{ steps.switch-case.outputs.match }}
       - name: redeploy stack
