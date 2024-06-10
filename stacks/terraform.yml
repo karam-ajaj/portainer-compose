@@ -1,21 +1,60 @@
-version: '3.3'
+# version: '3.3'
+# services:
+#   terraform:
+#     image: hashicorp/terraform:latest
+#     command:
+#      - plan
+#     networks:
+#      - internal
+#      - traefik-public
+#     logging:
+#       driver: json-file
+#     deploy:
+#       replicas: 0
+#       placement:
+#         constraints:
+#          - node.labels.Arch!=i686
+# networks:
+#   internal:
+#     driver: overlay
+#   traefik-public:
+#     external: true
+version: '3.4'
 services:
   terraform:
-    image: hashicorp/terraform:latest
-    command:
-     - plan
+    image: debian:trixie-slim
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    # volumes:
+    #  - /nfs-nas-swarm/data/XYZ:/XXXXXXXXXXX
     networks:
-     - internal
      - traefik-public
-    logging:
-      driver: json-file
+    # logging:
+    #   driver: json-file
     deploy:
-      replicas: 0
+    #   labels:
+    #     traefik.http.routers.XYZ-http.rule: Host(`XYZ.vnerd.nl`)
+    #     traefik.http.routers.XYZ-https.rule: Host(`XYZ.vnerd.nl`)
+		
+    #     traefik.http.routers.XYZ-http.entrypoints: http
+    #     traefik.http.routers.XYZ-https.entrypoints: https
+
+    #     traefik.http.routers.XYZ-http.middlewares: https-redirect
+		#     traefik.http.routers.XYZ-https.middlewares: authelia
+		
+    #     traefik.http.services.XYZ.loadbalancer.server.port: '80'
+    #     traefik.enable: 'true'
+    #     traefik.constraint-label: traefik-public
+    #     traefik.docker.network: traefik-public
+
+    #     traefik.http.routers.XYZ-https.tls: 'true'
+    #     traefik.http.routers.XYZ-https.tls.certresolver: le
       placement:
-        constraints:
+       constraints:
          - node.labels.Arch!=i686
+         - node.labels.worker==enabled
 networks:
-  internal:
-    driver: overlay
   traefik-public:
     external: true
