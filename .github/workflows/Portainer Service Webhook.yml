@@ -70,20 +70,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo ${{github.event.head_commit.message}}
-  adminer:
-    if: github.event.head_commit.message == 'adminer'
+  deploy:
     runs-on: ubuntu-latest
+    if: github.event.head_commit.message == 'adminer'
     steps:
       - uses: newarifrh/portainer-service-webhook@v1
         with:
           webhook_url: ${{env.adminer}}
-  ai:
     if: github.event.head_commit.message == 'ai'
-    runs-on: ubuntu-latest
     steps:
       - uses: newarifrh/portainer-service-webhook@v1
         with:
-          webhook_url: ${{env.ai}}
+          webhook_url: ${{env.ai}}        
+  # adminer:
+  #   if: github.event.head_commit.message == 'adminer'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.adminer}}
+  # ai:
+  #   if: github.event.head_commit.message == 'ai'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.ai}}
   # ansible:
   #   if: github.event.head_commit.message == 'ansible'
   #   runs-on: ubuntu-latest
