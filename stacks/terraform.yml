@@ -23,8 +23,8 @@ version: '3.4'
 services:
   terraform:
     image: debian:trixie-slim
-    # command: /run/entrypoint.sh
-    entrypoint: /home/tf01/install.sh
+    command: /home/tf01/install.sh
+    # entrypoint: /home/tf01/install.sh
     environment:
       PGID: '911'
       PUID: '911'
