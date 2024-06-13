@@ -8,7 +8,7 @@ services:
       PGID: '0'
       PUID: '0'
       TZ: Europe/Amsterdam
-      dev-addr: docs.vnerd.nl
+      # dev-addr: docs.vnerd.nl
     volumes:
      - /nfs-nas-swarm/config/docs:/docs
      - /nfs-nas-swarm/github-repos/portainer-compose:/docs/github-repos/portainer-compose
