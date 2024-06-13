@@ -70,27 +70,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo ${{github.event.head_commit.message}}
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run switch-case-action
-        uses: thaitype/actions-switch-case@v1
-        id: switch-case
-        with:
-          default: "its the default"
-          conditionals-with-values: |
-            ${{ 'test' == 'not-test' }} => shouldnt be this one
-            ${{ github.event.head_commit.message == 'ai' }} => ${{ github.event.head_commit.message}}
-      - name: Echo the result
-        run: echo ${{ steps.switch-case.outputs.match }}
-      - name: Echo the webhook
-        # with:
-        #   ${{stack}} == echo ${{ steps.switch-case.outputs.match }}
-        run: echo ${{env.ai}}
-      - name: redeploy stack
-        uses: newarifrh/portainer-service-webhook@v1
-        with:
-          webhook_url: ${{env.stack_name}}
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Run switch-case-action
+  #       uses: thaitype/actions-switch-case@v1
+  #       id: switch-case
+  #       with:
+  #         default: "its the default"
+  #         conditionals-with-values: |
+  #           ${{ 'test' == 'not-test' }} => shouldnt be this one
+  #           ${{ github.event.head_commit.message == 'ai' }} => ${{ github.event.head_commit.message}}
+  #     - name: Echo the result
+  #       run: echo ${{ steps.switch-case.outputs.match }}
+  #     - name: Echo the webhook
+  #       # with:
+  #       #   ${{stack}} == echo ${{ steps.switch-case.outputs.match }}
+  #       run: echo ${{env.ai}}
+  #     - name: redeploy stack
+  #       uses: newarifrh/portainer-service-webhook@v1
+  #       with:
+  #         webhook_url: ${{env.stack_name}}
   adminer:
     if: github.event.head_commit.message == 'adminer'
     runs-on: ubuntu-latest
@@ -98,20 +98,20 @@ jobs:
       - uses: newarifrh/portainer-service-webhook@v1
         with:
           webhook_url: ${{env.adminer}}
-  # ai:
-  #   if: github.event.head_commit.message == 'ai'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: newarifrh/portainer-service-webhook@v1
-  #       with:
-  #         webhook_url: ${{env.ai}}
-  # ansible:
-  #   if: github.event.head_commit.message == 'ansible'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: newarifrh/portainer-service-webhook@v1
-  #       with:
-  #         webhook_url: ${{env.ansible}}
+  ai:
+    if: github.event.head_commit.message == 'ai'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.ai}}
+  ansible:
+    if: github.event.head_commit.message == 'ansible'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.ansible}}
   api:
     if: github.event.head_commit.message == 'api'
     runs-on: ubuntu-latest
