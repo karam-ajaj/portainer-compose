@@ -30,7 +30,6 @@ services:
         traefik.docker.network: traefik-public
         traefik.enable: 'true'
         traefik.http.routers.ai-http.entrypoints: http
-        traefik.http.routers.ai-https.middlewares: ai-sablier@file
         sablier.enable: 'true'
         sablier.group: ai
         traefik.docker.lbswarm: 'true'

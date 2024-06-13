@@ -1,31 +1,32 @@
 version: '3.3'
 services:
-  wizarr:
-    image: ghcr.io/wizarrrr/wizarr:latest
+  grafana:
+    image: grafana/grafana-enterprise:latest
     environment:
       PGID: '911'
       PUID: '911'
+      SIGNUPS_ALLOWED: 'false'
       TZ: Europe/Amsterdam
     volumes:
-     - /nfs-nas-swarm/data/wizarr:/data/database
+     - /nfs-nas-swarm/data/grafana:/var/lib/grafana
     networks:
-     - traefik-public
      - internal
+     - traefik-public
     logging:
       driver: json-file
     deploy:
       labels:
-        traefik.http.routers.wizarr-https.entrypoints: https
-        traefik.http.routers.wizarr-https.rule: Host(`wizarr.vnerd.nl`)
-        traefik.http.routers.wizarr-http.entrypoints: http
-        traefik.http.routers.wizarr-https.tls.certresolver: le
-        traefik.http.routers.wizarr-http.middlewares: https-redirect
+        traefik.http.routers.grafana-https.entrypoints: https
+        traefik.http.routers.grafana-https.rule: Host(`grafana.vnerd.nl`)
+        traefik.http.routers.grafana-http.middlewares: https-redirect
+        traefik.http.routers.grafana-https.tls: 'true'
+        traefik.http.routers.grafana-https.tls.certresolver: le
+        traefik.http.services.grafana.loadbalancer.server.port: '3000'
+        traefik.http.routers.grafana-http.rule: Host(`grafana.vnerd.nl`)
         traefik.constraint-label: traefik-public
-        traefik.http.routers.wizarr-http.rule: Host(`wizarr.vnerd.nl`)
-        traefik.http.services.wizarr.loadbalancer.server.port: '5690'
-        traefik.http.routers.wizarr-https.tls: 'true'
         traefik.docker.network: traefik-public
         traefik.enable: 'true'
+        traefik.http.routers.grafana-http.entrypoints: http
       placement:
         constraints:
          - node.labels.Arch!=i686
