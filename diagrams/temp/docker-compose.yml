@@ -1,31 +1,29 @@
 version: '3.3'
 services:
-  kavita:
-    image: lscr.io/linuxserver/kavita:latest
+  wizarr:
+    image: ghcr.io/wizarrrr/wizarr:latest
     environment:
       PGID: '911'
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /nfs-nas-swarm/config/kavita:/config
-     - /media_pool/media:/books
-     - /nfs-nas-swarm/data/Books:/Books
+     - /nfs-nas-swarm/data/wizarr:/data/database
     networks:
-     - internal
      - traefik-public
+     - internal
     logging:
       driver: json-file
     deploy:
       labels:
-        traefik.http.routers.kavita-http.entrypoints: http
-        traefik.http.routers.kavita-http.middlewares: https-redirect
-        traefik.http.routers.kavita-https.entrypoints: https
-        traefik.http.routers.kavita-http.rule: Host(`books.vnerd.nl`)
-        traefik.http.routers.kavita-https.rule: Host(`books.vnerd.nl`)
-        traefik.http.routers.kavita-https.tls: 'true'
-        traefik.http.routers.kavita-https.tls.certresolver: le
+        traefik.http.routers.wizarr-https.entrypoints: https
+        traefik.http.routers.wizarr-https.rule: Host(`wizarr.vnerd.nl`)
+        traefik.http.routers.wizarr-http.entrypoints: http
+        traefik.http.routers.wizarr-https.tls.certresolver: le
+        traefik.http.routers.wizarr-http.middlewares: https-redirect
         traefik.constraint-label: traefik-public
-        traefik.http.services.kavita.loadbalancer.server.port: '5000'
+        traefik.http.routers.wizarr-http.rule: Host(`wizarr.vnerd.nl`)
+        traefik.http.services.wizarr.loadbalancer.server.port: '5690'
+        traefik.http.routers.wizarr-https.tls: 'true'
         traefik.docker.network: traefik-public
         traefik.enable: 'true'
       placement:
