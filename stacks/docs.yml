@@ -12,6 +12,7 @@ services:
     volumes:
      - /nfs-nas-swarm/config/docs:/docs
      - /nfs-nas-swarm/github-repos/portainer-compose:/docs/github-repos/portainer-compose
+     - /nfs-nas-swarm/config:/configs
     networks:
      - internal
      - traefik-public
