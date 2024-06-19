@@ -27,6 +27,7 @@ services:
          - node.labels.worker==enabled
   terraform-agent01:
     image: hashicorp/tfc-agent:latest
+    command: /run/configure.sh
     environment:
       TFC_AGENT_TOKEN: $AGENT_TOKEN
       TFC_AGENT_NAME: 'agent01'
