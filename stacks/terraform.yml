@@ -13,7 +13,7 @@ services:
     ## a volume to store the initial script to install terraform
      - /nfs-nas-swarm/config/terraform/install.sh:/run/install.sh
      ## a volume to store local terraform files
-     - /nfs-nas-swarm/config/terraform/tf01:/home/terraform-agent
+     - /nfs-nas-swarm/config/terraform/vnerd-agents-pool:/home/vnerd-agents-pool
      ## test files
      - /nfs-nas-swarm/config/terraform/tf01:/home/tf01
     networks:
