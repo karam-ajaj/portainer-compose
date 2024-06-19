@@ -25,6 +25,26 @@ services:
        constraints:
          - node.labels.Arch!=i686
          - node.labels.worker==enabled
+  terraform-agent01:
+    image: hashicorp/tfc-agent:latest
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    volumes:
+    ## a volume to store the script to configure terraform agent
+     - /nfs-nas-swarm/config/terraform/configure.sh:/run/configure.sh
+     ## a volume to store local terraform files
+     - /nfs-nas-swarm/config/terraform/vnerd-agents-pool:/home/vnerd-agents-pool
+    networks:
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      placement:
+       constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
 networks:
   traefik-public:
     external: true
