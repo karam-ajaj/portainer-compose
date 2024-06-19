@@ -28,8 +28,8 @@ services:
   terraform-agent01:
     image: hashicorp/tfc-agent:latest
     environment:
-      TFC_AGENT_TOKEN
-      TFC_AGENT_NAME
+      TFC_AGENT_TOKEN: $AGENT_TOKEN
+      TFC_AGENT_NAME: 'agent01'
       PGID: '911'
       PUID: '911'
       TZ: Europe/Amsterdam
