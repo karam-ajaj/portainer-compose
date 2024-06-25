@@ -42,38 +42,38 @@ services:
      # - --metrics.influxdb2.addEntryPointsLabels=true
      # - --metrics.influxdb2.addrouterslabels=true
      # - --metrics.influxdb2.addServicesLabels=true
-     # enable opentelemetry metrics
-     - --metrics.otlp=true
-     - --metrics.otlp.addEntryPointsLabels=true
-     - --metrics.otlp.addRoutersLabels=true
-     - --metrics.otlp.addServicesLabels=true
-     - --metrics.otlp.http=true
-     - --metrics.otlp.http.endpoint=http://10.10.10.200:4318/v1/metrics
-     - --metrics.otlp.grpc=true
-     - --metrics.otlp.grpc.endpoint=10.10.10.200:4317
+    #  # enable opentelemetry metrics
+    #  - --metrics.otlp=true
+    #  - --metrics.otlp.addEntryPointsLabels=true
+    #  - --metrics.otlp.addRoutersLabels=true
+    #  - --metrics.otlp.addServicesLabels=true
+    #  - --metrics.otlp.http=true
+    #  - --metrics.otlp.http.endpoint=http://10.10.10.200:4318/v1/metrics
+    #  - --metrics.otlp.grpc=true
+    #  - --metrics.otlp.grpc.endpoint=10.10.10.200:4317
      ## sablier plgin
      - --experimental.plugins.sablier.modulename=github.com/acouvreur/sablier
      - --experimental.plugins.sablier.version=v1.5.0
      ## staticresponse plugin
      - --experimental.plugins.staticresponse.modulename=github.com/jdel/staticresponse
      - --experimental.plugins.staticresponse.version=v0.0.1
-     ## enable OpenTelemetry 
-     - --tracing.otlp=true
-     - --tracing.otlp.http=true
-     - --tracing.otlp.http.endpoint=http://10.10.10.200:4318/v1/traces
-     - --tracing.otlp.http.tls.insecureSkipVerify=true
-     - --tracing.otlp.grpc=true
-     - --tracing.otlp.grpc.endpoint=10.10.10.200:4317
-     - --tracing.otlp.grpc.insecure=true
-     ## enable tracing
-     - --tracing=true
-     # - --tracing.addinternals
-     - --tracing.serviceName=traefik_traefikv3
-     - --tracing.sampleRate=0.1
-     # - --tracing.globalAttributes.attr1=foo
-     # - --tracing.globalAttributes.attr2=bar
-     # - --tracing.capturedRequestHeaders[0]=X-CustomHeader
-     # - --tracing.capturedResponseHeaders[0]=X-CustomHeader
+    #  ## enable OpenTelemetry 
+    #  - --tracing.otlp=true
+    #  - --tracing.otlp.http=true
+    #  - --tracing.otlp.http.endpoint=http://10.10.10.200:4318/v1/traces
+    #  - --tracing.otlp.http.tls.insecureSkipVerify=true
+    #  - --tracing.otlp.grpc=true
+    #  - --tracing.otlp.grpc.endpoint=10.10.10.200:4317
+    #  - --tracing.otlp.grpc.insecure=true
+    #  ## enable tracing
+    #  - --tracing=true
+    #  # - --tracing.addinternals
+    #  - --tracing.serviceName=traefik_traefikv3
+    #  - --tracing.sampleRate=0.1
+    #  # - --tracing.globalAttributes.attr1=foo
+    #  # - --tracing.globalAttributes.attr2=bar
+    #  # - --tracing.capturedRequestHeaders[0]=X-CustomHeader
+    #  # - --tracing.capturedResponseHeaders[0]=X-CustomHeader
     environment:
       PGID: '911'
       PUID: '911'
