@@ -34,3 +34,4 @@ services:
 networks:
   traefik-public:
     external: true
+    
