@@ -29,7 +29,7 @@ services:
         traefik.http.routers.obsidian-https.middlewares: authelia
       placement:
        constraints:
-         - node.labels.Arch==i686
+         - node.labels.Arch!=i686
          - node.labels.worker==enabled
 networks:
   traefik-public:
