@@ -8,7 +8,7 @@ services:
       TZ: Europe/Amsterdam
     volumes:
      - /nfs-nas-swarm/config/obsidian:/config
-	 - /var/run/docker.sock:/var/run/docker.sock
+	   - /var/run/docker.sock:/var/run/docker.sock
     networks:
      - traefik-public
     logging:
@@ -26,7 +26,7 @@ services:
         traefik.enable: 'true'
         traefik.http.routers.obsidian-https.entrypoints: https
         traefik.http.routers.obsidian-http.entrypoints: http
-		traefik.http.routers.obsidian-https.middlewares: authelia
+		    traefik.http.routers.obsidian-https.middlewares: authelia
       placement:
        constraints:
          - node.labels.Arch==i686
