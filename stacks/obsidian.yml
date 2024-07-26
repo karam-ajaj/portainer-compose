@@ -1,0 +1,36 @@
+version: '3.3'
+services:
+  obsidian:
+    image: lscr.io/linuxserver/obsidian:latest
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    volumes:
+     - /nfs-nas-swarm/config/obsidian:/config
+	 - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.obsidian-http.middlewares: https-redirect
+        traefik.http.routers.obsidian-http.rule: Host(`obsidian.vnerd.nl`)
+        traefik.http.services.obsidian.loadbalancer.server.port: '3000'
+        traefik.http.routers.obsidian-https.tls: 'true'
+        traefik.http.routers.obsidian-https.tls.certresolver: le
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.obsidian-https.rule: Host(`obsidian.vnerd.nl`)
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.obsidian-https.entrypoints: https
+        traefik.http.routers.obsidian-http.entrypoints: http
+		traefik.http.routers.obsidian-https.middlewares: authelia
+      placement:
+       constraints:
+         - node.labels.Arch==i686
+         - node.labels.worker==enabled
+networks:
+  traefik-public:
+    external: true
