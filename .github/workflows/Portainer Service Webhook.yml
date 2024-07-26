@@ -35,6 +35,7 @@ env:
   minio: https://portainer.vnerd.nl/api/stacks/webhooks/bc5f94c6-1cbf-4528-b9e9-56fe382058b8
   nginx: https://portainer.vnerd.nl/api/stacks/webhooks/a125a7db-9235-4b84-a4c3-4b26ec7cf360
   notifiarr: https://portainer.vnerd.nl/api/stacks/webhooks/7dcda516-d254-4101-bfc0-349bbd526686
+  obsidian: https://portainer.vnerd.nl/api/stacks/webhooks/9408e2ab-4f64-43ef-84c4-8b2a72993d3b
   opentelemetry: https://portainer.vnerd.nl/api/stacks/webhooks/d7f8d8bf-3e5d-417a-b4d3-98fc0085cfbb
   pdf: https://portainer.vnerd.nl/api/stacks/webhooks/f1301806-65b1-4e6c-b549-035d54ca79f1
   pgadmin: https://portainer.vnerd.nl/api/stacks/webhooks/838f0999-ead7-4271-b128-c6d26e0168fc
@@ -315,6 +316,13 @@ jobs:
       - uses: newarifrh/portainer-service-webhook@v1
         with:
           webhook_url: ${{env.notifiarr}}
+  obsidian:
+    if: github.event.head_commit.message == 'obsidian'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.obsidian}}
   opentelemetry:
     if: github.event.head_commit.message == 'opentelemetry'
     runs-on: ubuntu-latest
