@@ -9,6 +9,7 @@ services:
     volumes:
      - /nfs-nas-swarm/config/filebrowser/.filebrowser.json:/.filebrowser.json
      - /nfs-nas-swarm:/srv
+     - /media_pool:/tnas/media_pool
      - /nfs-nas-swarm/config/filebrowser/filebrowser.db:/database/filebrowser.db
     networks:
      - traefik-public
