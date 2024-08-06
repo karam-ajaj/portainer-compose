@@ -174,7 +174,7 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     ports:
-      3050:8086
+      - 3050:8086
     volumes:
      - /etc/localtime:/etc/localtime:ro
      - /media_services_config/lidarr:/config
