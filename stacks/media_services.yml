@@ -173,6 +173,8 @@ services:
       PGID: '911'
       PUID: '911'
       TZ: Europe/Amsterdam
+    ports:
+      3050:8086
     volumes:
      - /etc/localtime:/etc/localtime:ro
      - /media_services_config/lidarr:/config
@@ -191,7 +193,7 @@ services:
         traefik.http.routers.lidarr-https.tls: 'true'
         traefik.constraint-label: traefik-public
         traefik.http.routers.lidarr-https.rule: Host(`lidarr.vnerd.nl`)
-        traefik.http.services.lidarr.loadbalancer.server.port: '8686'
+        traefik.http.services.lidarr.loadbalancer.server.port: '3050'
         traefik.http.routers.lidarr-https.entrypoints: https
         traefik.http.routers.lidarr-http.middlewares: https-redirect
         traefik.docker.network: traefik-public
