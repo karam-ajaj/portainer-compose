@@ -1,0 +1,49 @@
+version: '3.3'
+services:
+  db-luai:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: luaidb
+      MYSQL_PASSWORD: 9wVC&uoH5Y@dcL
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+      MYSQL_USER: luaiuser
+    volumes:
+     - /data/wordpress-luai/db:/var/lib/mysql
+     - /etc/localtime:/etc/localtime:ro
+    networks:
+     - internal
+    logging:
+      driver: json-file
+  wordpress-luai:
+    image: wordpress:laluai
+    environment:
+      WORDPRESS_DB_HOST: db-luai
+      WORDPRESS_DB_NAME: luaidb
+      WORDPRESS_DB_PASSWORD: 9wVC&uoH5Y@dcL
+      WORDPRESS_DB_USER: luaiuser
+    volumes:
+     - /data/wordpress-luai/wordpress:/var/www/html
+     - /etc/localtime:/etc/localtime:ro
+    networks:
+     - traefik-public
+     - internal
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.wordpress-luai-http.entrypoints: http
+        traefik.http.services.wordpress-luai.loadbalancer.server.port: '80'
+        traefik.http.routers.wordpress-luai-http.middlewares: https-redirect
+        traefik.http.routers.wordpress-luai-https.entrypoints: https
+        traefik.http.routers.wordpress-luai-http.rule: Host(`luai.vnerd.nl`)
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.wordpress-luai-https.rule: Host(`luai.vnerd.nl`)
+        traefik.http.routers.wordpress-luai-https.tls.certresolver: le
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.wordpress-luai-https.tls: 'true'
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true

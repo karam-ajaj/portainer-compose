@@ -30,6 +30,7 @@ env:
   kavita: https://portainer.vnerd.nl/api/stacks/webhooks/d016d35c-b7a4-4133-be04-23e8f3d8f5c4
   librenms: https://portainer.vnerd.nl/api/stacks/webhooks/884d5401-4342-4f12-b75e-75717efa5739
   logspout: https://portainer.vnerd.nl/api/stacks/webhooks/f2ce74dc-4928-4d91-9591-ce781f8e5f04
+  luai-wordpress: https://portainer.vnerd.nl/api/stacks/webhooks/db5698fe-3a32-4f09-ab06-05121ebeb857
   mealie: https://portainer.vnerd.nl/api/stacks/webhooks/6012e58c-d77b-4a75-a06d-53c8e0136afc
   media_services: https://portainer.vnerd.nl/api/stacks/webhooks/6ee97e03-1a3d-4d81-b9cf-3de91318e05b
   minio: https://portainer.vnerd.nl/api/stacks/webhooks/bc5f94c6-1cbf-4528-b9e9-56fe382058b8
@@ -281,6 +282,13 @@ jobs:
       - uses: newarifrh/portainer-service-webhook@v1
         with:
           webhook_url: ${{env.logspout}}
+  luai-wordpress:
+    if: github.event.head_commit.message == 'luai-wordpress'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.luai-wordpress}}
   mealie:
     if: github.event.head_commit.message == 'mealie'
     runs-on: ubuntu-latest
