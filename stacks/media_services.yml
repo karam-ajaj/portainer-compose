@@ -405,8 +405,10 @@ services:
       PGID: '911'
       PUID: '911'
       TZ: Europe/Amsterdam
+      TORRENTING_PORT: '6881'
     ports:
      - 6881:6881
+     - 6881:6881/udp
     volumes:
      - /media_services_config/qbittorrent:/config
      - /media_pool/torrents:/data/torrents
