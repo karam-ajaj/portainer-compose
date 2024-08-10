@@ -15,7 +15,7 @@ services:
     logging:
       driver: json-file
   wordpress-luai:
-    image: wordpress:laluai
+    image: wordpress:latest
     environment:
       WORDPRESS_DB_HOST: db-luai
       WORDPRESS_DB_NAME: luaidb
