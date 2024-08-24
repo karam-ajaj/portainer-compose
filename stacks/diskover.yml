@@ -2,7 +2,8 @@ version: '3.3'
 services:
   diskover:
     image: lscr.io/linuxserver/diskover:latest
-    # command:
+    command:
+      - diskover python3 /app/diskover/diskover.py -f -i diskover-nfs-nas-swarm /nfs-nas-swarm
     #  - /bin/bash
     #  - -c
     #  - crontab /config/crontabs/abc
