@@ -2,8 +2,8 @@ version: '3.3'
 services:
   diskover:
     image: lscr.io/linuxserver/diskover:latest
+    user: root
     command:
-      - --user root
       # - python3 /app/diskover/diskover.py -f -i diskover-nfs-nas-swarm /nfs-nas-swarm
     #  - /bin/bash
     #  - -c
