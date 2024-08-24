@@ -2,10 +2,10 @@ version: '3.3'
 services:
   diskover:
     image: lscr.io/linuxserver/diskover:latest
-    command:
-     - /bin/bash
-     - -c
-     - crontab /config/crontabs/abc
+    # command:
+    #  - /bin/bash
+    #  - -c
+    #  - crontab /config/crontabs/abc
     environment:
       ES_HOST: elasticsearch
       ES_PASS: changeme
