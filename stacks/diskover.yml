@@ -2,7 +2,6 @@ version: '3.3'
 services:
   diskover:
     image: lscr.io/linuxserver/diskover:latest
-    user: root
     command:
       # - python3 /app/diskover/diskover.py -f -i diskover-nfs-nas-swarm /nfs-nas-swarm
     #  - /bin/bash
@@ -13,8 +12,8 @@ services:
       ES_PASS: changeme
       ES_PORT: '9200'
       ES_USER: elastic
-      PGID: '1000'
-      PUID: '1000'
+      PGID: '0'
+      PUID: '0'
     volumes:
      - /nfs-nas-swarm/config/diskover/diskover:/config
      - /nfs-nas-swarm:/nfs-nas-swarm
