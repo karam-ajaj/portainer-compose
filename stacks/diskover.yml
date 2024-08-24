@@ -3,7 +3,9 @@ services:
   diskover:
     image: lscr.io/linuxserver/diskover:latest
     command:
-     - --crontab /config/crontabs/abc
+     - sh
+     - -c
+     - crontab /config/crontabs/abc
     environment:
       ES_HOST: elasticsearch
       ES_PASS: changeme
