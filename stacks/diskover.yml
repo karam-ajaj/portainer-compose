@@ -3,7 +3,7 @@ services:
   diskover:
     image: lscr.io/linuxserver/diskover:latest
     command:
-     - sh
+     - /bin/bash
      - -c
      - crontab /config/crontabs/abc
     environment:
