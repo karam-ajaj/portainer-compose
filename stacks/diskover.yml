@@ -2,18 +2,18 @@ version: '3.3'
 services:
   diskover:
     image: lscr.io/linuxserver/diskover:latest
-    command:
+    # command:
       # - python3 /app/diskover/diskover.py -f -i diskover-nfs-nas-swarm /nfs-nas-swarm
     #  - /bin/bash
     #  - -c
-      - crontab /config/crontabs/abc
+      # - crontab /config/crontabs/abc
     environment:
       ES_HOST: elasticsearch
       ES_PASS: changeme
       ES_PORT: '9200'
       ES_USER: elastic
-      PGID: '0'
-      PUID: '0'
+      PGID: '1000'
+      PUID: '1000'
     volumes:
      - /nfs-nas-swarm/config/diskover/diskover:/config
      - /nfs-nas-swarm:/nfs-nas-swarm
