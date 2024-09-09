@@ -74,6 +74,10 @@ services:
     #  # - --tracing.globalAttributes.attr2=bar
     #  # - --tracing.capturedRequestHeaders[0]=X-CustomHeader
     #  # - --tracing.capturedResponseHeaders[0]=X-CustomHeader
+    ## add kubernetes provider on pxvm01
+    - --providers.kubernetesingress=true
+    - --providers.kubernetesingress.endpoint=http://10.10.10.101:8080
+    # - --providers.kubernetesingress.token=mytoken
     environment:
       PGID: '911'
       PUID: '911'
