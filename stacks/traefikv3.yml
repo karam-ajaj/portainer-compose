@@ -77,7 +77,7 @@ services:
      ## add kubernetes provider on pxvm01
      - --providers.kubernetesingress=true
      - --providers.kubernetesingress.endpoint=http://10.10.10.101:8080
-    # - --providers.kubernetesingress.token=mytoken
+     - --providers.kubernetesingress.token="eyJhbGciOiJSUzI1NiIsImtpZCI6InFYRWQyUm9jMDJyZXpydGU3d0ZIWGFRc1ZkRmtNVk9OeU00QkNnYVUyLWcifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjoxNzI1ODgwOTEwLCJpYXQiOjE3MjU4NzczMTAsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsInNlcnZpY2VhY2NvdW50Ijp7Im5hbWUiOiJrOHNhZG1pbiIsInVpZCI6IjBmYTljZGQ2LTU4MTktNDJhMy1hN2FlLWYwNWYzMzNhMDQyNCJ9fSwibmJmIjoxNzI1ODc3MzEwLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06azhzYWRtaW4ifQ.pJO5ZSYn3G3xUJgpn4n3-V_fpJmrFRgG2xFuc5Tssm3_RLNgU2ExlJliPi9qa2BxE8TRcD-19RZpl9-E6rBvJnaojth0ALBQRfmXfMBivoYDpsg4Xg48VpzPpx7fiYU685_1VInxcgu4o9XjHhPDFJIT7v8pJN9MuBotn4o5B9zKK9FaF_CC-1LbOK_22p29jx76ZLnveRPtEDmg72Cru-si1bwzRgpPd-3yLymuo6IwgZXEGJHn_YVEyV5oQzBg6x0xkbs2DIBMy5KpG-MegOEoNlztTZJ4RIU-SHX_cjpH0mJBJpOdHaCvHk-pWjclcXqrb0CHS2Ok0hKtHfsVgw"
     environment:
       PGID: '911'
       PUID: '911'
