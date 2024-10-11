@@ -77,3 +77,4 @@ networks:
     driver: overlay
   traefik-public:
     external: true
+    
