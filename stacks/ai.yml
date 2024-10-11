@@ -71,7 +71,7 @@ services:
         traefik.docker.lbswarm: 'true'
       placement:
         constraints:
-         - node.labels.Arch==i686
+         - node.labels.Arch!=i686
 networks:
   internal:
     driver: overlay
