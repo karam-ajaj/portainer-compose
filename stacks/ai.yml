@@ -9,8 +9,8 @@ services:
     ports:
      - 32168:32168
     volumes:
-     - /nfs-nas-swarm/config/ai1/settings:/etc/codeproject/ai
-     - /nfs-nas-swarm/config/ai1/modules:/app/modules
+     - /nfs-nas-swarm/config/ai/settings:/etc/codeproject/ai
+     - /nfs-nas-swarm/config/ai/modules:/app/modules
     networks:
      - internal
      - traefik-public
@@ -45,7 +45,7 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /nfs-nas-swarm/config/aiui1:/usr/share/nginx/html
+     - /nfs-nas-swarm/config/aiui:/usr/share/nginx/html
     networks:
      - internal
      - traefik-public
