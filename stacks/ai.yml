@@ -10,7 +10,8 @@ services:
      - 32168:32168
     volumes:
      - /nfs-nas-swarm/config/ai/settings:/etc/codeproject/ai
-     - /nfs-nas-swarm/config/ai/modules:/app/modules
+    #  - /nfs-nas-swarm/config/ai/modules:/app/modules
+     - /nfs-nas-swarm/config/ai/app:/app
     networks:
      - internal
      - traefik-public
