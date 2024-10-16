@@ -24,7 +24,7 @@ services:
     deploy:
       # replicas: 0
       labels:
-        sablier.enable: 'true'
+        # sablier.enable: 'true'
         traefik.http.routers.coder-https.entrypoints: https
         traefik.http.routers.coder-https.middlewares: authelia #, coder-sablier@file
         traefik.http.routers.coder-http.middlewares: https-redirect
