@@ -38,6 +38,9 @@ services:
         traefik.enable: 'true'
         traefik.http.routers.winxp1-http.entrypoints: http
         traefik.http.routers.winxp1-https.middlewares: authelia
+        sablier.enable: 'true'
+        sablier.group: windows
+        traefik.docker.lbswarm: 'true'
         traefik.http.routers.winxp1-https.middlewares: windows_winxp1-sablier@file
       placement:
         constraints:
@@ -81,6 +84,9 @@ services:
         traefik.enable: 'true'
         traefik.http.routers.winxp2-http.entrypoints: http
         traefik.http.routers.winxp2-https.middlewares: authelia
+        sablier.enable: 'true'
+        sablier.group: windows
+        traefik.docker.lbswarm: 'true'
         traefik.http.routers.winxp2-https.middlewares: windows_winxp2-sablier@file
       placement:
         constraints:
