@@ -5,6 +5,7 @@ name: Portainer Service Webhook
 env:
   adminer : https://portainer.vnerd.nl/api/stacks/webhooks/d68343fa-2adf-4f16-9869-0ec8c02063f8
   ai: https://portainer.vnerd.nl/api/stacks/webhooks/01895035-0c48-467b-8790-0e925abedf20
+  aicp: https://portainer.vnerd.nl/api/stacks/webhooks/
   # ansible: 
   api: https://portainer.vnerd.nl/api/stacks/webhooks/fefa4ec1-2939-4177-a4f4-60e240bfedd2
   audiobookshelf: https://portainer.vnerd.nl/api/stacks/webhooks/f521b84f-5363-4c77-a77e-ccfeebd722d3
@@ -107,6 +108,13 @@ jobs:
       - uses: newarifrh/portainer-service-webhook@v1
         with:
           webhook_url: ${{env.ai}}
+  aicp:
+    if: github.event.head_commit.message == 'aicp'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.aicp}}
   ansible:
     if: github.event.head_commit.message == 'ansible'
     runs-on: ubuntu-latest

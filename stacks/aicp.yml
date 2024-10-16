@@ -1,0 +1,45 @@
+version: '3.3'
+services:
+  aicp:
+    image: codeproject/ai-server:latest
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+    ports:
+     - 32168:32168
+    volumes:
+     - /nfs-nas-swarm/config/aicp/settings:/etc/codeproject/aicp
+     - /nfs-nas-swarm/config/aicp/modules:/app/modules
+    networks:
+     - internal
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 0
+      labels:
+        traefik.http.routers.aicp-http.rule: Host(`aicp.vnerd.nl`)
+        traefik.http.routers.aicp-https.tls.certresolver: le
+        traefik.http.routers.aicp-https.tls: 'true'
+        traefik.http.services.aicp.loadbalancer.server.port: '32168'
+        traefik.http.routers.aicp-http.middlewares: https-redirect
+        traefik.http.routers.aicp-https.entrypoints: https
+        traefik.http.routers.aicp-https.rule: Host(`aicp.vnerd.nl`)
+        traefik.constraicpnt-label: traefik-public
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.aicp-http.entrypoints: http
+        sablier.enable: 'true'
+        sablier.group: aicp
+        traefik.docker.lbswarm: 'true'
+        traefik.http.routers.aicp-https.middlewares: aicp_aicp-sablier@file
+      placement:
+        constraicpnts:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true
