@@ -16,10 +16,10 @@ services:
      - traefik-public
     logging:
       driver: json-file
-    ports:
-      # - 8006:8006
-      - 3390:3389/tcp
-      - 3390:3389/udp
+    # ports:
+    #   # - 8006:8006
+    #   - 3390:3389/tcp
+    #   - 3390:3389/udp
     cap_add:
       - NET_ADMIN
     # devices:
@@ -47,53 +47,53 @@ services:
         constraints:
          - node.labels.Arch!=i686
          - node.labels.worker==enabled
-  winxp2:
-    image: dockurr/windows
-    environment:
-      PGID: '911'
-      PUID: '911'
-      TZ: Europe/Amsterdam
-      VERSION: "winxp"
-      # DEVICE_NAME: '/dev/kvm'
-      # KVM: "N"
-    volumes:
-    - /nfs-nas-swarm/data/windows/winxp2:/storage
-    networks:
-     - internal
-     - traefik-public
-    logging:
-      driver: json-file
-    # ports:
-    #   - 8006:8006
-    #   - 3390:3389/tcp
-    #   - 3390:3389/udp
-    cap_add:
-      - NET_ADMIN
-    # devices:
-    #   - /dev/kvm:/dev/kvm
-    deploy:
-      replicas: 0
-      labels:
-        traefik.http.routers.winxp2-http.rule: Host(`winxp2.vnerd.nl`)
-        traefik.http.routers.winxp2-https.tls.certresolver: le
-        traefik.http.routers.winxp2-https.tls: 'true'
-        traefik.http.services.winxp2.loadbalancer.server.port: '8006'
-        traefik.http.routers.winxp2-http.middlewares: https-redirect
-        traefik.http.routers.winxp2-https.entrypoints: https
-        traefik.http.routers.winxp2-https.rule: Host(`winxp2.vnerd.nl`)
-        traefik.constraint-label: traefik-public
-        traefik.docker.network: traefik-public
-        traefik.enable: 'true'
-        traefik.http.routers.winxp2-http.entrypoints: http
-        traefik.http.routers.winxp2-https.middlewares: authelia
-        sablier.enable: 'true'
-        sablier.group: windows
-        traefik.docker.lbswarm: 'true'
-        traefik.http.routers.winxp2-https.middlewares: windows_winxp2-sablier@file
-      placement:
-        constraints:
-         - node.labels.Arch!=i686
-         - node.labels.worker==enabled
+  # winxp2:
+  #   image: dockurr/windows
+  #   environment:
+  #     PGID: '911'
+  #     PUID: '911'
+  #     TZ: Europe/Amsterdam
+  #     VERSION: "winxp"
+  #     # DEVICE_NAME: '/dev/kvm'
+  #     # KVM: "N"
+  #   volumes:
+  #   - /nfs-nas-swarm/data/windows/winxp2:/storage
+  #   networks:
+  #    - internal
+  #    - traefik-public
+  #   logging:
+  #     driver: json-file
+  #   # ports:
+  #   #   - 8006:8006
+  #   #   - 3390:3389/tcp
+  #   #   - 3390:3389/udp
+  #   cap_add:
+  #     - NET_ADMIN
+  #   # devices:
+  #   #   - /dev/kvm:/dev/kvm
+  #   deploy:
+  #     replicas: 0
+  #     labels:
+  #       traefik.http.routers.winxp2-http.rule: Host(`winxp2.vnerd.nl`)
+  #       traefik.http.routers.winxp2-https.tls.certresolver: le
+  #       traefik.http.routers.winxp2-https.tls: 'true'
+  #       traefik.http.services.winxp2.loadbalancer.server.port: '8006'
+  #       traefik.http.routers.winxp2-http.middlewares: https-redirect
+  #       traefik.http.routers.winxp2-https.entrypoints: https
+  #       traefik.http.routers.winxp2-https.rule: Host(`winxp2.vnerd.nl`)
+  #       traefik.constraint-label: traefik-public
+  #       traefik.docker.network: traefik-public
+  #       traefik.enable: 'true'
+  #       traefik.http.routers.winxp2-http.entrypoints: http
+  #       traefik.http.routers.winxp2-https.middlewares: authelia
+  #       sablier.enable: 'true'
+  #       sablier.group: windows
+  #       traefik.docker.lbswarm: 'true'
+  #       traefik.http.routers.winxp2-https.middlewares: windows_winxp2-sablier@file
+  #     placement:
+  #       constraints:
+  #        - node.labels.Arch!=i686
+  #        - node.labels.worker==enabled
   macos1:
     image: dockurr/macos
     environment:
@@ -110,10 +110,10 @@ services:
      - traefik-public
     logging:
       driver: json-file
-    ports:
-      # - 8006:8006
-      - 5900:5900/tcp
-      - 5900:5900/udp
+    # ports:
+    #   # - 8006:8006
+    #   - 5900:5900/tcp
+    #   - 5900:5900/udp
     cap_add:
       - NET_ADMIN
     # devices:
