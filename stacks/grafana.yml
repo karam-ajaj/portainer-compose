@@ -3,8 +3,8 @@ services:
   grafana:
     image: grafana/grafana-enterprise:latest
     environment:
-      PGID: '911'
-      PUID: '911'
+      PGID: '0'
+      PUID: '0'
       SIGNUPS_ALLOWED: 'false'
       TZ: Europe/Amsterdam
     volumes:
