@@ -26,6 +26,7 @@ env:
   grafana: https://portainer.vnerd.nl/api/stacks/webhooks/dfef142d-e53b-43c3-ba99-6b321c7dd497
   grav: https://portainer.vnerd.nl/api/stacks/webhooks/12de37a7-b66e-42f9-a5fc-659093fe5e6a
   homarr: https://portainer.vnerd.nl/api/stacks/webhooks/d8366d37-7257-445e-b424-f39e016285bc
+  homeassistant: https://portainer.vnerd.nl/api/stacks/webhooks/04119a21-9fbd-4ea5-bca1-fe60e5ca37c5
   influxdb: https://portainer.vnerd.nl/api/stacks/webhooks/6216037c-e1e6-440b-8a9e-387cc9697966
   jellyfin:
   kavita: https://portainer.vnerd.nl/api/stacks/webhooks/d016d35c-b7a4-4133-be04-23e8f3d8f5c4
@@ -255,6 +256,13 @@ jobs:
       - uses: newarifrh/portainer-service-webhook@v1
         with:
           webhook_url: ${{env.homarr}}
+  homeassistant:
+    if: github.event.head_commit.message == 'homeassistant'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: newarifrh/portainer-service-webhook@v1
+        with:
+          webhook_url: ${{env.homeassistant}}
   influxdb:
     if: github.event.head_commit.message == 'influxdb'
     runs-on: ubuntu-latest
