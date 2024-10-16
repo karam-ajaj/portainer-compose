@@ -35,7 +35,7 @@ services:
         traefik.docker.lbswarm: 'true'
         traefik.http.routers.aicp-https.middlewares: aicp_aicp-sablier@file
       placement:
-        constraicpnts:
+        constraints:
          - node.labels.Arch!=i686
          - node.labels.worker==enabled
 networks:
