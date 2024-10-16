@@ -1,10 +1,10 @@
 version: '3.3'
 services:
   grafana:
-    image: grafana/grafana-enterprise:latest
+    image: grafana/grafana:main
     environment:
-      PGID: '0'
-      PUID: '0'
+      PGID: '911'
+      PUID: '911'
       SIGNUPS_ALLOWED: 'false'
       TZ: Europe/Amsterdam
     volumes:
