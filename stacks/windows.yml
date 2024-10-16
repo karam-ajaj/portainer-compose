@@ -24,6 +24,7 @@ services:
     # devices:
       # - /dev/kvm:/dev/kvm
     deploy:
+      replicas: 0
       labels:
         traefik.http.routers.winxp1-http.rule: Host(`winxp1.vnerd.nl`)
         traefik.http.routers.winxp1-https.tls.certresolver: le
@@ -37,6 +38,7 @@ services:
         traefik.enable: 'true'
         traefik.http.routers.winxp1-http.entrypoints: http
         traefik.http.routers.winxp1-https.middlewares: authelia
+        traefik.http.routers.winxp1-https.middlewares: windows_winxp1-sablier@file
       placement:
         constraints:
          - node.labels.Arch!=i686
@@ -79,6 +81,7 @@ services:
         traefik.enable: 'true'
         traefik.http.routers.winxp2-http.entrypoints: http
         traefik.http.routers.winxp2-https.middlewares: authelia
+        traefik.http.routers.winxp2-https.middlewares: windows_winxp2-sablier@file
       placement:
         constraints:
          - node.labels.Arch!=i686
