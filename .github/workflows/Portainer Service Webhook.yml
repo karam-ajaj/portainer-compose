@@ -492,7 +492,7 @@ jobs:
     steps:
       - uses: newarifrh/portainer-service-webhook@v1
         with:
-          webhook_url: ${{env.windows}
+          webhook_url: ${{env.windows}}
   wizarr:
     if: github.event.head_commit.message == 'wizarr'
     runs-on: ubuntu-latest
