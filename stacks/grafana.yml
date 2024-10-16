@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   grafana:
-    image: grafana/grafana:main
+    image: grafana/grafana-enterprise:latest
     environment:
       PGID: '911'
       PUID: '911'
