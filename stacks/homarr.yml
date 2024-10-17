@@ -8,7 +8,7 @@ services:
       TZ: Europe/Amsterdam
     volumes:
      - /nfs-nas-swarm/config/homarr/configs:/app/data/configs
-    #  - /nfs-nas-swarm/data/homarr/data:/data
+     - /nfs-nas-swarm/data/homarr/data:/data
      - /nfs-nas-swarm/data/homarr/icons:/app/public/icons
     networks:
      - traefik-public
