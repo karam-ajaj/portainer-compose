@@ -566,7 +566,7 @@ services:
          - node.labels.Arch!=i686
          - node.labels.worker==enabled
   sabnzbd:
-    image: lscr.io/linuxserver/sabnzbd:latest
+    image: lscr.io/linuxserver/sabnzbd:4.3.3
     environment:
       PGID: '911'
       PUID: '911'
