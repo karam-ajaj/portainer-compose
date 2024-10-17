@@ -33,4 +33,4 @@ services:
          - node.labels.worker==enabled
 networks:
   traefik-public:
-    external: true
+    external: truehomarr
