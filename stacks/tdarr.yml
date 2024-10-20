@@ -46,8 +46,8 @@ services:
       placement:
         constraints:
          - node.labels.Arch!=i686
-         - node.hostname==pxsw01.karam.lab
-  tdarr-node-pxsw01:
+         - node.hostname==px01
+  tdarr-node-px01:
     image: ghcr.io/haveagitgat/tdarr_node:2.17.01
     environment:
       NVIDIA_DRIVER_CAPABILITIES: all
@@ -74,8 +74,8 @@ services:
       placement:
         constraints:
          - node.labels.Arch!=i686
-         - node.hostname==pxsw01.karam.lab
-  tdarr-node-pxsw02:
+         - node.hostname==px01
+  tdarr-node-px02:
     image: ghcr.io/haveagitgat/tdarr_node:2.17.01
     environment:
       NVIDIA_DRIVER_CAPABILITIES: all
@@ -102,8 +102,8 @@ services:
       placement:
         constraints:
          - node.labels.Arch!=i686
-         - node.hostname==pxsw02.karam.lab
-  tdarr-node-pxsw03:
+         - node.hostname==px02
+  tdarr-node-px03:
     image: ghcr.io/haveagitgat/tdarr_node:2.17.01
     environment:
       NVIDIA_DRIVER_CAPABILITIES: all
@@ -130,35 +130,7 @@ services:
       placement:
         constraints:
          - node.labels.Arch!=i686
-         - node.hostname==pxsw03.karam.lab
-  tdarr-node-pxsw04:
-    image: ghcr.io/haveagitgat/tdarr_node:2.17.01
-    environment:
-      NVIDIA_DRIVER_CAPABILITIES: all
-      NVIDIA_VISIBLE_DEVICES: all
-      PGID: '911'
-      PUID: '911'
-      TZ: Europe/Amsterdam
-      UMASK_SET: '002'
-      ffmpegVersion: '6'
-      inContainer: 'true'
-      nodeName: node-pxsw04
-      serverIP: tdarr
-      serverPort: '8266'
-    volumes:
-     - /nfs-nas-swarm/config/tdarr/configs:/app/configs
-     - /nfs-nas-swarm/config/tdarr/logs:/app/logs
-     - /media_pool/media:/data
-     - /media_pool/tdarr/transcode_cache:/tmp
-    networks:
-     - internal
-    logging:
-      driver: json-file
-    deploy:
-      placement:
-        constraints:
-         - node.labels.Arch!=i686
-         - node.hostname==pxsw04.karam.lab
+         - node.hostname==px03
 networks:
   internal:
     driver: overlay

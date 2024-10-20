@@ -1,0 +1,58 @@
+version: '3.3'
+services:
+  db-eindhovenpalestine:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: eindhovenpalestinedb
+      MYSQL_PASSWORD: 9wVC&uoH5Y@dcL
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+      MYSQL_USER: eindhovenpalestineuser
+    volumes:
+    #  - /nfs-nas-swarm/data/wordpress-eindhovenpalestine/db:/var/lib/mysql
+     - /etc/localtime:/etc/localtime:ro
+    deploy:
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+    networks:
+     - internal
+    logging:
+      driver: json-file
+  wordpress-eindhovenpalestine:
+    image: wordpress:latest
+    environment:
+      WORDPRESS_DB_HOST: db-eindhovenpalestine
+      WORDPRESS_DB_NAME: eindhovenpalestinedb
+      WORDPRESS_DB_PASSWORD: 9wVC&uoH5Y@dcL
+      WORDPRESS_DB_USER: eindhovenpalestineuser
+    volumes:
+    #  - /nfs-nas-swarm/data/wordpress-eindhovenpalestine/wordpress:/var/www/html
+     - /etc/localtime:/etc/localtime:ro
+    networks:
+     - traefik-public
+     - internal
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.wordpress-eindhovenpalestine-http.entrypoints: http
+        traefik.http.services.wordpress-eindhovenpalestine.loadbalancer.server.port: '80'
+        traefik.http.routers.wordpress-eindhovenpalestine-http.middlewares: https-redirect
+        traefik.http.routers.wordpress-eindhovenpalestine-https.entrypoints: https
+        traefik.http.routers.wordpress-eindhovenpalestine-http.rule: Host(`eindhovenstudents4palestine.nl`)
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.wordpress-eindhovenpalestine-https.rule: Host(`eindhovenstudents4palestine.nl`)
+        traefik.http.routers.wordpress-eindhovenpalestine-https.tls.certresolver: le
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.wordpress-eindhovenpalestine-https.tls: 'true'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true

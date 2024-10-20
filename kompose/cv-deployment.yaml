@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f cv.yml
+    kompose.version: 1.34.0 (cbf2835db)
+  labels:
+    io.kompose.service: cv
+    traefik.constraint-label: traefik-public
+    traefik.docker.network: traefik-public
+    traefik.enable: "true"
+    traefik.http.routers.cv-http.entrypoints: http
+    traefik.http.routers.cv-http.middlewares: https-redirect
+    traefik.http.routers.cv-http.rule: "cv.vnerd.nl"
+    traefik.http.routers.cv-https.entrypoints: https
+    traefik.http.routers.cv-https.rule: "cv.vnerd.nl"
+    traefik.http.routers.cv-https.tls: "true"
+    traefik.http.routers.cv-https.tls.certresolver: le
+    traefik.http.services.cv.loadbalancer.server.port: "80"
+  name: cv
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: cv
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f cv.yml
+        kompose.version: 1.34.0 (cbf2835db)
+      labels:
+        io.kompose.service: cv
+    spec:
+      containers:
+        - env:
+            - name: PGID
+              value: "911"
+            - name: PUID
+              value: "911"
+            - name: TZ
+              value: Europe/Amsterdam
+          image: nginx:latest
+          name: cv
+          volumeMounts:
+            - mountPath: /usr/share/nginx/html
+              name: cv-claim0
+      restartPolicy: Always
+      volumes:
+        - name: cv-claim0
+          persistentVolumeClaim:
+            claimName: cv-claim0
