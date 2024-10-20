@@ -31,7 +31,7 @@ services:
       placement:
         constraints:
          - node.hostname==pc01.karam.lab
-  dashpxsw01:
+  dashpx01:
     image: mauricenino/dashdot:5.7.0
     environment:
       DASHDOT_ALWAYS_SHOW_PERCENTAGES: 'true'
@@ -49,10 +49,10 @@ services:
     deploy:
       labels:
         traefik.http.routers.dashpxsw01-https.entrypoints: https
-        traefik.http.routers.dashpxsw01-http.rule: Host(`dashpxsw01.vnerd.nl`)
+        traefik.http.routers.dashpxsw01-http.rule: Host(`dashpx01.vnerd.nl`)
         traefik.http.routers.dashpxsw01-http.entrypoints: http
         traefik.http.services.dashpxsw01.loadbalancer.server.port: '3001'
-        traefik.http.routers.dashpxsw01-https.rule: Host(`dashpxsw01.vnerd.nl`)
+        traefik.http.routers.dashpxsw01-https.rule: Host(`dashpx01.vnerd.nl`)
         traefik.http.routers.dashpxsw01-http.middlewares: https-redirect
         traefik.constraint-label: traefik-public
         traefik.http.routers.dashpxsw01-https.tls: 'true'
@@ -61,8 +61,8 @@ services:
         traefik.enable: 'true'
       placement:
         constraints:
-         - node.hostname==pxsw01.karam.lab
-  dashpxsw02:
+         - node.hostname==px01
+  dashpx02:
     image: mauricenino/dashdot:5.7.0
     environment:
       DASHDOT_ALWAYS_SHOW_PERCENTAGES: 'true'
@@ -80,20 +80,20 @@ services:
     deploy:
       labels:
         traefik.http.routers.dashpxsw02-http.middlewares: https-redirect
-        traefik.http.routers.dashpxsw02-http.rule: Host(`dashpxsw02.vnerd.nl`)
+        traefik.http.routers.dashpxsw02-http.rule: Host(`dashpx02.vnerd.nl`)
         traefik.http.services.dashpxsw02.loadbalancer.server.port: '3001'
         traefik.http.routers.dashpxsw02-https.entrypoints: https
         traefik.http.routers.dashpxsw02-https.tls.certresolver: le
         traefik.constraint-label: traefik-public
         traefik.http.routers.dashpxsw02-http.entrypoints: http
         traefik.http.routers.dashpxsw02-https.tls: 'true'
-        traefik.http.routers.dashpxsw02-https.rule: Host(`dashpxsw02.vnerd.nl`)
+        traefik.http.routers.dashpxsw02-https.rule: Host(`dashpx02.vnerd.nl`)
         traefik.docker.network: traefik-public
         traefik.enable: 'true'
       placement:
         constraints:
-         - node.hostname==pxsw02.karam.lab
-  dashpxsw03:
+         - node.hostname==px02
+  dashpx03:
     image: mauricenino/dashdot:5.7.0
     environment:
       DASHDOT_ALWAYS_SHOW_PERCENTAGES: 'true'
@@ -116,14 +116,14 @@ services:
         traefik.http.routers.dashpxsw03-https.entrypoints: https
         traefik.constraint-label: traefik-public
         traefik.http.routers.dashpxsw03-http.middlewares: https-redirect
-        traefik.http.routers.dashpxsw03-https.rule: Host(`dashpxsw03.vnerd.nl`)
+        traefik.http.routers.dashpxsw03-https.rule: Host(`dashpx03.vnerd.nl`)
         traefik.http.services.dashpxsw03.loadbalancer.server.port: '3001'
         traefik.docker.network: traefik-public
         traefik.enable: 'true'
-        traefik.http.routers.dashpxsw03-http.rule: Host(`dashpxsw03.vnerd.nl`)
+        traefik.http.routers.dashpxsw03-http.rule: Host(`dashpx03.vnerd.nl`)
       placement:
         constraints:
-         - node.hostname==pxsw03.karam.lab
+         - node.hostname==px03
   dashpxsw04:
     image: mauricenino/dashdot:5.7.0
     environment:
