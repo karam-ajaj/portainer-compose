@@ -78,6 +78,7 @@ services:
     logging:
       driver: json-file
     deploy:
+      replicas: 0
       labels:
         traefik.http.routers.dashpxsw02-http.middlewares: https-redirect
         traefik.http.routers.dashpxsw02-http.rule: Host(`dashpx02.vnerd.nl`)
@@ -109,6 +110,7 @@ services:
     logging:
       driver: json-file
     deploy:
+      replicas: 0
       labels:
         traefik.http.routers.dashpxsw03-https.tls.certresolver: le
         traefik.http.routers.dashpxsw03-http.entrypoints: http
@@ -140,6 +142,7 @@ services:
     logging:
       driver: json-file
     deploy:
+      replicas: 0
       labels:
         traefik.http.services.dashpxsw04.loadbalancer.server.port: '3001'
         traefik.http.routers.dashpxsw04-https.rule: Host(`dashpxsw04.vnerd.nl`)

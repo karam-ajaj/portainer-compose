@@ -21,6 +21,7 @@ services:
     logging:
       driver: json-file
     deploy:
+      replicas: 0
       placement:
        constraints:
          - node.labels.Arch!=i686
@@ -44,6 +45,7 @@ services:
     logging:
       driver: json-file
     deploy:
+      replicas: 0
       placement:
        constraints:
          - node.labels.Arch!=i686

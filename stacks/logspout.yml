@@ -9,5 +9,6 @@ services:
     deploy:
       mode: global
       placement:
+      replicas: 0
         constraints:
          - node.labels.Arch != i686

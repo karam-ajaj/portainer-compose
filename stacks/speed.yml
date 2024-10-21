@@ -8,7 +8,7 @@ services:
       TZ: Europe/Amsterdam
       APP_NAME: vnerd lab speed
       PUBLIC_DASHBOARD: 'true'
-      # APP_KEY: 'base64:WZYRWk71u6KfDipWjejYxEAm8mRHsNTt1rVGSPedzFU='
+      APP_KEY: 'base64:HCDUWR1jl1O+BEEdzcKZk8cYv4O9WTrLi5VAvrPY9jA='
     volumes:
      - /nfs-nas-swarm/config/speed:/config
     networks:
