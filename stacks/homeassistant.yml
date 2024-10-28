@@ -5,7 +5,7 @@ services:
     volumes:
      - /nfs-nas-swarm/config/homeassistant:/config
      - /nfs-nas-swarm:/nas-parent-dir
-     - /var/run/docker.sock:/var/run/docker.sock
+     - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
      - internal
      - traefik-public

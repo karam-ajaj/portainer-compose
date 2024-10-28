@@ -8,7 +8,7 @@ services:
       TZ: Europe/Amsterdam
     volumes:
      - /nfs-nas-swarm/config/obsidian:/config
-     - /var/run/docker.sock:/var/run/docker.sock
+     - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
      - traefik-public
     logging:

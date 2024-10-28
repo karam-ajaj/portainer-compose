@@ -5,7 +5,7 @@ services:
     command:
      - syslog+tcp://10.10.10.200:2255
     volumes:
-     - /var/run/docker.sock:/var/run/docker.sock
+     - /var/run/docker.sock:/var/run/docker.sock:ro
     deploy:
       mode: global
       placement:

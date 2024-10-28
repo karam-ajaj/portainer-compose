@@ -7,7 +7,7 @@ services:
       TZ: Europe/Amsterdam
     volumes:
      - /nfs-nas-swarm/config/dockwatch/pc01:/config
-     - /var/run/docker.sock:/var/run/docker.sock
+     - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
      - internal
      - traefik-public

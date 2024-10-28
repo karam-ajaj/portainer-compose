@@ -11,7 +11,7 @@ services:
     ports:
      - 1000:1000
     volumes:
-     - /var/run/docker.sock:/var/run/docker.sock
+     - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
      - internal
      - traefik-public
