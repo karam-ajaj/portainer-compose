@@ -1,0 +1,97 @@
+version: '3.4'
+services:
+  allinone:
+    pid: host
+    image: neuvector/allinone:latest
+    container_name: allinone
+    # privileged: true
+    cap_add:
+      - SYS_ADMIN
+      - NET_ADMIN
+      - SYS_PTRACE
+      - IPC_LOCK
+    security_opt:
+      - apparmor:unconfined
+      - seccomp:unconfined
+      - label:disable
+    environment:
+      CLUSTER_JOIN_ADDR: "127.0.0.1"
+      NV_PLATFORM_INFO=platform: "Docker"
+      # CLUSTER_ADVERTISED_ADDR: "10.10.10.111"
+    ports:
+    #  - 18300:18300
+    #  - 18301:18301
+    #  - 18400:18400
+    #  - 18401:18401
+    #  - 18301:18301/udp
+     - 8443:8443
+    #  - 10443:10443 # API
+    #  - 8500:8500
+    volumes:
+     - /lib/modules:/lib/modules:ro
+     - /var/neuvector:/var/neuvector
+     - /var/run/docker.sock:/var/run/docker.sock:ro
+     - /proc:/host/proc:ro
+     - /sys/fs/cgroup:/host/cgroup:ro
+    networks:
+     - internal
+    #  - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      # labels:
+      #   # traefik.http.routers.neuvector-http.rule: Host(`neuvector.vnerd.nl`)
+      #   traefik.http.routers.neuvector-https.rule: Host(`neuvector.vnerd.nl`)
+
+      #   # traefik.http.routers.neuvector-http.entrypoints: http
+      #   traefik.http.routers.neuvector-https.entrypoints: https
+
+      #   traefik.http.routers.neuvector-http.middlewares: https-redirect
+      #   # traefik.http.routers.XYZ-https.middlewares: authelia
+
+      #   traefik.http.services.neuvector.loadbalancer.server.port: '8443'
+
+      #   traefik.enable: 'true'
+      #   traefik.constraint-label: traefik-public
+      #   traefik.docker.network: traefik-public
+
+      #   traefik.http.routers.neuvector-https.tls: 'true'
+      #   traefik.http.routers.neuvector-https.tls.certresolver: le
+      placement:
+       constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+         - node.hostname==px01
+  # enforcer:
+  #   pid: host
+  #   image: neuvector/enforcer:latest
+  #   container_name: enforcer
+  #   privileged: true
+  #   environment:
+  #     CLUSTER_JOIN_ADDR: "10.10.10.111"
+  #     NV_PLATFORM_INFO=platform: "Docker"
+  #   ports:
+  #    - 18301:18301
+  #    - 18401:18401
+  #    - 18301:18301/udp
+  #   volumes:
+  #    - /lib/modules:/lib/modules:ro
+  #    - /var/run/docker.sock:/var/run/docker.sock:ro
+  #    - /proc:/host/proc:ro
+  #    - /sys/fs/cgroup/:/host/cgroup/:ro
+  #   networks:
+  #    - internal
+  #   #  - traefik-public
+  #   logging:
+  #     driver: json-file
+  #   deploy:
+  #     placement:
+  #      constraints:
+  #        - node.labels.Arch!=i686
+  #        - node.labels.worker==enabled
+  #        - node.hostname==px02
+networks:
+  internal:
+    driver: overlay
+  # traefik-public:
+  #   external: true

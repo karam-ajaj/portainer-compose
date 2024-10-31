@@ -1,0 +1,129 @@
+version: '3.8'
+services:
+  manager:
+    pid: host
+    image: neuvector/manager:5.3.0
+    container_name: manager
+    # privileged: true
+    # cap_add:
+    #   - SYS_ADMIN
+    #   - NET_ADMIN
+    #   - SYS_PTRACE
+    #   - IPC_LOCK
+    # security_opt:
+    #   - apparmor:unconfined
+    #   - seccomp:unconfined
+    #   - label:disable
+    environment:
+      # - CLUSTER_JOIN_ADDR=10.10.10.111
+      - NV_PLATFORM_INFO=platform=Docker
+      # CLUSTER_JOIN_ADDR: "10.10.10.111"
+      # NV_PLATFORM_INFO=platform: "Docker"
+      # DOCKER_API_VERSION: '1.35'
+      - CTRL_SERVER_IP=10.10.10.111
+      # CLUSTER_ADVERTISED_ADDR: "10.10.10.111"
+    ports:
+     - 8443:8443
+    volumes:
+     - /lib/modules:/lib/modules:ro
+     - /var/neuvector:/var/neuvector
+     - /var/run/docker.sock:/var/run/docker.sock:ro
+     - /proc:/host/proc:ro
+     - /sys/fs/cgroup:/host/cgroup:ro
+    networks:
+     - internal
+    logging:
+      driver: json-file
+    deploy:
+      placement:
+       constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+         - node.hostname==px01
+  controller:
+    pid: host
+    image: neuvector/controller:5.3.0
+    container_name: allinone
+    # privileged: true
+    cap_add:
+        - SYS_ADMIN
+        - NET_ADMIN
+        - SYS_PTRACE
+        - IPC_LOCK
+    security_opt:
+        - apparmor=unconfined
+        - seccomp=unconfined
+        - label=disable
+    # cap_add:
+    #   - SYS_ADMIN
+    #   - NET_ADMIN
+    #   - SYS_PTRACE
+    #   - IPC_LOCK
+    # security_opt:
+    #   - apparmor:unconfined
+    #   - seccomp:unconfined
+    #   - label:disable
+    environment:
+      - CLUSTER_JOIN_ADDR=10.10.10.111
+      - NV_PLATFORM_INFO=platform=Docker
+      # CLUSTER_JOIN_ADDR: "10.10.10.111"
+      # NV_PLATFORM_INFO=platform: "Docker"
+      # CTRL_SERVER_IP: "10.10.10.111"
+      # CLUSTER_ADVERTISED_ADDR: "10.10.10.111"
+    ports:
+    #  - 18300:18300
+    #  - 18301:18301
+    #  - 18400:18400
+    #  - 18401:18401
+    #  - 18301:18301/udp
+    #  - 8443:8443
+     - 10443:10443 # API
+    #  - 8500:8500
+    volumes:
+     - /lib/modules:/lib/modules:ro
+     - /var/neuvector:/var/neuvector
+     - /var/run/docker.sock:/var/run/docker.sock:ro
+     - /proc:/host/proc:ro
+     - /sys/fs/cgroup:/host/cgroup:ro
+    networks:
+     - internal
+    logging:
+      driver: json-file
+    deploy:
+      placement:
+       constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+         - node.hostname==px01
+  # enforcer:
+  # enforcer:
+  #   pid: host
+  #   image: neuvector/enforcer:latest
+  #   container_name: enforcer
+  #   privileged: true
+  #   environment:
+  #     CLUSTER_JOIN_ADDR: "10.10.10.111"
+  #     NV_PLATFORM_INFO=platform: "Docker"
+  #   ports:
+  #    - 18301:18301
+  #    - 18401:18401
+  #    - 18301:18301/udp
+  #   volumes:
+  #    - /lib/modules:/lib/modules:ro
+  #    - /var/run/docker.sock:/var/run/docker.sock:ro
+  #    - /proc:/host/proc:ro
+  #    - /sys/fs/cgroup/:/host/cgroup/:ro
+  #   networks:
+  #    - internal
+  #   #  - traefik-public
+  #   logging:
+  #     driver: json-file
+  #   deploy:
+  #     placement:
+  #      constraints:
+  #        - node.labels.Arch!=i686
+  #        - node.labels.worker==enabled
+  #        - node.hostname==px02
+networks:
+  internal:
+    driver: overlay
