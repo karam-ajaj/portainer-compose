@@ -15,19 +15,20 @@ services:
     #   - seccomp:unconfined
     #   - label:disable
     environment:
-      # - CLUSTER_JOIN_ADDR=10.10.10.111
+      - CLUSTER_JOIN_ADDR=10.10.10.111
       - NV_PLATFORM_INFO=platform=Docker
       # CLUSTER_JOIN_ADDR: "10.10.10.111"
       # NV_PLATFORM_INFO=platform: "Docker"
       # DOCKER_API_VERSION: '1.35'
       - CTRL_SERVER_IP=10.10.10.111
-      # CLUSTER_ADVERTISED_ADDR: "10.10.10.111"
+      # - CTRL_SERVER_IP=neuvector_controller
+      - CLUSTER_ADVERTISED_ADDR=10.10.10.111
     ports:
      - 8443:8443
     volumes:
      - /lib/modules:/lib/modules:ro
      - /var/neuvector:/var/neuvector
-     - /var/run/docker.sock:/var/run/docker.sock:ro
+     - /var/run/docker.sock:/var/run/docker.sock
      - /proc:/host/proc:ro
      - /sys/fs/cgroup:/host/cgroup:ro
     networks:
@@ -42,18 +43,18 @@ services:
          - node.hostname==px01
   controller:
     pid: host
-    image: neuvector/controller:5.3.0
+    image: neuvector/controller:2.5.0
     container_name: allinone
     # privileged: true
-    cap_add:
-        - SYS_ADMIN
-        - NET_ADMIN
-        - SYS_PTRACE
-        - IPC_LOCK
-    security_opt:
-        - apparmor=unconfined
-        - seccomp=unconfined
-        - label=disable
+    # cap_add:
+    #     - SYS_ADMIN
+    #     - NET_ADMIN
+    #     - SYS_PTRACE
+    #     - IPC_LOCK
+    # security_opt:
+    #     - apparmor=unconfined
+    #     - seccomp=unconfined
+    #     - label=disable
     # cap_add:
     #   - SYS_ADMIN
     #   - NET_ADMIN
@@ -63,13 +64,18 @@ services:
     #   - apparmor:unconfined
     #   - seccomp:unconfined
     #   - label:disable
-    environment:
-      - CLUSTER_JOIN_ADDR=10.10.10.111
-      - NV_PLATFORM_INFO=platform=Docker
+    # environment:
+    #   - PGID=0
+    #   - PUID=0
+    #   - DOCKER_API_VERSION=1.24
+    #   - CLUSTER_JOIN_ADDR=neuvector_controller
+    #   - NV_PLATFORM_INFO=platform=Docker
       # CLUSTER_JOIN_ADDR: "10.10.10.111"
       # NV_PLATFORM_INFO=platform: "Docker"
       # CTRL_SERVER_IP: "10.10.10.111"
       # CLUSTER_ADVERTISED_ADDR: "10.10.10.111"
+    environment:
+      DOCKER_API_VERSION: '1.35'
     ports:
     #  - 18300:18300
     #  - 18301:18301
