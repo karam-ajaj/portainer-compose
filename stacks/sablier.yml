@@ -1,7 +1,8 @@
 version: '3.3'
 services:
   sablier:
-    image: ghcr.io/acouvreur/sablier:latest
+    # image: ghcr.io/acouvreur/sablier:latest
+    image: sablierapp/sablier:1.8.1
     command:
      - start
      - --provider.name=swarm
@@ -11,7 +12,7 @@ services:
     ports:
      - 1000:1000
     volumes:
-     - /var/run/docker.sock:/var/run/docker.sock:ro
+     - /var/run/docker.sock:/var/run/docker.sock
     networks:
      - internal
      - traefik-public
