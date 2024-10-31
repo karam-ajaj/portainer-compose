@@ -1,7 +1,7 @@
 version: '3.4'
 services:
   traefik:
-    image: traefik:v3.0.0
+    image: traefik:v3.2.0
     command:
      - --providers.docker
      - --providers.docker.exposedbydefault=false
@@ -52,8 +52,8 @@ services:
     #  - --metrics.otlp.grpc=true
     #  - --metrics.otlp.grpc.endpoint=10.10.10.200:4317
      ## sablier plgin
-     - --experimental.plugins.sablier.modulename=github.com/acouvreur/sablier
-     - --experimental.plugins.sablier.version=v1.5.0
+     - --experimental.plugins.sablier.modulename=github.com/sablierapp/sablier
+     - --experimental.plugins.sablier.version=v1.8.1
      ## staticresponse plugin
      - --experimental.plugins.staticresponse.modulename=github.com/jdel/staticresponse
      - --experimental.plugins.staticresponse.version=v0.0.1
@@ -75,9 +75,11 @@ services:
     #  # - --tracing.capturedRequestHeaders[0]=X-CustomHeader
     #  # - --tracing.capturedResponseHeaders[0]=X-CustomHeader
      ## add kubernetes provider on pxvm01
-     - --providers.kubernetesingress=true
-     - --providers.kubernetesingress.endpoint=http://10.10.10.101:8080
+    #  - --providers.kubernetesingress=true
+    #  - --providers.kubernetesingress.endpoint=http://10.10.10.101:8080
     #  - --providers.kubernetesingress.token=my-token
+    ## add fastProxy experemental on version v3.2.0
+     - --experimental.fastProxy
     environment:
       PGID: '911'
       PUID: '911'
@@ -140,7 +142,7 @@ services:
         constraints:
          - node.role==manager
          - node.labels.worker==enabled
-         - node.hostname==px01
+#         - node.hostname==px01
   # opentelemetry:
   #   image: otel/opentelemetry-collector:latest
   #   environment:
