@@ -10,7 +10,6 @@ services:
       DNSMASQ_USER: root
       PIHOLE_UID: '0'
       TZ: Europe/Amsterdam
-      # WEBPASSWORD: tMENcE6itBZrsKrATTrF
       hostname: pihole
       # PGID: '999'
       # PUID: '911'
