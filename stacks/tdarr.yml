@@ -46,8 +46,8 @@ services:
       placement:
         constraints:
          - node.labels.Arch!=i686
-         - node.hostname==px01
-  tdarr-node-px01:
+         - node.hostname==pxsw01.karam.lab
+  tdarr-node-pxsw01:
     image: ghcr.io/haveagitgat/tdarr_node:2.17.01
     environment:
       NVIDIA_DRIVER_CAPABILITIES: all
@@ -74,8 +74,8 @@ services:
       placement:
         constraints:
          - node.labels.Arch!=i686
-         - node.hostname==px01
-  tdarr-node-px02:
+         - node.hostname==pxsw01.karam.lab
+  tdarr-node-pxsw02:
     image: ghcr.io/haveagitgat/tdarr_node:2.17.01
     environment:
       NVIDIA_DRIVER_CAPABILITIES: all
@@ -102,8 +102,8 @@ services:
       placement:
         constraints:
          - node.labels.Arch!=i686
-         - node.hostname==px02
-  tdarr-node-px03:
+         - node.hostname==pxsw02.karam.lab
+  tdarr-node-pxsw03:
     image: ghcr.io/haveagitgat/tdarr_node:2.17.01
     environment:
       NVIDIA_DRIVER_CAPABILITIES: all
@@ -130,7 +130,7 @@ services:
       placement:
         constraints:
          - node.labels.Arch!=i686
-         - node.hostname==px03
+         - node.hostname==pxsw03.karam.lab
 networks:
   internal:
     driver: overlay

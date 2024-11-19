@@ -3,7 +3,7 @@ services:
   homeassistant:
     image: homeassistant/home-assistant:stable
     volumes:
-     - /nfs-nas-swarm/config/homeassistant:/config
+     - /nfs-nas-swarm/config/ha:/config
      - /nfs-nas-swarm:/nas-parent-dir
      - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:

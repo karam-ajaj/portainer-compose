@@ -1,0 +1,139 @@
+version: '3.8'
+services:
+  pihole:
+    # image: pihole/pihole:latest
+    ## used the image in this repo
+    ## https://github.com/jacklul/pihole-updatelists
+    image: jacklul/pihole:latest
+    container_name: pihole
+    environment:
+      DNSMASQ_USER: root
+      PIHOLE_UID: '0'
+      TZ: Europe/Amsterdam
+      # WEBPASSWORD: tMENcE6itBZrsKrATTrF
+      hostname: pihole
+      # PGID: '999'
+      # PUID: '911'
+      ADLISTS_URL: 'https://v.firebog.net/hosts/lists.php?type=tick'
+      # WHITELIST_URL: 'https://raw.githubusercontent.com/anudeepND/whitelist/master/domains/whitelist.txt'
+      #REGEX_WHITELIST_URL: ''
+      #BLACKLIST_URL: ''
+      REGEX_BLACKLIST_URL: 'https://raw.githubusercontent.com/mmotti/pihole-regex/master/regex.list'
+    ports:
+    #  - "53:53"
+    #  - "53:53/udp"
+    #  - "67:67/udp"
+     - 8090:80
+     - target: 53
+      #  host_ip: 10.10.10.27
+       published: 5353
+       protocol: tcp
+       mode: host
+     - target: 53
+      #  host_ip: 10.10.10.27
+       published: 5353
+       protocol: udp
+       mode: host
+     - target: 67
+      #  host_ip: 10.10.10.27
+       published: 6767
+       protocol: udp
+       mode: host
+     - target: 67
+      #  host_ip: 10.10.10.27
+       published: 6767
+       protocol: tcp
+       mode: host
+    volumes:
+     - /nfs-nas-swarm/config/pihole/etc/dnsmasq.d:/etc/dnsmasq.d
+     - /nfs-nas-swarm/config/pihole/etc/pihole:/etc/pihole
+    networks:
+    #  - pihole-macnet
+     - traefik-public
+     - outside
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.pihole-https.tls.certresolver: le
+        # traefik.http.routers.pihole-http.middlewares: https-redirect, pihole-redirectregex@swarm
+        # traefik.http.routers.pihole-http.middlewares: piholehttp-redirectregex@swarm
+        # traefik.http.routers.pihole-http.middlewares: piholehttp-redirectregex@swarm
+        # traefik.http.routers.pihole-http.middlewares: pihole-prefix
+        # traefik.http.routers.pihole-https.middlewares: pihole-redirectregex@swarm
+        traefik.http.routers.pihole-https.rule: Host(`pihole.vnerd.nl`) && (PathPrefix(`/admin`))
+        traefik.http.routers.pihole-https.entrypoints: https
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.pihole-https.tls: 'true'
+        traefik.http.services.pihole.loadbalancer.server.port: '80'
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.pihole-http.entrypoints: http
+        traefik.http.routers.pihole-http.rule: Host(`pihole.vnerd.nl`) && (PathPrefix(`/admin`))
+        # traefik.http.routers.pihole-https.middlewares: authelia
+        # traefik.http.middlewares.piholehttp-redirectregex.redirectregex.regex: ^http://pihole.vnerd.nl
+        # traefik.http.middlewares.piholehttp-redirectregex.redirectregex.replacement: http://pihole.vnerd.nl/admin
+        traefik.http.middlewares.pihole-prefix.addprefix.prefix: /admin
+        traefik.http.routers.pihole-http.middlewares: pihole-prefix, https-redirect
+        traefik.http.routers.pihole-https.middlewares: authelia
+        # traefik.http.middlewares.piholehttps-redirectregex.redirectregex.regex: ^https://pihole.vnerd.nl/(.*)
+        # traefik.http.middlewares.piholehttps-redirectregex.redirectregex.replacement: https://pihole.vnerd.nl/admin
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+         - node.hostname!=pc01.karam.lab
+         - node.hostname==pxsw01.karam.lab
+networks:
+  outside:
+    external:
+      name: "host"
+  # macnet:
+  #   driver: macvlan
+  traefik-public:
+    external: true
+
+
+# nothing from the following works
+# still getting requests from 10.0.0.139
+# that is the ingress point on pc01
+# root@pc01:~# docker network inspect ingress
+# -------------------
+# creating a host network
+# https://forums.docker.com/t/use-host-network-for-swarm-container/74878
+# ---------------------
+# creating macvlan
+# https://docs.docker.com/engine/network/drivers/macvlan/
+
+# docker network create -d macvlan \
+#   --subnet=10.10.10.0/24 \
+#   --ip-range=10.10.10.128/25 \
+#   --gateway=10.10.10.1 \
+#   -o parent=ens18 pihole-macnet
+
+
+
+
+# -------------------
+# IT IS finally working
+# with host network and ports are mapped using host mode
+# fw is forwarding 53 to 5353
+# all wireless clients are visible in pihole
+
+# ---------------------
+# DHCP is not working (the load warning is solved if you used the pihole DHCP and not the router)
+# port mapping 67/udp should be enabled
+# firewall nat 6767 to 67
+# dchp stop on router
+# activate/deactivate dhcp on pihole from here: /nfs-nas-swarm/config/pihole/etc/pihole/setupVars.conf
+# DHCP_ACTIVE=false
+
+# the problem is that there is another dhcp server on the same network
+# https://docs.vnerd.nl/Infrastructure/PXE%20TFTP/?h=dhcp#dhcp
+# karam@pxsw02:~$ sudo nmap -sU -p67 --script dhcp-discover 10.10.10.220
+
+# also, consider the internal network configurations for the container on the host network
+# eth2@if964: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default
+#     link/ether 02:42:ac:12:00:0b brd ff:ff:ff:ff:ff:ff link-netnsid 2
+#     inet 172.18.0.11/16 brd 172.18.255.255 scope global eth2
+#        valid_lft forever preferred_lft forever

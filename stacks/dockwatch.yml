@@ -114,6 +114,7 @@ services:
     logging:
       driver: json-file
     deploy:
+      replicas: 0
       placement:
         constraints:
          - node.hostname==pxsw04.karam.lab

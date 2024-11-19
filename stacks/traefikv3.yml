@@ -99,6 +99,8 @@ services:
      - /nfs-nas-swarm/config/traefikv3/dynamic-config:/dynamic-config
      - /nfs-nas-swarm/config/traefikv3/static-config:/static-config
      - /var/run/docker.sock:/var/run/docker.sock:ro
+    # extra_hosts:
+    #  - host.docker.internal:172.17.0.1
     networks:
      # - host
      - traefik-public

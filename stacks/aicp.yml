@@ -33,7 +33,7 @@ services:
         sablier.enable: 'true'
         sablier.group: aicp
         traefik.docker.lbswarm: 'true'
-        traefik.http.routers.aicp-https.middlewares: aicp_aicp-sablier@file
+        traefik.http.routers.aicp-https.middlewares: authelia, aicp_aicp-sablier@file
       placement:
         constraints:
          - node.labels.Arch!=i686

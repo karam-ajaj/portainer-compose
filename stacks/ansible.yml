@@ -10,7 +10,7 @@ services:
       placement:
         constraints:
          - node.labels.Arch!=i686
-         - node.hostname == pc01.karam.lab
+         - node.hostname == pxsw01.karam.lab
 networks:
   internal:
     driver: overlay

@@ -12,11 +12,12 @@ services:
       PUID: '911'
       PGID: '911'
       MINIO_BROWSER_REDIRECT_URL: https://minio-console.vnerd.nl
+        # MINIO_ROOT_PASSWORD_FILE: /password/root_password
       MINIO_ROOT_PASSWORD_FILE: /run/secrets/minio_password
       MINIO_ROOT_USER: admin
       MINIO_SERVER_URL: https://minio.vnerd.nl
     secrets:
-      - minio_password
+     - minio_password
     ports:
      - 9000:9000
     volumes:
