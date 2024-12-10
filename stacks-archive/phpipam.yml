@@ -90,3 +90,4 @@ networks:
 secrets:
    phpipam_password:
      external: true
+     

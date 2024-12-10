@@ -11,7 +11,7 @@ services:
     ports:
      - 8089:8089/udp
     volumes:
-     - /nfs-nas-swarm/data/influxdb:/var/lib/influxdb2
+     - /swarm/data/influxdb:/var/lib/influxdb2
     networks:
      - internal
      - traefik-public

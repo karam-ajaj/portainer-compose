@@ -15,6 +15,7 @@ services:
     logging:
       driver: json-file
     deploy:
+      replicas: 0
       labels:
         traefik.http.routers.duplicati-https.tls: 'true'
         traefik.http.routers.duplicati-https.middlewares: authelia

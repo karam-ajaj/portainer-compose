@@ -7,10 +7,10 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /nfs-nas-swarm/config/homarr/configs:/app/data/configs
-     - /nfs-nas-swarm/data/homarr/data:/data
-     - /nfs-nas-swarm/data/homarr/icons:/app/public/icons
-     - /nfs-nas-swarm/data/homarr/pics:/app/public/pics
+     - /swarm/config/homarr/configs:/app/data/configs
+     - /swarm/data/homarr/data:/data
+     - /swarm/data/homarr/icons:/app/public/icons
+     - /swarm/data/homarr/pics:/app/public/pics
     networks:
      - traefik-public
     logging:

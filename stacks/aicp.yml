@@ -9,8 +9,8 @@ services:
     ports:
      - 32168:32168
     volumes:
-     - /nfs-nas-swarm/config/aicp/settings:/etc/codeproject/aicp
-     - /nfs-nas-swarm/config/aicp/modules:/app/modules
+     - /swarm/config/aicp/settings:/etc/codeproject/aicp
+     - /swarm/config/aicp/modules:/app/modules
     networks:
      - internal
      - traefik-public

@@ -8,7 +8,7 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
       MYSQL_USER: luaiuser
     volumes:
-     - /nfs-nas-swarm/data/wordpress-luai/db:/var/lib/mysql
+     - /swarm/data/wordpress-luai/db:/var/lib/mysql
      - /etc/localtime:/etc/localtime:ro
     networks:
      - internal
@@ -22,7 +22,7 @@ services:
       WORDPRESS_DB_PASSWORD: 9wVC&uoH5Y@dcL
       WORDPRESS_DB_USER: luaiuser
     volumes:
-     - /nfs-nas-swarm/data/wordpress-luai/wordpress:/var/www/html
+     - /swarm/data/wordpress-luai/wordpress:/var/www/html
      - /etc/localtime:/etc/localtime:ro
     networks:
      - traefik-public

@@ -12,8 +12,8 @@ services:
      - 3028:3028
      - 3080:3080
     volumes:
-     - /nfs-nas-swarm/data/teleport:/var/lib/teleport
-     - /nfs-nas-swarm/config/teleport:/etc/teleport
+     - /swarm/data/teleport:/var/lib/teleport
+     - /swarm/config/teleport:/etc/teleport
     networks:
      - librenms_internal
      - internal

@@ -7,8 +7,8 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /nfs-nas-swarm/config/pdf/trainingData:/usr/share/tesseract-ocr/4.00/tessdata
-     - /nfs-nas-swarm/config/pdf/extraConfigs:/configs
+     - /swarm/config/pdf/trainingData:/usr/share/tesseract-ocr/4.00/tessdata
+     - /swarm/config/pdf/extraConfigs:/configs
     networks:
      - internal
      - traefik-public

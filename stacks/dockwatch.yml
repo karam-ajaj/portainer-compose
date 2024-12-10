@@ -6,7 +6,7 @@ services:
       PGID: '998'
       TZ: Europe/Amsterdam
     volumes:
-     - /nfs-nas-swarm/config/dockwatch/pc01:/config
+     - /swarm/config/dockwatch/pc01:/config
      - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
      - internal
@@ -23,7 +23,7 @@ services:
       PGID: '999'
       TZ: Europe/Amsterdam
     volumes:
-     - /nfs-nas-swarm/config/dockwatch/pc03:/config
+     - /swarm/config/dockwatch/pc03:/config
      - /var/run/docker.sock:/var/run/docker.sock
     networks:
      - internal
@@ -41,7 +41,7 @@ services:
       PGID: '999'
       TZ: Europe/Amsterdam
     volumes:
-     - /nfs-nas-swarm/config/dockwatch/pxsw01:/config
+     - /swarm/config/dockwatch/pxsw01:/config
      - /var/run/docker.sock:/var/run/docker.sock
     networks:
      - internal
@@ -71,7 +71,7 @@ services:
       PGID: '999'
       TZ: Europe/Amsterdam
     volumes:
-     - /nfs-nas-swarm/config/dockwatch/pxsw02:/config
+     - /swarm/config/dockwatch/pxsw02:/config
      - /var/run/docker.sock:/var/run/docker.sock
     networks:
      - internal
@@ -88,7 +88,7 @@ services:
       PGID: '999'
       TZ: Europe/Amsterdam
     volumes:
-     - /nfs-nas-swarm/config/dockwatch/pxsw03:/config
+     - /swarm/config/dockwatch/pxsw03:/config
      - /var/run/docker.sock:/var/run/docker.sock
     networks:
      - internal
@@ -106,7 +106,7 @@ services:
       PGID: '999'
       TZ: Europe/Amsterdam
     volumes:
-     - /nfs-nas-swarm/config/dockwatch/pxsw04:/config
+     - /swarm/config/dockwatch/pxsw04:/config
      - /var/run/docker.sock:/var/run/docker.sock
     networks:
      - internal

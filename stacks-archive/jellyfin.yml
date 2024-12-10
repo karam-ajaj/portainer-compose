@@ -17,6 +17,7 @@ services:
     logging:
       driver: json-file
     deploy:
+      replicas: 0
       labels:
         traefik.http.routers.jellyfin.rule: Host(`jellyfin.vnerd.nl`)
         traefik.http.routers.jellyfin-http.entrypoints: http

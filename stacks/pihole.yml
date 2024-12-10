@@ -44,8 +44,8 @@ services:
        protocol: tcp
        mode: host
     volumes:
-     - /nfs-nas-swarm/config/pihole/etc/dnsmasq.d:/etc/dnsmasq.d
-     - /nfs-nas-swarm/config/pihole/etc/pihole:/etc/pihole
+     - /swarm/config/pihole/etc/dnsmasq.d:/etc/dnsmasq.d
+     - /swarm/config/pihole/etc/pihole:/etc/pihole
     networks:
     #  - pihole-macnet
      - traefik-public

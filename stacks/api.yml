@@ -37,7 +37,7 @@ services:
       SWAGGER_FILE: '/usr/share/nginx/html/api/swagger.yml'
       SWAGGER_JSON_URL: '/api/swagger.yml'
     volumes:
-     - /nfs-nas-swarm/config/api/vc:/usr/share/nginx/html/api
+     - /swarm/config/api/vc:/usr/share/nginx/html/api
     networks:
      - traefik-public
     logging:
@@ -68,7 +68,7 @@ services:
       SWAGGER_FILE: '/usr/share/nginx/html/api/swagger.yml'
       SWAGGER_JSON_URL: '/api/swagger.yml'
     volumes:
-     - /nfs-nas-swarm/config/api/aria:/usr/share/nginx/html/api
+     - /swarm/config/api/aria:/usr/share/nginx/html/api
     networks:
      - traefik-public
     logging:
@@ -99,7 +99,7 @@ services:
       SWAGGER_FILE: '/usr/share/nginx/html/api/swagger.yml'
       SWAGGER_JSON_URL: '/api/swagger.yml'
     volumes:
-     - /nfs-nas-swarm/config/api/lcm:/usr/share/nginx/html/api
+     - /swarm/config/api/lcm:/usr/share/nginx/html/api
     networks:
      - traefik-public
     logging:

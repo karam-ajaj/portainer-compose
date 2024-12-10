@@ -7,7 +7,7 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /nfs-nas-swarm/config/authelia:/config
+     - /swarm/config/authelia:/config
     networks:
      - traefik-public
     logging:

@@ -7,7 +7,7 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /nfs-nas-swarm/config/grav:/config
+     - /swarm/config/grav:/config
     networks:
      - internal
      - traefik-public

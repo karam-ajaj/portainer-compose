@@ -7,7 +7,7 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /nfs-nas-swarm/config/freecad:/config
+     - /swarm/config/freecad:/config
     networks:
      - internal
      - traefik-public

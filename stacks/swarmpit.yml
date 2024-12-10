@@ -31,7 +31,7 @@ services:
      - 888:8080
     volumes:
      - /var/run/docker.sock:/var/run/docker.sock
-     - /nfs-nas-swarm/config/swarmpit:/swarmpit-config
+     - /swarm/config/swarmpit:/swarmpit-config
     networks:
      - swarmpit-network
      - traefik-public

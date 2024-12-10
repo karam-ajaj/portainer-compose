@@ -15,7 +15,7 @@ services:
       TZ: Europe/Amsterdam
       CB_SERVER_NAME: 'vnerd DataBase Console'
     volumes:
-     - /nfs-nas-swarm/config/cloudbeaver:/var/cloudbeaver/workspace
+     - /swarm/config/cloudbeaver:/var/cloudbeaver/workspace
     networks:
      - internal
      - traefik-public

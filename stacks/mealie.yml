@@ -18,7 +18,7 @@ services:
       RECIPE_SHOW_ASSETS: 'true'
       RECIPE_SHOW_NUTRITION: 'true'
     volumes:
-     - /nfs-nas-swarm/data/mealie:/app/data
+     - /swarm/data/mealie/app:/app/data
      - /etc/localtime:/etc/localtime:ro
     networks:
      - internal
@@ -47,6 +47,8 @@ services:
     environment:
       POSTGRES_PASSWORD: mealie
       POSTGRES_USER: mealie
+    volumes:
+      - /swarm/data/mealie/db:/var/lib/postgresql/data
     networks:
      - internal
      - traefik-public

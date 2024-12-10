@@ -7,7 +7,7 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /nfs-nas-swarm/data/CV:/usr/share/nginx/html
+     - /swarm/data/CV:/usr/share/nginx/html
     networks:
      - traefik-public
     logging:

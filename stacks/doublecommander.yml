@@ -3,12 +3,13 @@ services:
   doublecommander:
     image: lscr.io/linuxserver/doublecommander:latest
     environment:
-      PGID: '911'
-      PUID: '911'
+      PGID: '0'
+      PUID: '0'
       TZ: Europe/Amsterdam
     volumes:
-     - /nfs-nas-swarm:/data
-     - /nfs-nas-swarm/config/doublecommander:/config
+     - /nfs-nas-swarm:/nfs-nas-swarm
+     - /swarm:/swarm
+     - /swarm/config/doublecommander:/config
     networks:
      - internal
      - traefik-public

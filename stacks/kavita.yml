@@ -7,7 +7,7 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /nfs-nas-swarm/config/kavita:/config
+     - /swarm/config/kavita:/config
      - /media_pool/media:/books
      - /nfs-nas-swarm/data/Books:/Books
     networks:

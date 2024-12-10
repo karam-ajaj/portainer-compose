@@ -1,7 +1,7 @@
 version: '3.4'
 services:
   traefik:
-    image: traefik:v3.2.0
+    image: traefik:v3.2.1
     command:
      - --providers.docker
      - --providers.docker.exposedbydefault=false
@@ -95,9 +95,9 @@ services:
      #   protocol: tcp
      #   mode: host
     volumes:
-     - /nfs-nas-swarm/config/traefikv3/certificates:/certificates
-     - /nfs-nas-swarm/config/traefikv3/dynamic-config:/dynamic-config
-     - /nfs-nas-swarm/config/traefikv3/static-config:/static-config
+     - /swarm/config/traefikv3/certificates:/certificates
+     - /swarm/config/traefikv3/dynamic-config:/dynamic-config
+     - /swarm/config/traefikv3/static-config:/static-config
      - /var/run/docker.sock:/var/run/docker.sock:ro
     # extra_hosts:
     #  - host.docker.internal:172.17.0.1

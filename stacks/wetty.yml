@@ -7,13 +7,14 @@ services:
       SSHHOST: 10.10.10.150
       SSHUSER: karam
     volumes:
-     - /nfs-nas-swarm/config/wetty:/config
+     - /swarm/config/wetty:/config
     networks:
      - traefik-public
      - internal
     logging:
       driver: json-file
     deploy:
+      replicas: 0
       labels:
         traefik.http.routers.ans01-https.rule: Host(`ans01.vnerd.nl`)
         traefik.http.routers.ans01-http.entrypoints: http
@@ -38,7 +39,7 @@ services:
       SSHHOST: 10.10.10.220
       SSHUSER: karam
     volumes:
-     - /nfs-nas-swarm/config/wetty:/config
+     - /swarm/config/wetty:/config
     networks:
      - traefik-public
      - internal
@@ -69,7 +70,7 @@ services:
       SSHHOST: 10.10.10.221
       SSHUSER: karam
     volumes:
-     - /nfs-nas-swarm/config/wetty:/config
+     - /swarm/config/wetty:/config
     networks:
      - traefik-public
      - internal
@@ -101,13 +102,14 @@ services:
       SSHHOST: 10.10.10.222
       SSHUSER: karam
     volumes:
-     - /nfs-nas-swarm/config/wetty:/config
+     - /swarm/config/wetty:/config
     networks:
      - traefik-public
      - internal
     logging:
       driver: json-file
     deploy:
+      replicas: 0
       labels:
         traefik.http.services.pc03.loadbalancer.server.port: '3000'
         traefik.http.routers.pc03-https.middlewares: authelia
@@ -138,6 +140,7 @@ services:
     logging:
       driver: json-file
     deploy:
+      replicas: 0
       labels:
         traefik.http.services.terraformtnas01.loadbalancer.server.port: '3000'
         traefik.http.routers.terraformtnas01-https.entrypoints: https

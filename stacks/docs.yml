@@ -10,9 +10,9 @@ services:
       TZ: Europe/Amsterdam
       # dev-addr: docs.vnerd.nl
     volumes:
-     - /nfs-nas-swarm/config/docs:/docs
-     - /nfs-nas-swarm/github-repos/portainer-compose:/docs/github-repos/portainer-compose
-     - /nfs-nas-swarm/config:/docs/configs
+     - /swarm/config/docs:/docs
+     - /swarm/github-repos/portainer-compose:/docs/github-repos/portainer-compose
+     - /swarm/config:/docs/configs
     networks:
      - internal
      - traefik-public

@@ -3,12 +3,12 @@ services:
   grafana:
     image: grafana/grafana-enterprise:latest
     environment:
-      PGID: '0'
-      PUID: '0'
+      PGID: '1000'
+      PUID: '1000'
       SIGNUPS_ALLOWED: 'false'
       TZ: Europe/Amsterdam
     volumes:
-     - /nfs-nas-swarm/data/grafana:/var/lib/grafana
+     - /swarm/data/grafana:/var/lib/grafana
     networks:
      - internal
      - traefik-public

@@ -1,4 +1,4 @@
-# docker pull adminer:4.8.1
+# depricated
 
 version: '3.3'
 services:
@@ -9,15 +9,15 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-    - /nfs-nas-swarm/config/adminer/settings:/etc/codeproject/adminer
-    - /nfs-nas-swarm/config/adminer/modules:/app/modules
+    - /swarm/config/adminer/settings:/etc/codeproject/adminer
+    - /swarm/config/adminer/modules:/app/modules
     networks:
      - internal
      - traefik-public
     logging:
       driver: json-file
     deploy:
-      replicas: 0
+      replicas: 1
       labels:
         traefik.http.routers.adminer-http.rule: Host(`adminer.vnerd.nl`)
         traefik.http.routers.adminer-https.tls.certresolver: le

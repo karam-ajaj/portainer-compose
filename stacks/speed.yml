@@ -12,7 +12,7 @@ services:
       APP_URL: 'speed.vnerd.nl'
       SPEEDTEST_SCHEDULE: '15 * * * *'
     volumes:
-     - /nfs-nas-swarm/config/speed:/config
+     - /swarm/config/speed:/config
     networks:
      - internal
      - traefik-public

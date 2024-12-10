@@ -7,12 +7,13 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /nfs-nas-swarm/config/smokeping:/config
+     - /swarm/config/smokeping:/config
     networks:
      - traefik-public
     logging:
       driver: json-file
     deploy:
+      replicas: 0
       labels:
         traefik.http.routers.smokeping-http.rule: Host(`smokeping.vnerd.nl`)
         traefik.http.routers.smokeping-https.middlewares: authelia

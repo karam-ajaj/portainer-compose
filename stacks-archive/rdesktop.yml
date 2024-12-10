@@ -15,6 +15,7 @@ services:
     logging:
       driver: json-file
     deploy:
+      replicas: 0
       labels:
         traefik.tcp.routers.rdesktop.tls: 'true'
         traefik.constraint-label: traefik-public

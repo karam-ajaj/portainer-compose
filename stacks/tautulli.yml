@@ -8,7 +8,7 @@ services:
       TZ: Europe/Amsterdam
       UMASK: '002'
     volumes:
-     - /nfs-nas-swarm/config/tautulli:/config
+     - /swarm/config/tautulli:/config
     networks:
      - media_services_media-network
      - traefik-public

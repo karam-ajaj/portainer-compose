@@ -21,8 +21,8 @@ services:
     ports:
      - 9000:9000
     volumes:
-     - /nfs-nas-swarm/data/minio:/data
-     - /nfs-nas-swarm/data/minio:/password
+     - /swarm/data/minio:/data
+     - /swarm/data/minio:/password
     networks:
      - traefik-public
     logging:

@@ -1,12 +1,16 @@
+## it should be upgraded to 2.27.02
+# it should work if all files are copied
+# delete all job reports: https://docs.tdarr.io/docs/other/job-reports 
+
 version: '3.3'
 services:
   tdarr:
-    image: ghcr.io/haveagitgat/tdarr:2.17.01
+    image: ghcr.io/haveagitgat/tdarr:2.27.02
     environment:
       NVIDIA_DRIVER_CAPABILITIES: all
       NVIDIA_VISIBLE_DEVICES: all
-      PGID: '911'
-      PUID: '911'
+      # PGID: '911'
+      # PUID: '911'
       TZ: Europe/Amsterdam
       UMASK_SET: '002'
       ffmpegVersion: '6'
@@ -19,9 +23,9 @@ services:
     ports:
      - 8266:8266
     volumes:
-     - /nfs-nas-swarm/config/tdarr/server:/app/server
-     - /nfs-nas-swarm/config/tdarr/configs:/app/configs
-     - /nfs-nas-swarm/config/tdarr/logs:/app/logs
+     - /swarm/config/tdarr/server:/app/server
+     - /swarm/config/tdarr/configs:/app/configs
+     - /swarm/config/tdarr/logs:/app/logs
      - /media_pool/media:/data
      - /media_pool/tdarr/transcode_cache:/tmp
     networks:
@@ -48,12 +52,12 @@ services:
          - node.labels.Arch!=i686
          - node.hostname==pxsw01.karam.lab
   tdarr-node-pxsw01:
-    image: ghcr.io/haveagitgat/tdarr_node:2.17.01
+    image: ghcr.io/haveagitgat/tdarr_node:2.27.02
     environment:
       NVIDIA_DRIVER_CAPABILITIES: all
       NVIDIA_VISIBLE_DEVICES: all
-      PGID: '911'
-      PUID: '911'
+      # PGID: '911'
+      # PUID: '911'
       TZ: Europe/Amsterdam
       UMASK_SET: '002'
       ffmpegVersion: '6'
@@ -62,8 +66,8 @@ services:
       serverIP: tdarr
       serverPort: '8266'
     volumes:
-     - /nfs-nas-swarm/config/tdarr/configs:/app/configs
-     - /nfs-nas-swarm/config/tdarr/logs:/app/logs
+     - /swarm/config/tdarr/configs:/app/configs
+     - /swarm/config/tdarr/logs:/app/logs
      - /media_pool/media:/data
      - /media_pool/tdarr/transcode_cache:/tmp
     networks:
@@ -76,12 +80,12 @@ services:
          - node.labels.Arch!=i686
          - node.hostname==pxsw01.karam.lab
   tdarr-node-pxsw02:
-    image: ghcr.io/haveagitgat/tdarr_node:2.17.01
+    image: ghcr.io/haveagitgat/tdarr_node:2.27.02
     environment:
       NVIDIA_DRIVER_CAPABILITIES: all
       NVIDIA_VISIBLE_DEVICES: all
-      PGID: '911'
-      PUID: '911'
+      # PGID: '911'
+      # PUID: '911'
       TZ: Europe/Amsterdam
       UMASK_SET: '002'
       ffmpegVersion: '6'
@@ -90,8 +94,8 @@ services:
       serverIP: tdarr
       serverPort: '8266'
     volumes:
-     - /nfs-nas-swarm/config/tdarr/configs:/app/configs
-     - /nfs-nas-swarm/config/tdarr/logs:/app/logs
+     - /swarm/config/tdarr/configs:/app/configs
+     - /swarm/config/tdarr/logs:/app/logs
      - /media_pool/media:/data
      - /media_pool/tdarr/transcode_cache:/tmp
     networks:
@@ -104,12 +108,12 @@ services:
          - node.labels.Arch!=i686
          - node.hostname==pxsw02.karam.lab
   tdarr-node-pxsw03:
-    image: ghcr.io/haveagitgat/tdarr_node:2.17.01
+    image: ghcr.io/haveagitgat/tdarr_node:2.27.02
     environment:
       NVIDIA_DRIVER_CAPABILITIES: all
       NVIDIA_VISIBLE_DEVICES: all
-      PGID: '911'
-      PUID: '911'
+      # PGID: '911'
+      # PUID: '911'
       TZ: Europe/Amsterdam
       UMASK_SET: '002'
       ffmpegVersion: '6'
@@ -118,8 +122,8 @@ services:
       serverIP: tdarr
       serverPort: '8266'
     volumes:
-     - /nfs-nas-swarm/config/tdarr/configs:/app/configs
-     - /nfs-nas-swarm/config/tdarr/logs:/app/logs
+     - /swarm/config/tdarr/configs:/app/configs
+     - /swarm/config/tdarr/logs:/app/logs
      - /media_pool/media:/data
      - /media_pool/tdarr/transcode_cache:/tmp
     networks:

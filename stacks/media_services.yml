@@ -7,7 +7,7 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /media_services_config/bazarr:/config
+     - /swarm/config/media_services_config/bazarr:/config
      - /media_pool:/data
     networks:
      - media-network
@@ -39,7 +39,7 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /media_services_config/headphones:/config
+     - /swarm/config/media_services_config/headphones:/config
      - /media_pool:/data
     networks:
      - media-network
@@ -75,7 +75,7 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /media_services_config/heimdall:/config
+     - /swarm/config/media_services_config/heimdall:/config
      - /etc/localtime:/etc/localtime:ro
     networks:
      - media-network
@@ -111,7 +111,7 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /media_services_config/jackett:/config
+     - /swarm/config/media_services_config/jackett:/config
     networks:
      - media-network
      - traefik-public
@@ -142,7 +142,7 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /media_services_config/lazylibrarian:/config
+     - /swarm/config/media_services_config/lazylibrarian:/config
      - /media_pool:/data
     networks:
      - media-network
@@ -177,7 +177,7 @@ services:
       # - 3050:8086
     volumes:
      - /etc/localtime:/etc/localtime:ro
-     - /media_services_config/lidarr:/config
+     - /swarm/config/media_services_config/lidarr:/config
      - /media_pool:/data
     networks:
      - media-network
@@ -209,7 +209,7 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /media_services_config/mylar:/config
+     - /swarm/config/media_services_config/mylar:/config
      - /media_pool:/data
     networks:
      - media-network
@@ -241,7 +241,7 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /media_services_config/nzbget:/config
+     - /swarm/config/media_services_config/nzbget:/config
      - /media_pool/usenet:/data/usenet
     networks:
      - media-network
@@ -273,7 +273,7 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /media_services_config/nzbhydra2:/config
+     - /swarm/config/media_services_config/nzbhydra2:/config
     networks:
      - media-network
      - traefik-public
@@ -308,7 +308,7 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /media_services_config/ombi:/config
+     - /swarm/config/media_services_config/ombi:/config
     networks:
      - media-network
      - traefik-public
@@ -343,8 +343,8 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /media_services_config/overseerr/config:/config
-     # - /media_services_config/overseerr/app/overseerr:/app/overseerr
+     - /swarm/config/media_services_config/overseerr/config:/config
+     # - /swarm/config/media_services_config/overseerr/app/overseerr:/app/overseerr
     networks:
      - media-network
      - traefik-public
@@ -374,7 +374,7 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /media_services_config/prowlarr:/config
+     - /swarm/config/media_services_config/prowlarr:/config
      - /media_pool:/data
     networks:
      - media-network
@@ -410,7 +410,7 @@ services:
      - 6881:6881
      - 6881:6881/udp
     volumes:
-     - /media_services_config/qbittorrent:/config
+     - /swarm/config/media_services_config/qbittorrent:/config
      - /media_pool/torrents:/data/torrents
     networks:
      - media-network
@@ -442,7 +442,7 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /media_services_config/radarr:/config
+     - /swarm/config/media_services_config/radarr:/config
      - /media_pool:/data
     networks:
      - media-network
@@ -474,7 +474,7 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /media_services_config/readarr:/config
+     - /swarm/config/media_services_config/readarr:/config
      - /media_pool:/data
     networks:
      - media-network
@@ -506,7 +506,7 @@ services:
   #     PUID: '911'
   #     TZ: Europe/Amsterdam
   #   volumes:
-  #    - /media_services_config/reiverr:/config
+  #    - /swarm/config/media_services_config/reiverr:/config
   #    - /media_pool:/data
   #   networks:
   #    - media-network
@@ -540,7 +540,7 @@ services:
     ports:
      - 36258:36258
     volumes:
-     - /media_services_config/rutorrent:/config
+     - /swarm/config/media_services_config/rutorrent:/config
      - /media_pool/torrents:/data/torrents
     networks:
      - media-network
@@ -572,7 +572,7 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /media_services_config/sabnzbd:/config
+     - /swarm/config/media_services_config/sabnzbd:/config
      - /media_pool/usenet:/data/usenet
      - /media_pool/sabnzbd:/data/sabnzbd
     networks:
@@ -605,7 +605,7 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /media_services_config/sonarr:/config
+     - /swarm/config/media_services_config/sonarr:/config
      - /media_pool:/data
     networks:
      - media-network

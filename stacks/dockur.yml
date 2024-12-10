@@ -10,7 +10,7 @@ services:
       DEVICE_NAME: '/dev/kvm'
       KVM: "N"
     volumes:
-    - /nfs-nas-swarm/data/windows/win7:/storage
+    - /swarm/data/dockur/win7:/storage
     networks:
      - internal
      - traefik-public
@@ -24,10 +24,8 @@ services:
       - NET_ADMIN
     devices:
       - /dev/kvm:/dev/kvm
-    cap_add:
-      - NET_ADMIN
     deploy:
-      replicas: 1
+      replicas: 0
       labels:
         traefik.http.routers.win7-http.rule: Host(`win7.vnerd.nl`)
         traefik.http.routers.win7-https.tls.certresolver: le
@@ -56,7 +54,7 @@ services:
       # DEVICE_NAME: '/dev/kvm'
       KVM: "N"
     volumes:
-    - /nfs-nas-swarm/data/windows/winxp1:/storage
+    - /swarm/data/dockur/winxp1:/storage
     networks:
      - internal
      - traefik-public
@@ -70,10 +68,8 @@ services:
       - NET_ADMIN
     # devices:
       # - /dev/kvm:/dev/kvm
-    cap_add:
-      - NET_ADMIN
     deploy:
-      replicas: 0
+      replicas: 1
       labels:
         traefik.http.routers.winxp1-http.rule: Host(`winxp1.vnerd.nl`)
         traefik.http.routers.winxp1-https.tls.certresolver: le
@@ -152,7 +148,7 @@ services:
       # DEVICE_NAME: '/dev/kvm'
       KVM: "N"
     volumes:
-    - /nfs-nas-swarm/data/windows/macos1:/storage
+    - /swarm/data/dockur/macos1:/storage
     networks:
      - internal
      - traefik-public

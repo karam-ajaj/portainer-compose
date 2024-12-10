@@ -15,7 +15,7 @@ services:
       PGID: '1000'
       PUID: '1000'
     volumes:
-     - /nfs-nas-swarm/config/diskover/diskover:/config
+     - /swarm/config/diskover/diskover:/config
      - /nfs-nas-swarm:/nfs-nas-swarm
      - /media_pool:/media_pool
      - /media_services_config:/media_services_config
@@ -54,12 +54,13 @@ services:
     ports:
      - 9200:9200
     volumes:
-     - /nfs-nas-swarm/data/diskover/esdata:/usr/share/elasticsearch/data
+     - /swarm/data/diskover/esdata:/usr/share/elasticsearch/data
     networks:
      - internal
     logging:
       driver: json-file
     deploy:
+      replicas: 0
       placement:
         constraints:
          - node.labels.Arch!=i686
@@ -71,8 +72,8 @@ services:
      - -c
      - sysctl -w vm.max_map_count=262144
     environment:
-      PGID: '0'
-      PUID: '0'
+      PGID: '1000'
+      PUID: '1000'
     networks:
      - internal
     logging:

@@ -7,10 +7,10 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /nfs-nas-swarm/data/audiobookshelf/audiobooks:/audiobooks
-     - /nfs-nas-swarm/data/audiobookshelf/podcasts:/podcasts
-     - /nfs-nas-swarm/config/audiobookshelf:/config
-     - /nfs-nas-swarm/data/audiobookshelf/metadata:/metadata
+     - /swarm/data/audiobookshelf/audiobooks:/audiobooks
+     - /swarm/data/audiobookshelf/podcasts:/podcasts
+     - /swarm/config/audiobookshelf:/config
+     - /swarm/data/audiobookshelf/metadata:/metadata
     networks:
      - internal
      - traefik-public

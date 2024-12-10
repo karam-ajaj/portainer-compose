@@ -15,7 +15,7 @@ services:
     secrets:
       - pgadmin_password
     volumes:
-     - /nfs-nas-swarm/config/pgadmin:/var/lib/pgadmin
+     - /swarm/config/pgadmin:/var/lib/pgadmin
     networks:
      - internal
      - traefik-public
