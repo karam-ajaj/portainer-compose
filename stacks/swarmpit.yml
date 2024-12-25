@@ -62,7 +62,7 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /nfs-nas-swarm/data/swarmpit/db-data:/opt/couchdb/data
+     - /swarm/data/swarmpit/db-data:/opt/couchdb/data
     networks:
      - swarmpit-network
     logging:
@@ -86,7 +86,7 @@ services:
       PUID: '911'
       TZ: Europe/Amsterdam
     volumes:
-     - /nfs-nas-swarm/data/swarmpit/influx-data:/var/lib/influxdb
+     - /swarm/data/swarmpit/influx-data:/var/lib/influxdb
     networks:
      - swarmpit-network
     logging:

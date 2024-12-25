@@ -40,7 +40,7 @@ services:
        constraints:
          - node.labels.Arch!=i686
          - node.labels.worker==enabled
-         - node.hostname==px01
+        #  - node.hostname==px01
   controller:
     pid: host
     image: neuvector/controller:2.5.0
@@ -100,7 +100,7 @@ services:
        constraints:
          - node.labels.Arch!=i686
          - node.labels.worker==enabled
-         - node.hostname==px01
+        #  - node.hostname==px01
   # enforcer:
   # enforcer:
   #   pid: host

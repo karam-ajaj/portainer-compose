@@ -8,9 +8,15 @@ services:
       TZ: Europe/Amsterdam
     volumes:
      - /swarm/config/filebrowser/.filebrowser.json:/.filebrowser.json
-     - /swarm:/srv/nfs-nas-swarm
-     - /media_pool:/srv/tnas_media_pool
      - /swarm/config/filebrowser/filebrowser.db:/database/filebrowser.db
+     # nfs nas shared folder
+     - /nfs-nas-swarm:/srv/nfs-nas-swarm
+     # swarm local folder
+     - /swarm:/srv/swarm
+     # tnas shared folder for media (RAID 0)
+     - /media_pool:/srv/tnas_media_pool
+     # OMV shared folder
+     - /media_services_config:/srv/media_services_config
     networks:
      - traefik-public
     logging:
