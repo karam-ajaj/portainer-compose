@@ -12,8 +12,9 @@ services:
     volumes:
     - /swarm/data/dockur/win7:/storage
     networks:
-     - internal
-     - traefik-public
+    #  - internal
+     - outside
+    #  - traefik-public
     logging:
       driver: json-file
     # ports:
@@ -56,12 +57,18 @@ services:
     volumes:
     - /swarm/data/dockur/winxp1:/storage
     networks:
-     - internal
-     - traefik-public
+    #  - internal
+     - outside
+    #  - traefik-public
     logging:
       driver: json-file
-    # ports:
-    #   # - 8006:8006
+    ports:
+     - target: 8006
+      #  host_ip: 10.10.10.27
+       published: 8007
+       protocol: tcp
+       mode: host
+    #  - 8007:8006
     #   - 3390:3389/tcp
     #   - 3390:3389/udp
     cap_add:
@@ -69,20 +76,20 @@ services:
     # devices:
       # - /dev/kvm:/dev/kvm
     deploy:
-      replicas: 1
-      labels:
-        traefik.http.routers.winxp1-http.rule: Host(`winxp1.vnerd.nl`)
-        traefik.http.routers.winxp1-https.tls.certresolver: le
-        traefik.http.routers.winxp1-https.tls: 'true'
-        traefik.http.services.winxp1.loadbalancer.server.port: '8006'
-        traefik.http.routers.winxp1-http.middlewares: https-redirect
-        traefik.http.routers.winxp1-https.entrypoints: https
-        traefik.http.routers.winxp1-https.rule: Host(`winxp1.vnerd.nl`)
-        traefik.constraint-label: traefik-public
-        traefik.docker.network: traefik-public
-        traefik.enable: 'true'
-        traefik.http.routers.winxp1-http.entrypoints: http
-        traefik.http.routers.winxp1-https.middlewares: authelia
+      replicas: 0
+      # labels:
+        # traefik.http.routers.winxp1-http.rule: Host(`winxp1.vnerd.nl`)
+        # traefik.http.routers.winxp1-https.tls.certresolver: le
+        # traefik.http.routers.winxp1-https.tls: 'true'
+        # traefik.http.services.winxp1.loadbalancer.server.port: '8007'
+        # traefik.http.routers.winxp1-http.middlewares: https-redirect
+        # traefik.http.routers.winxp1-https.entrypoints: https
+        # traefik.http.routers.winxp1-https.rule: Host(`winxp1.vnerd.nl`)
+        # traefik.constraint-label: traefik-public
+        # traefik.docker.network: traefik-public
+        # traefik.enable: 'true'
+        # traefik.http.routers.winxp1-http.entrypoints: http
+        # traefik.http.routers.winxp1-https.middlewares: authelia
         # sablier.enable: 'true'
         # sablier.group: windows
         # traefik.docker.lbswarm: 'true'
@@ -150,8 +157,9 @@ services:
     volumes:
     - /swarm/data/dockur/macos1:/storage
     networks:
-     - internal
-     - traefik-public
+    #  - internal
+    #  - traefik-public
+     - outside
     logging:
       driver: json-file
     # ports:
@@ -182,7 +190,10 @@ services:
          - node.labels.Arch!=i686
          - node.labels.worker==enabled
 networks:
-  internal:
-    driver: overlay
-  traefik-public:
-    external: true
+  # internal:
+  #   driver: overlay
+  # traefik-public:
+  #   external: true
+  outside:
+    external:
+      name: "host"

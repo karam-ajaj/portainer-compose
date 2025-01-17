@@ -11,6 +11,7 @@ services:
       TZ: Europe/Amsterdam
     volumes:
      - /swarm/config:/home/coder/nfs-nas-swarm/config
+     - /swarm/data:/home/coder/nfs-nas-swarm/data
     #  - /nfs-nas-swarm/bkp:/home/coder/nfs-nas-swarm/bkp
      - /swarm/github-repos:/home/coder/nfs-nas-swarm/github-repos
      - /swarm/config/coder/config:/config

@@ -1,0 +1,42 @@
+# it is easier to deploy using this command:
+# docker run --ipc=host -it redhat/granite-3-1b-a400m-instruct
+
+# this LLM doesnt have access to internet
+
+version: '3.4'
+services:
+  granite:
+    image: redhat/granite-3-1b-a400m-instruct
+    environment:
+      TZ: Europe/Amsterdam
+      ipc: host
+    networks:
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.granite-http.rule: Host(`granite.vnerd.nl`)
+        traefik.http.routers.granite-https.rule: Host(`granite.vnerd.nl`)
+
+        traefik.http.routers.granite-http.entrypoints: http
+        traefik.http.routers.granite-https.entrypoints: https
+
+        traefik.http.routers.granite-http.middlewares: https-redirect
+        traefik.http.routers.granite-https.middlewares: authelia
+
+        traefik.http.services.granite.loadbalancer.server.port: '80'
+
+        traefik.enable: 'true'
+        traefik.constraint-label: traefik-public
+        traefik.docker.network: traefik-public
+
+        traefik.http.routers.granite-https.tls: 'true'
+        traefik.http.routers.granite-https.tls.certresolver: le
+      placement:
+       constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  traefik-public:
+    external: true

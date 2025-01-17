@@ -1,0 +1,44 @@
+# it is easier to deploy using this command:
+# docker run -it --rm --gpus=all -p 8000:8000 --name vllm ai/meta-llama:3.1-8B-Instruct-cuda-12.6 --cpu-offload-gb 5 --max-model-len 30576
+
+# gives an error
+
+version: '3.4'
+services:
+  meta:
+    image: ai/meta-llama:3.1-8B-Instruct-cuda-12.6
+    environment:
+      TZ: Europe/Amsterdam
+      # gpus: all
+      # cpu-offload-gb: 5
+      # max-model-len: 30576
+    networks:
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.meta-http.rule: Host(`meta.vnerd.nl`)
+        traefik.http.routers.meta-https.rule: Host(`meta.vnerd.nl`)
+
+        traefik.http.routers.meta-http.entrypoints: http
+        traefik.http.routers.meta-https.entrypoints: https
+
+        traefik.http.routers.meta-http.middlewares: https-redirect
+        traefik.http.routers.meta-https.middlewares: authelia
+
+        traefik.http.services.meta.loadbalancer.server.port: '8000'
+
+        traefik.enable: 'true'
+        traefik.constraint-label: traefik-public
+        traefik.docker.network: traefik-public
+
+        traefik.http.routers.meta-https.tls: 'true'
+        traefik.http.routers.meta-https.tls.certresolver: le
+      placement:
+       constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  traefik-public:
+    external: true

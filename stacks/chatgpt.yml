@@ -1,0 +1,102 @@
+version: '3.3'
+services:
+  client:
+    image: yidadaa/chatgpt-next-web
+    environment:
+      TZ: Europe/Amsterdam
+      # dev-addr: chatgpt.vnerd.nl
+      # # service port
+      # APP_PORT: 8090
+      # # the ChatGPT client domain, keep the same with chatgpt-client: `APP_HOSTNAME` option
+      # APP_HOSTNAME: "http://chatgpt_client:8090"
+      # # the ChatGPT backend upstream, or connect a sparrow dev server `"http://host.docker.internal:8091"`
+      # APP_UPSTREAM: "http://chatgpt_sparrow:8091"
+    # volumes:
+    #  - /swarm/config/chatgpt:/chatgpt
+    #  - /swarm/github-repos/portainer-compose:/chatgpt/github-repos/portainer-compose
+    #  - /swarm/config:/chatgpt/configs
+    networks:
+    #  - internal
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      # replicas: 0
+      labels:
+        # sablier.enable: 'true'
+        traefik.http.routers.chatgpt-https.tls: 'true'
+        traefik.http.routers.chatgpt-https.tls.certresolver: le
+        traefik.http.routers.chatgpt-http.entrypoints: http
+        traefik.http.services.chatgpt.loadbalancer.server.port: '3000'
+        # traefik.http.routers.chatgpt-https.middlewares: chatgpt-sablier@file
+        # traefik.http.routers.chatgpt-https.middlewares: 500error@file
+        traefik.http.routers.chatgpt-https.entrypoints: https
+        traefik.http.routers.chatgpt-https.rule: Host(`chatgpt.vnerd.nl`)
+        # sablier.group: chatgpt
+        traefik.constraint-label: traefik-public
+        # traefik.docker.lbswarm: 'true'
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.chatgpt-http.middlewares: https-redirect
+        traefik.http.routers.chatgpt-https.middlewares: authelia
+        traefik.http.routers.chatgpt-http.rule: Host(`chatgpt.vnerd.nl`)
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  # sparrow:
+  #   image: soulteary/sparrow
+  #   environment:
+  #     TZ: Europe/Amsterdam
+  #     # [Basic Settings]
+  #     # => The ChatGPT Web Client Domain
+  #     WEB_CLIENT_HOSTNAME: "http://chatgpt_client:8090"
+  #     # => Service port, default: 8091
+  #     # APP_PORT: 8091
+
+  #     # [Private OpenAI API Server Settings] *optional
+  #     # => Enable OpenAI 3.5 API
+  #     ENABLE_OPENAI_API: "on"
+  #     # => OpenAI API Key
+  #     OPENAI_API_KEY: "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"
+  #     # => Enable OpenAI API Proxy
+  #     # OPENAI_API_PROXY_ENABLE: "on"
+  #     # => OpenAI API Proxy Address, eg: `"http://127.0.0.1:1234"` or ""
+  #     # OPENAI_API_PROXY_ADDR: "http://127.0.0.1:1234"
+  #   # volumes:
+  #   #  - /swarm/config/chatgpt:/chatgpt
+  #   #  - /swarm/github-repos/portainer-compose:/chatgpt/github-repos/portainer-compose
+  #   #  - /swarm/config:/chatgpt/configs
+  #   networks:
+  #    - internal
+  #   #  - traefik-public
+  #   logging:
+  #     driver: json-file
+  #   deploy:
+  #     # replicas: 0
+  #     # labels:
+  #     #   # sablier.enable: 'true'
+  #     #   traefik.http.routers.chatgpt-https.tls: 'true'
+  #     #   traefik.http.routers.chatgpt-https.tls.certresolver: le
+  #     #   traefik.http.routers.chatgpt-http.entrypoints: http
+  #     #   traefik.http.services.chatgpt.loadbalancer.server.port: '8090'
+  #     #   # traefik.http.routers.chatgpt-https.middlewares: chatgpt-sablier@file
+  #     #   # traefik.http.routers.chatgpt-https.middlewares: 500error@file
+  #     #   traefik.http.routers.chatgpt-https.entrypoints: https
+  #     #   traefik.http.routers.chatgpt-https.rule: Host(`chatgpt.vnerd.nl`)
+  #     #   # sablier.group: chatgpt
+  #     #   traefik.constraint-label: traefik-public
+  #     #   # traefik.docker.lbswarm: 'true'
+  #     #   traefik.docker.network: traefik-public
+  #     #   traefik.enable: 'true'
+  #     #   traefik.http.routers.chatgpt-http.middlewares: https-redirect
+  #     #   traefik.http.routers.chatgpt-http.rule: Host(`chatgpt.vnerd.nl`)
+  #     placement:
+  #       constraints:
+  #        - node.labels.Arch!=i686
+  #        - node.labels.worker==enabled
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true

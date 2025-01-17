@@ -104,7 +104,7 @@ services:
     networks:
      # - host
      - traefik-public
-     # - signoz1_default
+    #  - signoz1_default
     logging:
       driver: json-file
     deploy:
