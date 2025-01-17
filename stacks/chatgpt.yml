@@ -58,7 +58,7 @@ services:
   #     # => Enable OpenAI 3.5 API
   #     ENABLE_OPENAI_API: "on"
   #     # => OpenAI API Key
-  #     OPENAI_API_KEY: "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"
+  #     OPENAI_API_KEY: "sk-proj-XXXXXXXXXXXXX"
   #     # => Enable OpenAI API Proxy
   #     # OPENAI_API_PROXY_ENABLE: "on"
   #     # => OpenAI API Proxy Address, eg: `"http://127.0.0.1:1234"` or ""
