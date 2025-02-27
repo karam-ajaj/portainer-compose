@@ -1,0 +1,66 @@
+# docker run -it -p 3000:3000 -v $(pwd)/ntopng.license:/etc/ntopng.license:ro --net=host ntop/ntopng:latest -i eth0
+
+
+version: '3.8'
+services:
+  ntopng:
+    image: ntop/ntopng:latest
+    command:
+    #  - ntopng --community
+    #  - ntopng /etc/ntopng/ntopng.conf
+    #  - ntopng
+     - --community
+    #  - -i ens18
+    #  - -i docker_gwbridge
+    #  - -i docker0
+    cap_add:
+      # - cap_set_proc
+      - CAP_NET_ADMIN
+    environment:
+      TZ: Europe/Amsterdam
+      # hostname: ntopng
+      PGID: '0'
+      PUID: '0'
+    ports:
+     - 3000:3000
+    #  - target: 3000
+    #    published: 3000
+    #    protocol: tcp
+    #    mode: host
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    #  - /swarm/config/ntopng:/etc/ntopng
+    #  - /swarm/config/ntopng/ntopng.conf:/etc/ntopng/ntopng.conf
+    #  - /swarm/config/ntopng/ntopng.license:/etc/ntopng.license:ro
+    networks:
+    #  - ntopng-macnet
+    #  - traefik-public
+     - outside
+    logging:
+      driver: json-file
+    deploy:
+      # labels:
+      #   traefik.http.routers.ntopng-https.tls.certresolver: le
+      #   traefik.http.routers.ntopng-https.rule: Host(`ntopng.vnerd.nl`)
+      #   traefik.http.routers.ntopng-https.entrypoints: https
+      #   traefik.constraint-label: traefik-public
+      #   traefik.http.routers.ntopng-https.tls: 'true'
+      #   traefik.http.services.ntopng.loadbalancer.server.port: '3000'
+      #   traefik.docker.network: traefik-public
+      #   traefik.enable: 'true'
+      #   traefik.http.routers.ntopng-http.entrypoints: http
+      #   traefik.http.routers.ntopng-http.rule: Host(`ntopng.vnerd.nl`)
+      #   traefik.http.routers.ntopng-http.middlewares: https-redirect
+      #   traefik.http.routers.ntopng-https.middlewares: authelia
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  outside:
+    external:
+      name: "host"
+  # macnet:
+  #   driver: macvlan
+  traefik-public:
+    external: true
