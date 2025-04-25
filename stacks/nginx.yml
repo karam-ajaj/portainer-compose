@@ -26,7 +26,7 @@ services:
         traefik.http.routers.nginx-https.rule: Host(`nginx.vnerd.nl`)
       placement:
         constraints:
-         - node.labels.Arch==i686
+         - node.labels.Arch!=i686
 networks:
   traefik-public:
     external: true
