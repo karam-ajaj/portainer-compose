@@ -1,0 +1,78 @@
+version: '3.3'
+services:
+  cozystack-db:
+    image: couchdb:latest
+    environment:
+      COUCHDB_USER: admin
+      COUCHDB_PASSWORD: password
+    volumes:
+     - /swarm/data/cozystack/db:/opt/couchdb/data
+     - /etc/localtime:/etc/localtime:ro
+    deploy:
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+    networks:
+    #  - traefik-public
+     - internal
+    logging:
+      driver: json-file
+  cozystack-app:
+    image: cozy/cozy-stack:latest
+    environment:
+      COUCHDB_HOST: cozystack-db
+      COUCHDB_USER: admin
+      COUCHDB_PASSWORD: password
+      COZY_HOST: '0.0.0.0'
+      COZY_ADMIN_HOST: '0.0.0.0'
+      COZY_COUCHDB_URL: 'http://admin:password@cozystack-db:5984'
+      COZY_FS_URL: 'file:///var/lib/cozy'
+      # pass = E@93ccJkXi!T!^Qh
+      # COZY_ADMIN_PASSWORD: '$2y$10$GKtXWFrd.vXjX00WZ6SjH.zbhqxGWdT8OBeMqc5i1EsCExLvLn27W'
+      # COZY_PASS: $2y$10$GKtXWFrd.vXjX00WZ6SjH.zbhqxGWdT8OBeMqc5i1EsCExLvLn27W
+      # COZY_ADMIN_PASSPHRASE: password
+      COZY_ADMIN_PASSPHRASE: "S0m3Th1ngL0ng&Rand0m"
+    volumes:
+     - /swarm/data/cozystack/app:/var/lib/cozy
+     - /swarm/config/cozystack/app:/etc/cozy/
+     - /etc/localtime:/etc/localtime:ro
+    networks:
+     - traefik-public
+     - internal
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.cozystack-app-http.entrypoints: http
+        traefik.http.services.cozystack-app.loadbalancer.server.port: '8080'
+        traefik.http.routers.cozystack-app-http.middlewares: https-redirect
+        traefik.http.routers.cozystack-app-https.entrypoints: https
+        traefik.http.routers.cozystack-app-http.rule: Host(`cozystack.vnerd.nl`)
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.cozystack-app-https.rule: Host(`cozystack.vnerd.nl`)
+        traefik.http.routers.cozystack-app-https.tls.certresolver: le
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.cozystack-app-https.tls: 'true'
+
+        # traefik.http.routers.cozystack-admin-http.entrypoints: http
+        # traefik.http.services.cozystack-admin.loadbalancer.server.port: '6060'
+        # traefik.http.routers.cozystack-admin-http.middlewares: https-redirect
+        # traefik.http.routers.cozystack-admin-https.entrypoints: https
+        # traefik.http.routers.cozystack-admin-http.rule: Host(`cozystack-admin.vnerd.nl`)
+        # traefik.constraint-label: traefik-public
+        # traefik.http.routers.cozystack-admin-https.rule: Host(`cozystack-admin.vnerd.nl`)
+        # traefik.http.routers.cozystack-admin-https.tls.certresolver: le
+        # traefik.docker.network: traefik-public
+        # traefik.enable: 'true'
+        # traefik.http.routers.cozystack-admin-https.tls: 'true'
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true
