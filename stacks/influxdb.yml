@@ -13,9 +13,9 @@ services:
     volumes:
      - /swarm/data/influxdb:/var/lib/influxdb2
     networks:
-     - internal
+    #  - internal
      - traefik-public
-     - cloudbeaver_internal
+    #  - cloudbeaver_internal
     logging:
       driver: json-file
     deploy:
@@ -36,9 +36,9 @@ services:
          - node.labels.Arch!=i686
          - node.labels.worker==enabled
 networks:
-  internal:
-    driver: overlay
+  # internal:
+  #   driver: overlay
   traefik-public:
     external: true
-  cloudbeaver_internal:
-    external: true
+  # cloudbeaver_internal:
+  #   external: true
