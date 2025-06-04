@@ -11,7 +11,7 @@ services:
      - /var/run/docker.sock:/var/run/docker.sock
      - /var/lib/docker/volumes:/var/lib/docker/volumes
     networks:
-     - portainer-internal
+     - internal
     logging:
       driver: json-file
     deploy:
@@ -43,7 +43,7 @@ services:
      - /var/run/docker.sock:/var/run/docker.sock:ro
      - /swarm/data/portainer:/data
     networks:
-     - portainer-internal
+     - internal
      - traefik-public
     logging:
       driver: json-file
@@ -74,7 +74,7 @@ services:
          - node.labels.worker==enabled
          - node.labels.Arch!=aarch64
 networks:
-  portainer-internal:
+  internal:
     driver: overlay
   traefik-public:
     external: true
