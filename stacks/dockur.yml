@@ -1,49 +1,49 @@
 version: '3.3'
 services:
-  win7:
-    image: dockurr/windows
-    environment:
-      PGID: '911'
-      PUID: '911'
-      TZ: Europe/Amsterdam
-      VERSION: "win7"
-      DEVICE_NAME: '/dev/kvm'
-      KVM: "N"
-    volumes:
-    - /swarm/data/dockur/win7:/storage
-    networks:
-    #  - internal
-     - outside
-    #  - traefik-public
-    logging:
-      driver: json-file
-    # ports:
-    #   # - 8006:8006
-    #   - 3390:3389/tcp
-    #   - 3390:3389/udp
-    cap_add:
-      - NET_ADMIN
-    devices:
-      - /dev/kvm:/dev/kvm
-    deploy:
-      replicas: 0
-      labels:
-        traefik.http.routers.win7-http.rule: Host(`win7.vnerd.nl`)
-        traefik.http.routers.win7-https.tls.certresolver: le
-        traefik.http.routers.win7-https.tls: 'true'
-        traefik.http.services.win7.loadbalancer.server.port: '8006'
-        traefik.http.routers.win7-http.middlewares: https-redirect
-        traefik.http.routers.win7-https.entrypoints: https
-        traefik.http.routers.win7-https.rule: Host(`win7.vnerd.nl`)
-        traefik.constraint-label: traefik-public
-        traefik.docker.network: traefik-public
-        traefik.enable: 'true'
-        traefik.http.routers.win7-http.entrypoints: http
-        traefik.http.routers.win7-https.middlewares: authelia
-      placement:
-        constraints:
-         - node.labels.Arch!=i686
-         - node.labels.worker==enabled
+  # win7:
+  #   image: dockurr/windows
+  #   environment:
+  #     PGID: '911'
+  #     PUID: '911'
+  #     TZ: Europe/Amsterdam
+  #     VERSION: "win7"
+  #     DEVICE_NAME: '/dev/kvm'
+  #     KVM: "N"
+  #   volumes:
+  #   - /swarm/data/dockur/win7:/storage
+  #   networks:
+  #   #  - internal
+  #   #  - outside
+  #    - traefik-public
+  #   logging:
+  #     driver: json-file
+  #   # ports:
+  #   #   # - 8006:8006
+  #   #   - 3390:3389/tcp
+  #   #   - 3390:3389/udp
+  #   cap_add:
+  #     - NET_ADMIN
+  #   devices:
+  #     - /dev/kvm:/dev/kvm
+  #   deploy:
+  #     replicas: 0
+  #     labels:
+  #       traefik.http.routers.win7-http.rule: Host(`win7.vnerd.nl`)
+  #       traefik.http.routers.win7-https.tls.certresolver: le
+  #       traefik.http.routers.win7-https.tls: 'true'
+  #       traefik.http.services.win7.loadbalancer.server.port: '8006'
+  #       traefik.http.routers.win7-http.middlewares: https-redirect
+  #       traefik.http.routers.win7-https.entrypoints: https
+  #       traefik.http.routers.win7-https.rule: Host(`win7.vnerd.nl`)
+  #       traefik.constraint-label: traefik-public
+  #       traefik.docker.network: traefik-public
+  #       traefik.enable: 'true'
+  #       traefik.http.routers.win7-http.entrypoints: http
+  #       traefik.http.routers.win7-https.middlewares: authelia
+  #     placement:
+  #       constraints:
+  #        - node.labels.Arch!=i686
+  #        - node.labels.worker==enabled
 
   winxp1:
     image: dockurr/windows
@@ -63,33 +63,33 @@ services:
     logging:
       driver: json-file
     ports:
-     - target: 8006
-      #  host_ip: 10.10.10.27
-       published: 8007
-       protocol: tcp
-       mode: host
-    #  - 8007:8006
+    #  - target: 8006
+    #   #  host_ip: 10.10.10.27
+    #    published: 8007
+    #    protocol: tcp
+    #    mode: host
+     - 8007:8006
     #   - 3390:3389/tcp
     #   - 3390:3389/udp
-    cap_add:
-      - NET_ADMIN
+    # cap_add:
+    #   - NET_ADMIN
     # devices:
       # - /dev/kvm:/dev/kvm
     deploy:
       replicas: 0
-      # labels:
-        # traefik.http.routers.winxp1-http.rule: Host(`winxp1.vnerd.nl`)
-        # traefik.http.routers.winxp1-https.tls.certresolver: le
-        # traefik.http.routers.winxp1-https.tls: 'true'
-        # traefik.http.services.winxp1.loadbalancer.server.port: '8007'
-        # traefik.http.routers.winxp1-http.middlewares: https-redirect
-        # traefik.http.routers.winxp1-https.entrypoints: https
-        # traefik.http.routers.winxp1-https.rule: Host(`winxp1.vnerd.nl`)
-        # traefik.constraint-label: traefik-public
-        # traefik.docker.network: traefik-public
-        # traefik.enable: 'true'
-        # traefik.http.routers.winxp1-http.entrypoints: http
-        # traefik.http.routers.winxp1-https.middlewares: authelia
+      labels:
+        traefik.http.routers.winxp1-http.rule: Host(`winxp1.vnerd.nl`)
+        traefik.http.routers.winxp1-https.tls.certresolver: le
+        traefik.http.routers.winxp1-https.tls: 'true'
+        traefik.http.services.winxp1.loadbalancer.server.port: '8007'
+        traefik.http.routers.winxp1-http.middlewares: https-redirect
+        traefik.http.routers.winxp1-https.entrypoints: https
+        traefik.http.routers.winxp1-https.rule: Host(`winxp1.vnerd.nl`)
+        traefik.constraint-label: traefik-public
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.winxp1-http.entrypoints: http
+        traefik.http.routers.winxp1-https.middlewares: authelia
         # sablier.enable: 'true'
         # sablier.group: windows
         # traefik.docker.lbswarm: 'true'
@@ -145,50 +145,50 @@ services:
   #       constraints:
   #        - node.labels.Arch!=i686
   #        - node.labels.worker==enabled
-  macos1:
-    image: dockurr/macos
-    environment:
-      PGID: '911'
-      PUID: '911'
-      TZ: Europe/Amsterdam
-      VERSION: "ventura"
-      # DEVICE_NAME: '/dev/kvm'
-      KVM: "N"
-    volumes:
-    - /swarm/data/dockur/macos1:/storage
-    networks:
-    #  - internal
-    #  - traefik-public
-     - outside
-    logging:
-      driver: json-file
-    # ports:
-    #   # - 8006:8006
-    #   - 5900:5900/tcp
-    #   - 5900:5900/udp
-    cap_add:
-      - NET_ADMIN
-    # devices:
-      # - /dev/kvm:/dev/kvm
-    deploy:
-      replicas: 0
-      labels:
-        traefik.http.routers.macos1-http.rule: Host(`macos1.vnerd.nl`)
-        traefik.http.routers.macos1-https.tls.certresolver: le
-        traefik.http.routers.macos1-https.tls: 'true'
-        traefik.http.services.macos1.loadbalancer.server.port: '8006'
-        traefik.http.routers.macos1-http.middlewares: https-redirect
-        traefik.http.routers.macos1-https.entrypoints: https
-        traefik.http.routers.macos1-https.rule: Host(`macos1.vnerd.nl`)
-        traefik.constraint-label: traefik-public
-        traefik.docker.network: traefik-public
-        traefik.enable: 'true'
-        traefik.http.routers.macos1-http.entrypoints: http
-        traefik.http.routers.macos1-https.middlewares: authelia
-      placement:
-        constraints:
-         - node.labels.Arch!=i686
-         - node.labels.worker==enabled
+  # macos1:
+  #   image: dockurr/macos
+  #   environment:
+  #     PGID: '911'
+  #     PUID: '911'
+  #     TZ: Europe/Amsterdam
+  #     VERSION: "ventura"
+  #     # DEVICE_NAME: '/dev/kvm'
+  #     KVM: "N"
+  #   volumes:
+  #   - /swarm/data/dockur/macos1:/storage
+  #   networks:
+  #   #  - internal
+  #    - traefik-public
+  #   #  - outside
+  #   logging:
+  #     driver: json-file
+  #   # ports:
+  #   #   # - 8006:8006
+  #   #   - 5900:5900/tcp
+  #   #   - 5900:5900/udp
+  #   cap_add:
+  #     - NET_ADMIN
+  #   # devices:
+  #     # - /dev/kvm:/dev/kvm
+  #   deploy:
+  #     replicas: 0
+  #     labels:
+  #       traefik.http.routers.macos1-http.rule: Host(`macos1.vnerd.nl`)
+  #       traefik.http.routers.macos1-https.tls.certresolver: le
+  #       traefik.http.routers.macos1-https.tls: 'true'
+  #       traefik.http.services.macos1.loadbalancer.server.port: '8006'
+  #       traefik.http.routers.macos1-http.middlewares: https-redirect
+  #       traefik.http.routers.macos1-https.entrypoints: https
+  #       traefik.http.routers.macos1-https.rule: Host(`macos1.vnerd.nl`)
+  #       traefik.constraint-label: traefik-public
+  #       traefik.docker.network: traefik-public
+  #       traefik.enable: 'true'
+  #       traefik.http.routers.macos1-http.entrypoints: http
+  #       traefik.http.routers.macos1-https.middlewares: authelia
+  #     placement:
+  #       constraints:
+  #        - node.labels.Arch!=i686
+  #        - node.labels.worker==enabled
 networks:
   # internal:
   #   driver: overlay

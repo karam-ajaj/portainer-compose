@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  cryptpad:
+    image: cryptpad/cryptpad:version-2025.6.0
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+      CPAD_MAIN_DOMAIN: "cryptpad.vnerd.nl"
+      #CPAD_SANDBOX_DOMAIN: "postgres"
+      CPAD_INSTALL_ONLYOFFICE: "true"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /swarm/config/cryptpad:/cryptpad/config
+      # - /swarm/data/cryptpad:/cryptpad
+      #- /swarm/config/cryptpad:/photos/BackupKoki
+    networks:
+      - internal
+      - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.services.cryptpad.loadbalancer.server.port: '3000'
+        traefik.http.routers.cryptpad-http.rule: Host(`cryptpad.vnerd.nl`)
+        traefik.http.routers.cryptpad-http.entrypoints: http
+        traefik.http.routers.cryptpad-http.middlewares: https-redirect
+        traefik.http.routers.cryptpad-https.rule: Host(`cryptpad.vnerd.nl`)
+        traefik.http.routers.cryptpad-https.entrypoints: https
+        traefik.http.routers.cryptpad-https.tls: 'true'
+        traefik.http.routers.cryptpad-https.tls.certresolver: le
+        # traefik.http.routers.cryptpad-https.middlewares: authelia
+        traefik.constraint-label: traefik-public
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+      placement:
+        constraints:
+          - node.labels.Arch!=i686
+          - node.labels.worker==enabled
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true

@@ -48,7 +48,7 @@ services:
     logging:
       driver: json-file
     deploy:
-      replicas: 0
+      replicas: 1
       labels:
         traefik.http.routers.portainer-https.entrypoints: https
         traefik.http.routers.portainer-https.tls.certresolver: le
@@ -61,10 +61,10 @@ services:
         traefik.docker.network: traefik-public
         traefik.enable: 'true'
         traefik.http.routers.portainer-https.rule: Host(`portainer.vnerd.nl`)
-        sablier.enable: 'true'
-        sablier.group: portainer
-        traefik.docker.lbswarm: 'true'
-        traefik.http.routers.portainer-https.middlewares: authelia, portainer-sablier@file
+        # sablier.enable: 'true'
+        # sablier.group: portainer
+        # traefik.docker.lbswarm: 'true'
+        traefik.http.routers.portainer-https.middlewares: authelia #, portainer-sablier@file
       update_config:
         parallelism: 0
         failure_action: rollback

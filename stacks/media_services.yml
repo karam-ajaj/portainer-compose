@@ -468,7 +468,7 @@ services:
          - node.labels.Arch!=i686
          - node.labels.worker==enabled
   readarr:
-    image: lscr.io/linuxserver/readarr:nightly
+    image: lscr.io/linuxserver/readarr:0.4.19-nightly
     environment:
       PGID: '911'
       PUID: '911'

@@ -121,7 +121,7 @@ services:
         traefik.http.middlewares.https-redirect.redirectscheme.permanent: 'true'
         traefik.constraint-label: traefik-public
         traefik.http.routers.traefik-public-http.rule: Host(`traefikv3.vnerd.nl`)
-        traefik.http.routers.traefik-public-https.middlewares: authelia@swarm
+        traefik.http.routers.traefik-public-https.middlewares: authelia
         traefik.docker.network: traefik-public
         traefik.enable: 'true'
         traefik.http.routers.traefik-public-https.tls.certresolver: le

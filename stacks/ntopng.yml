@@ -30,7 +30,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /swarm/config/ntopng/cloud.conf:/etc/ntopng/cloud.conf
-    #  - /swarm/config/ntopng/ntopng.conf:/etc/ntopng/ntopng.conf
+      # - /swarm/config/ntopng/ntopng.conf:/etc/ntopng/ntopng.conf
     #  - /swarm/config/ntopng/ntopng.license:/etc/ntopng.license:ro
     networks:
     #  - ntopng-macnet
@@ -39,6 +39,7 @@ services:
     logging:
       driver: json-file
     deploy:
+      replicas: 0
       # labels:
       #   traefik.http.routers.ntopng-https.tls.certresolver: le
       #   traefik.http.routers.ntopng-https.rule: Host(`ntopng.vnerd.nl`)
@@ -62,5 +63,5 @@ networks:
       name: "host"
   # macnet:
   #   driver: macvlan
-  traefik-public:
-    external: true
+  # traefik-public:
+  #   external: true

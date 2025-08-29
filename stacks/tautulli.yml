@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   tautulli:
-    image: hotio/tautulli:release-2.13.4
+    image: ghcr.io/hotio/tautulli
     environment:
       PGID: '911'
       PUID: '911'

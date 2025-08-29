@@ -9,34 +9,40 @@ services:
     volumes:
      - /swarm/config/freecad:/config
     networks:
-     - internal
+    #  - internal
      - traefik-public
     logging:
       driver: json-file
     deploy:
-      replicas: 0
+      replicas: 1
       labels:
-        traefik.http.services.freecad.loadbalancer.server.port: '3000'
+        traefik.http.services.freecad.loadbalancer.server.port: '3001'
         sablier.enable: 'true'
         traefik.http.routers.freecad-https.rule: Host(`freecad.vnerd.nl`)
         traefik.http.routers.freecad-http.middlewares: https-redirect
         traefik.http.routers.freecad-http.rule: Host(`freecad.vnerd.nl`)
         traefik.http.routers.freecad-http.entrypoints: http
         traefik.http.routers.freecad-https.tls.certresolver: le
-        traefik.http.routers.freecad-https.middlewares: authelia,freecad-sablier@file
-        sablier.group: freecad
+        # traefik.http.routers.freecad-https.middlewares: authelia,freecad-sablier@file,freecad-websocket
+        traefik.http.routers.freecad-https.middlewares: authelia
+        # sablier.group: freecad
         traefik.constraint-label: traefik-public
         traefik.http.routers.freecad-https.entrypoints: https
-        traefik.docker.lbswarm: 'true'
+        # traefik.docker.lbswarm: 'true'
         traefik.docker.network: traefik-public
         traefik.enable: 'true'
         traefik.http.routers.freecad-https.tls: 'true'
+        traefik.http.services.freecad.loadbalancer.serverstransport: ignorecert@file
+        traefik.http.services.freecad.loadbalancer.server.scheme: https
+        # traefik.http.middlewares.freecad-websocket.headers.customrequestheaders.Upgrade: websocket
+        # traefik.http.middlewares.freecad-websocket.headers.customrequestheaders.Connection: Upgrade
+
       placement:
         constraints:
          - node.labels.Arch!=i686
          - node.labels.worker==enabled
 networks:
-  internal:
-    driver: overlay
+  # internal:
+  #   driver: overlay
   traefik-public:
     external: true
