@@ -46,6 +46,7 @@ services:
     logging:
       driver: json-file
     deploy:
+      replicas: 0
       labels:
         traefik.http.routers.pc01-http.entrypoints: http
         traefik.http.routers.pc01-https.rule: Host(`pc01.vnerd.nl`)

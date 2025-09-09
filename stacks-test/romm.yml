@@ -1,0 +1,80 @@
+version: '3.3'
+
+volumes:
+  mysql_data:
+  romm_resources:
+  romm_redis_data:
+
+services:
+  romm:
+    image: rommapp/romm:latest
+    environment:
+      PGID: '911'
+      PUID: '911'
+      TZ: Europe/Amsterdam
+      DB_HOST: romm-db
+      DB_NAME: romm
+      DB_USER: romm-user
+      DB_PASSWD: "L6nN9!wRr4T8x2PjQv#k"   # secure random password
+      ROMM_AUTH_SECRET_KEY: "3e7c9b5f8c4a17d6d23f47a92a88c4f16e4fa0e87bb1b9e2c86f28a95e1c7b23" # openssl rand -hex 32
+      SCREENSCRAPER_USER: "scraper_user"
+      SCREENSCRAPER_PASSWORD: "zP7@rG3uB!5mXyK1"
+      RETROACHIEVEMENTS_API_KEY: "RA_6e2d3c7f98b14a45ac29e5d78fca2e11"
+      STEAMGRIDDB_API_KEY: "SGDB_9c8f7e2d12b3478c9345ac59eaf61c4e"
+      HASHEOUS_API_ENABLED: "true"
+    volumes:
+      - romm_resources:/romm/resources
+      - romm_redis_data:/redis-data
+      # - /path/to/library:/romm/library
+      # - /path/to/assets:/romm/assets
+      - /swarm/config/romm:/romm/config
+    networks:
+      - traefik-public
+      - internal
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.enable: 'true'
+        traefik.docker.network: traefik-public
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.romm-http.rule: Host(`romm.vnerd.nl`)
+        traefik.http.routers.romm-http.entrypoints: http
+        traefik.http.routers.romm-http.middlewares: https-redirect
+        traefik.http.routers.romm-https.rule: Host(`romm.vnerd.nl`)
+        traefik.http.routers.romm-https.entrypoints: https
+        traefik.http.routers.romm-https.tls: 'true'
+        traefik.http.routers.romm-https.tls.certresolver: le
+        traefik.http.services.romm.loadbalancer.server.port: '8080'
+      placement:
+        constraints:
+          - node.labels.Arch!=i686
+          - node.labels.worker==enabled
+
+  romm-db:
+    image: mariadb:latest
+    environment:
+      MARIADB_ROOT_PASSWORD: "xY9!dT3eQ7wUoR6@jV"  # secure random root password
+      MARIADB_DATABASE: romm
+      MARIADB_USER: romm-user
+      MARIADB_PASSWORD: "L6nN9!wRr4T8x2PjQv#k" # must match DB_PASSWD above
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - internal
+    deploy:
+      placement:
+        constraints:
+          - node.labels.worker==enabled
+    # healthcheck:
+    #   test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+    #   start_period: 30s
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 5
+
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true

@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   ha:
-    image: homeassistant/home-assistant:2024.10.4
+    image: homeassistant/home-assistant:2025.8
     environment:
       PGID: '1000'
       PUID: '1000'

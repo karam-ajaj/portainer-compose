@@ -1,0 +1,76 @@
+version: "3.8"
+
+services:
+
+  invidious:
+    image: quay.io/invidious/invidious:latest
+    environment:
+      INVIDIOUS_CONFIG: |
+        db:
+          dbname: invidious
+          user: kemal
+          password: kemal
+          host: invidious-db
+          port: 5432
+        check_tables: true
+        signature_server: inv_sig_helper:12999
+        visitor_data: ""
+        po_token: ""
+        hmac_key: "xie5YeiThahchee1Tohgh"
+    networks:
+      - traefik-public
+      - internal
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.enable: "true"
+        traefik.constraint-label: traefik-public
+        traefik.docker.network: traefik-public
+        traefik.http.services.invidious.loadbalancer.server.port: "3000"
+        traefik.http.routers.invidious-http.entrypoints: http
+        traefik.http.routers.invidious-http.rule: Host(`invidious.vnerd.nl`)
+        traefik.http.routers.invidious-http.middlewares: https-redirect
+        traefik.http.routers.invidious-https.entrypoints: https
+        traefik.http.routers.invidious-https.rule: Host(`invidious.vnerd.nl`)
+        traefik.http.routers.invidious-https.tls: "true"
+        traefik.http.routers.invidious-https.tls.certresolver: le
+      placement:
+        constraints:
+          - node.labels.worker==enabled
+          - node.labels.Arch!=i686
+
+  inv_sig_helper:
+    image: quay.io/invidious/inv-sig-helper:latest
+    command: ["--tcp", "0.0.0.0:12999"]
+    environment:
+      - RUST_LOG=info
+    networks:
+      - internal
+    deploy:
+      placement:
+        constraints:
+          - node.labels.worker==enabled
+
+  invidious-db:
+    image: postgres:14
+    volumes:
+      - /swarm/data/invidious/db:/var/lib/postgresql/data
+      - /swarm/config/invidious/sql:/config/sql
+      - /swarm/config/invidious/docker/init-invidious-db.sh:/docker-entrypoint-initdb.d/init-invidious-db.sh
+    environment:
+      POSTGRES_DB: invidious
+      POSTGRES_USER: kemal
+      POSTGRES_PASSWORD: kemal
+    networks:
+      - internal
+    deploy:
+      placement:
+        constraints:
+          - node.labels.worker==enabled
+
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true
