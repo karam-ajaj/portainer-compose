@@ -168,11 +168,15 @@ services:
          - node.labels.Arch!=i686
          - node.labels.worker==enabled
   lidarr:
-    image: lscr.io/linuxserver/lidarr:latest
+    # image: lscr.io/linuxserver/lidarr:latest
+    image: blampe/lidarr:latest
     environment:
       PGID: '911'
       PUID: '911'
       TZ: Europe/Amsterdam
+      LIDARR_URL: http://localhost:8686
+      LIDARR_API_KEY: 805ad62bcd5b4efd84f8b5036988af10
+
     # ports:
       # - 3050:8086
     volumes:
