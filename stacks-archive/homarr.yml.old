@@ -1,15 +1,16 @@
 version: '3.3'
 services:
   homarr:
-    image: ghcr.io/homarr-labs/homarr:latest
+    image: ghcr.io/ajnart/homarr:0.16.0
     environment:
-      # PGID: '911'
-      # PUID: '911'
+      PGID: '911'
+      PUID: '911'
       TZ: Europe/Amsterdam
-      SECRET_ENCRYPTION_KEY: a841da91b11c49794708f9b271fb953fa7eba16445f494d929778812b3cc7ecd
     volumes:
-     - /swarm/config/homarr:/appdata
-     - /var/run/docker.sock:/var/run/docker.sock
+     - /swarm/config/homarr/configs:/app/data/configs
+     - /swarm/data/homarr/data:/data
+     - /swarm/data/homarr/icons:/app/public/icons
+     - /swarm/data/homarr/pics:/app/public/pics
     networks:
      - traefik-public
     logging:

@@ -341,7 +341,7 @@ services:
          - node.labels.Arch!=i686
          - node.labels.worker==enabled
   overseerr:
-    image: linuxserver/overseerr:1.33.2
+    image: linuxserver/overseerr:latest
     environment:
       PGID: '911'
       PUID: '911'
@@ -440,7 +440,7 @@ services:
          - node.labels.Arch!=i686
          - node.labels.worker==enabled
   radarr:
-    image: lscr.io/linuxserver/radarr:version-5.4.6.8723
+    image: lscr.io/linuxserver/radarr:latest
     environment:
       PGID: '911'
       PUID: '911'
@@ -472,7 +472,7 @@ services:
          - node.labels.Arch!=i686
          - node.labels.worker==enabled
   readarr:
-    image: lscr.io/linuxserver/readarr:0.4.19-nightly
+    image: ghcr.io/faustvii/readarr:latest
     environment:
       PGID: '911'
       PUID: '911'
@@ -570,7 +570,7 @@ services:
          - node.labels.Arch!=i686
          - node.labels.worker==enabled
   sabnzbd:
-    image: lscr.io/linuxserver/sabnzbd:4.3.3
+    image: lscr.io/linuxserver/sabnzbd:latest
     environment:
       PGID: '911'
       PUID: '911'
@@ -603,7 +603,7 @@ services:
          - node.labels.Arch!=i686
          - node.labels.worker==enabled
   sonarr:
-    image: lscr.io/linuxserver/sonarr:version-4.0.4.1491
+    image: lscr.io/linuxserver/sonarr:latest
     environment:
       PGID: '911'
       PUID: '911'

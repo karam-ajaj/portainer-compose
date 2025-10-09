@@ -9,8 +9,8 @@ services:
     environment:
       NVIDIA_DRIVER_CAPABILITIES: all
       NVIDIA_VISIBLE_DEVICES: all
-      # PGID: '911'
-      # PUID: '911'
+      PGID: '0'
+      PUID: '0'
       TZ: Europe/Amsterdam
       UMASK_SET: '002'
       ffmpegVersion: '6'
@@ -56,8 +56,8 @@ services:
     environment:
       NVIDIA_DRIVER_CAPABILITIES: all
       NVIDIA_VISIBLE_DEVICES: all
-      # PGID: '911'
-      # PUID: '911'
+      PGID: '0'
+      PUID: '0'
       TZ: Europe/Amsterdam
       UMASK_SET: '002'
       ffmpegVersion: '6'
@@ -84,8 +84,8 @@ services:
     environment:
       NVIDIA_DRIVER_CAPABILITIES: all
       NVIDIA_VISIBLE_DEVICES: all
-      # PGID: '911'
-      # PUID: '911'
+      PGID: '0'
+      PUID: '0'
       TZ: Europe/Amsterdam
       UMASK_SET: '002'
       ffmpegVersion: '6'
@@ -112,8 +112,8 @@ services:
     environment:
       NVIDIA_DRIVER_CAPABILITIES: all
       NVIDIA_VISIBLE_DEVICES: all
-      # PGID: '911'
-      # PUID: '911'
+      PGID: '0'
+      PUID: '0'
       TZ: Europe/Amsterdam
       UMASK_SET: '002'
       ffmpegVersion: '6'

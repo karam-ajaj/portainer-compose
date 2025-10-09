@@ -19,30 +19,32 @@ services:
       #BLACKLIST_URL: ''
       REGEX_BLACKLIST_URL: 'https://raw.githubusercontent.com/mmotti/pihole-regex/master/regex.list'
     ports:
-    #  - "53:53"
-    #  - "53:53/udp"
-    #  - "67:67/udp"
-     - 8090:80
-     - target: 53
-      #  host_ip: 10.10.10.27
-       published: 5353
-       protocol: tcp
-       mode: host
-     - target: 53
-      #  host_ip: 10.10.10.27
-       published: 5353
-       protocol: udp
-       mode: host
-     - target: 67
-      #  host_ip: 10.10.10.27
-       published: 6767
-       protocol: udp
-       mode: host
-     - target: 67
-      #  host_ip: 10.10.10.27
-       published: 6767
-       protocol: tcp
-       mode: host
+     - "53:53"
+     - "53:53/udp"
+     - "67:67/udp"
+     - "8090:80" # to enable dashdot integeration
+     ## the following section can be used in case of firewall and port mapping
+    #  - 8090:80
+    #  - target: 53
+    #   #  host_ip: 10.10.10.27
+    #    published: 5353
+    #    protocol: tcp
+    #    mode: host
+    #  - target: 53
+    #   #  host_ip: 10.10.10.27
+    #    published: 5353
+    #    protocol: udp
+    #    mode: host
+    #  - target: 67
+    #   #  host_ip: 10.10.10.27
+    #    published: 6767
+    #    protocol: udp
+    #    mode: host
+    #  - target: 67
+    #   #  host_ip: 10.10.10.27
+    #    published: 6767
+    #    protocol: tcp
+    #    mode: host
     volumes:
      - /swarm/config/pihole/etc/dnsmasq.d:/etc/dnsmasq.d
      - /swarm/config/pihole/etc/pihole:/etc/pihole
@@ -60,7 +62,7 @@ services:
         # traefik.http.routers.pihole-http.middlewares: piholehttp-redirectregex@swarm
         # traefik.http.routers.pihole-http.middlewares: pihole-prefix
         # traefik.http.routers.pihole-https.middlewares: pihole-redirectregex@swarm
-        traefik.http.routers.pihole-https.rule: Host(`pihole.vnerd.nl`) && (PathPrefix(`/admin`))
+        traefik.http.routers.pihole-https.rule: Host(`pihole.vnerd.nl`) # && (PathPrefix(`/admin`))
         traefik.http.routers.pihole-https.entrypoints: https
         traefik.constraint-label: traefik-public
         traefik.http.routers.pihole-https.tls: 'true'
@@ -68,12 +70,12 @@ services:
         traefik.docker.network: traefik-public
         traefik.enable: 'true'
         traefik.http.routers.pihole-http.entrypoints: http
-        traefik.http.routers.pihole-http.rule: Host(`pihole.vnerd.nl`) && (PathPrefix(`/admin`))
+        traefik.http.routers.pihole-http.rule: Host(`pihole.vnerd.nl`) # && (PathPrefix(`/admin`))
         # traefik.http.routers.pihole-https.middlewares: authelia
         # traefik.http.middlewares.piholehttp-redirectregex.redirectregex.regex: ^http://pihole.vnerd.nl
         # traefik.http.middlewares.piholehttp-redirectregex.redirectregex.replacement: http://pihole.vnerd.nl/admin
-        traefik.http.middlewares.pihole-prefix.addprefix.prefix: /admin
-        traefik.http.routers.pihole-http.middlewares: pihole-prefix, https-redirect
+        # traefik.http.middlewares.pihole-prefix.addprefix.prefix: /admin
+        traefik.http.routers.pihole-http.middlewares: https-redirect, # pihole-prefix
         traefik.http.routers.pihole-https.middlewares: authelia
         # traefik.http.middlewares.piholehttps-redirectregex.redirectregex.regex: ^https://pihole.vnerd.nl/(.*)
         # traefik.http.middlewares.piholehttps-redirectregex.redirectregex.replacement: https://pihole.vnerd.nl/admin
