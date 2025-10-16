@@ -1,0 +1,31 @@
+version: '3.3'
+
+services:
+  agregarr:
+    image: agregarr/agregarr:latest
+    volumes:
+      - /swarm/config/agregarr:/app/config
+    networks:
+      - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.enable: 'true'
+        traefik.http.routers.agregarr-https.entrypoints: https
+        traefik.http.routers.agregarr-https.rule: Host(`agregarr.vnerd.nl`)
+        traefik.http.routers.agregarr-https.tls.certresolver: le
+        traefik.http.routers.agregarr-https.tls: 'true'
+        traefik.http.routers.agregarr-http.entrypoints: http
+        traefik.http.routers.agregarr-http.rule: Host(`agregarr.vnerd.nl`)
+        traefik.http.routers.agregarr-http.middlewares: https-redirect
+        traefik.docker.network: traefik-public
+        traefik.constraint-label: traefik-public
+        traefik.http.services.agregarr.loadbalancer.server.port: '7171'
+      placement:
+        constraints:
+          - node.labels.Arch!=i686
+          - node.labels.worker==enabled
+networks:
+  traefik-public:
+    external: true

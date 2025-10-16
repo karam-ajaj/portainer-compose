@@ -1,0 +1,36 @@
+version: '3.3'
+
+services:
+  navidrome:
+    image: deluan/navidrome:latest
+    environment:
+      # ND_LOGLEVEL: debug
+      ND_ENABLESHARING: 'true'
+      ND_DEFAULTSHAREEXPIRATION: '8760h'
+    volumes:
+      - /swarm/data/navidrome:/data
+      - /media_pool:/music:ro
+    networks:
+      - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.enable: 'true'
+        traefik.http.routers.navidrome-https.entrypoints: https
+        traefik.http.routers.navidrome-https.rule: Host(`navidrome.vnerd.nl`)
+        traefik.http.routers.navidrome-https.tls.certresolver: le
+        traefik.http.routers.navidrome-https.tls: 'true'
+        traefik.http.routers.navidrome-http.entrypoints: http
+        traefik.http.routers.navidrome-http.rule: Host(`navidrome.vnerd.nl`)
+        traefik.http.routers.navidrome-http.middlewares: https-redirect
+        traefik.docker.network: traefik-public
+        traefik.constraint-label: traefik-public
+        traefik.http.services.navidrome.loadbalancer.server.port: '4533'
+      placement:
+        constraints:
+          - node.labels.Arch!=i686
+          - node.labels.worker==enabled
+networks:
+  traefik-public:
+    external: true

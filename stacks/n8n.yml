@@ -1,10 +1,10 @@
 version: '3.3'
 services:
   n8n:
-    image: docker.n8n.io/n8nio/n8n
+    image: n8nio/n8n
     environment:
-      PGID: '911'
-      PUID: '911'
+      # PGID: '0'
+      # PUID: '0'
       # TZ: Europe/Amsterdam
       N8N_HOST: "n8n.vnerd.nl"
       N8N_PORT: "5678"
@@ -12,17 +12,17 @@ services:
       NODE_ENV: "production"
       WEBHOOK_URL: "https://n8n.vnerd.nl/"
       GENERIC_TIMEZONE: "Europe/Amsterdam"
-      N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: "true"
+      N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: "false"
       N8N_RUNNERS_ENABLED: "true"
-    # volumes:
-    #  - /swarm/data/n8n/:/home/node/.n8n/
+    volumes:
+     - /swarm/config/n8n:/home/node/.n8n
     networks:
     #  - internal
      - traefik-public
     logging:
       driver: json-file
     deploy:
-      # replicas: 1
+      replicas: 0
       labels:
         traefik.http.services.n8n.loadbalancer.server.port: '5678'
         sablier.enable: 'true'
@@ -31,12 +31,12 @@ services:
         traefik.http.routers.n8n-http.rule: Host(`n8n.vnerd.nl`)
         traefik.http.routers.n8n-http.entrypoints: http
         traefik.http.routers.n8n-https.tls.certresolver: le
-        # traefik.http.routers.n8n-https.middlewares: authelia,n8n-sablier@file,n8n-websocket
-        traefik.http.routers.n8n-https.middlewares: authelia
-        # sablier.group: n8n
+        traefik.http.routers.n8n-https.middlewares: n8n-sablier@file #, authelia, n8n-websocket
+        # traefik.http.routers.n8n-https.middlewares: authelia
+        sablier.group: n8n
         traefik.constraint-label: traefik-public
         traefik.http.routers.n8n-https.entrypoints: https
-        # traefik.docker.lbswarm: 'true'
+        traefik.docker.lbswarm: 'true'
         traefik.docker.network: traefik-public
         traefik.enable: 'true'
         traefik.http.routers.n8n-https.tls: 'true'

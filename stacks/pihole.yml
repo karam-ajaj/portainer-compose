@@ -75,7 +75,7 @@ services:
         # traefik.http.middlewares.piholehttp-redirectregex.redirectregex.regex: ^http://pihole.vnerd.nl
         # traefik.http.middlewares.piholehttp-redirectregex.redirectregex.replacement: http://pihole.vnerd.nl/admin
         # traefik.http.middlewares.pihole-prefix.addprefix.prefix: /admin
-        traefik.http.routers.pihole-http.middlewares: https-redirect, # pihole-prefix
+        traefik.http.routers.pihole-http.middlewares: https-redirect #, pihole-prefix
         traefik.http.routers.pihole-https.middlewares: authelia
         # traefik.http.middlewares.piholehttps-redirectregex.redirectregex.regex: ^https://pihole.vnerd.nl/(.*)
         # traefik.http.middlewares.piholehttps-redirectregex.redirectregex.replacement: https://pihole.vnerd.nl/admin

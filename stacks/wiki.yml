@@ -1,0 +1,57 @@
+version: '3.3'
+services:
+  ollama:
+    image: ollama/ollama:latest
+    environment:
+      OLLAMA_ORIGINS: '*'
+    volumes:
+     - /swarm/data/wiki/ollama:/root/.ollama
+    networks:
+    #  - traefik-public
+     - internal
+    # ports:
+    #  - "11434:11434"
+    logging:
+      driver: json-file
+    deploy:
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+  endless-wiki:
+    image: xanderstrike/endless-wiki:latest
+    environment:
+      OLLAMA_HOST: 'http://wiki_ollama:11434'
+      OLLAMA_MODEL: 'gemma3:1b' # pure delightful nonsense
+      # OLLAMA_MODEL: gemma3:12b # some accurate info
+      # OLLAMA_MODEL: gemma3:4b # the world is what you make it
+      PORT: 8080
+    # volumes:
+    #  - /swarm/data/wiki/endless-wiki:
+    networks:
+     - traefik-public
+     - internal
+    logging:
+      driver: json-file
+    deploy:
+      labels:
+        traefik.http.routers.wiki-http.middlewares: https-redirect
+        traefik.http.routers.wiki-http.rule: Host(`wiki.vnerd.nl`)
+        traefik.http.services.wiki.loadbalancer.server.port: '8080'
+        traefik.http.routers.wiki-https.tls: 'true'
+        traefik.http.routers.wiki-https.tls.certresolver: le
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.wiki-https.rule: Host(`wiki.vnerd.nl`)
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.wiki-https.entrypoints: https
+        traefik.http.routers.wiki-http.entrypoints: http
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true
