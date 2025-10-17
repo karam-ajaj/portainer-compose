@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  it-tools:
+    image: corentinth/it-tools:latest
+    networks:
+     - internal
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      # replicas: 0
+      labels:
+        # sablier.enable: 'true'
+        traefik.http.routers.it-tools-https.tls: 'true'
+        traefik.http.routers.it-tools-https.tls.certresolver: le
+        traefik.http.routers.it-tools-http.entrypoints: http
+        traefik.http.services.it-tools.loadbalancer.server.port: '80'
+        # traefik.http.routers.it-tools-https.middlewares: it-tools-sablier@file
+        # traefik.http.routers.it-tools-https.middlewares: 500error@file
+        traefik.http.routers.it-tools-https.entrypoints: https
+        traefik.http.routers.it-tools-https.rule: Host(`it-tools.vnerd.nl`)
+        # sablier.group: it-tools
+        traefik.constraint-label: traefik-public
+        # traefik.docker.lbswarm: 'true'
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.it-tools-http.middlewares: https-redirect
+        traefik.http.routers.it-tools-http.rule: Host(`it-tools.vnerd.nl`)
+      placement:
+        constraints:
+         - node.labels.Arch!=i686
+         - node.labels.worker==enabled
+networks:
+  internal:
+    driver: overlay
+  traefik-public:
+    external: true
+    
